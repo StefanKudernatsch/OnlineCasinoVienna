@@ -15,7 +15,7 @@ class DB
 
     function __construct()
     {
-
+        //username - password?
         $this->host = 'localhost';
         $this->user = 'Kudernatsch';
         $this->password = 'kudi';
