@@ -18,6 +18,8 @@ require_once 'inc/User.php';
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="res/css/style.css">
     <title>OnlineCasinoVienna</title>
+    <!-- Fonts Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
 <body>
 <?php
