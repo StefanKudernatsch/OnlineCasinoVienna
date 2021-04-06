@@ -1,0 +1,23 @@
+{
+  "name": "onlinecasinovienna",
+  "version": "1.0.0",
+  "description": "Website for OnlineCasinoVienna",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StefanKudernatsch/OnlineCasinoVienna.git"
+  },
+  "author": "Leon von Voss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StefanKudernatsch/OnlineCasinoVienna/issues"
+  },
+  "homepage": "https://github.com/StefanKudernatsch/OnlineCasinoVienna#readme",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
