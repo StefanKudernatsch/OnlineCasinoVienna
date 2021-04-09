@@ -91,46 +91,42 @@ class DB
         return new User($user["Gender"], $user["FirstName"], $user["LastName"], $user["UserImage"], $user["UserBirthDay"], $user["Username"], $user["Password"], $user["EMailAddress"], $user["City"], $user["PLZ"], $user["UserAddress"], $user["UserActive"]);
     }
 
-    function uploadImage($image, $userid) //
+    function uploadImage($user_image, $user_id) //
     {
-        $sql = "UPDATE usertable SET UserImage=? WHERE UserID = " . $userid . ";";
+        $sql = "UPDATE user SET UserImage=? WHERE ID = " . $user_id . ";";
         $stmt = $this->connect->prepare($sql);
         $null = "NULL";
         $stmt->bind_param("b", $null);
-        $stmt->send_long_data(0, file_get_contents($image));
-        $ergebnis = $stmt->execute();
-        return $ergebnis;
+        $stmt->send_long_data(0, file_get_contents($user_image));
+        return $stmt->execute();
 
     }
 
     function registerUser(User $user_object)
     {
-        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Adress, PostalCode, City, UserName, Password, Email, UserImage, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-
+        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email, UserImage, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         $stmt = $this->connect->prepare($sql);
-
         $gender = $user_object->getUserGender();
+        $birthday = $user_object->getUserBirthday();
         $firstname = $user_object->getUserFirstName();
         $lastname = $user_object->getUserLastName();
-        $birthday = $user_object->getUserBirthday();
+        $address = $user_object->getUserAddress();
+        $plz = $user_object->getUserPLZ();
+        $city = $user_object->getUserCity();
         $username = $user_object->getUserName();
         $password = password_hash($user_object->getUserPassword(), PASSWORD_DEFAULT);
         $email = $user_object->getUserEmail();
-        $city = $user_object->getUserCity();
-        $plz = $user_object->getUserPLZ();
-        $address = $user_object->getUserAddress();
+        $money = $user_object->getUserMoney();
         $active = $user_object->getUserActive();
-
-        $stmt->bind_param("ssssssssisi", $gender, $firstname, $lastname, $birthday, $username, $password, $email, $city, $plz, $address, $active);
-        $ergebnis = $stmt->execute();
-
-        return $ergebnis;
+        $banned = $user_object->getUserBanned();
+        $stmt->bind_param("issssissssiii", $gender, $birthday, $firstname, $lastname, $address, $plz, $city, $username, $password, $email, $money, $active, $banned);
+        return $stmt->execute();
     }
 
 
     function updateUser(User $user_object)
     {
-        $sql = "UPDATE usertable SET Gender = ?,FirstName = ?,LastName = ?,UserBirthDay = ?,Username = ?,EMailAddress = ?,City = ?,PLZ = ?,UserAddress = ? WHERE UserID = ?;";
+        $sql = "UPDATE user SET Gender = ?, Birthday = ?, FirstName = ?, LastName = ?, Address = ?, PostalCode = ?, City = ?, UserName = ?, Password = ?, Email = ?, Money = ?, Active = ?, Banned = ? WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
 
         $gender = $user_object->getUserGender();
