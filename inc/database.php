@@ -17,9 +17,9 @@ class DB
     {
         //username - password?
         $this->host = 'localhost';
-        $this->user = 'Kudernatsch';
-        $this->password = 'kudi';
-        $this->database = 'OnlineCasinoVienna';
+        $this->user = 'onlinecasino_w3';
+        $this->password = 'j9l9Qq2UeWkjxvI73KiTcZN21Xr9Kun3yK0ximFa';
+        $this->database = 'online_casino_w3_cs_technikum_wien_at';
 
         $this->connect = new mysqli($this->host, $this->user, $this->password, $this->database);
 
@@ -132,7 +132,7 @@ class DB
 
     function registerUser(User $user_object)
     {
-        $sql = "INSERT INTO usertable (Gender,FirstName,LastName,UserBirthDay, Username, Password, EMailAddress,City,PLZ,UserAddress,UserActive) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
+        $sql = "INSERT INTO usertable (Gender, FirstName, LastName, UserName, Password, Email,City,Post,Adress,Active, Banned, ProfilePic) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 
         $stmt = $this->connect->prepare($sql);
 
