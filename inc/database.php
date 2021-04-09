@@ -132,7 +132,7 @@ class DB
 
     function registerUser(User $user_object)
     {
-        $sql = "INSERT INTO usertable (Gender, FirstName, LastName, UserName, Password, Email,City,Post,Adress,Active, Banned, ProfilePic) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
+        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Adress, PostalCode, City, UserName, Password, Email, UserImage, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         $stmt = $this->connect->prepare($sql);
 

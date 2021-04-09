@@ -5,47 +5,55 @@ class User
 
     private $UserID;
     private $UserGender;
+    private $UserBirthday;
     private $UserFirstName;
     private $UserLastName;
-    private $UserBirthday;
-    private $UserImage;
+    private $UserAddress;
+    private $UserPLZ;
+    private $UserCity;
     private $UserName;
     private $UserPassword;
     private $UserEMail;
-    private $UserCity;
-    private $UserPLZ;
-    private $UserAddress;
-    private $UserActive;
+    private $UserImage;
+    private $UserMoney;
 
     /**
      * User constructor.
+     * @param $UserID
      * @param $UserGender
+     * @param $UserBirthday
      * @param $UserFirstName
      * @param $UserLastName
-     * @param $UserBirthday
-     * @param $UserImage
+     * @param $UserAddress
+     * @param $UserPLZ
+     * @param $UserCity
      * @param $UserName
      * @param $UserPassword
      * @param $UserEMail
-     * @param $UserCity
-     * @param $UserPLZ
-     * @param $UserAddress
+     * @param $UserImage
+     * @param $UserMoney
+     * @param $UserActive
+     * @param $UserBanned
      */
-    public function __construct($UserGender, $UserFirstName, $UserLastName, $UserBirthday, $UserImage, $UserName, $UserPassword, $UserEMail, $UserCity, $UserPLZ, $UserAddress, $UserActive)
+    public function __construct($UserID, $UserGender, $UserBirthday, $UserFirstName, $UserLastName, $UserAddress, $UserPLZ, $UserCity, $UserName, $UserPassword, $UserEMail, $UserImage, $UserMoney, $UserActive, $UserBanned)
     {
+        $this->UserID = $UserID;
         $this->UserGender = $UserGender;
+        $this->UserBirthday = $UserBirthday;
         $this->UserFirstName = $UserFirstName;
         $this->UserLastName = $UserLastName;
-        $this->UserBirthday = $UserBirthday;
-        $this->UserImage = $UserImage;
+        $this->UserAddress = $UserAddress;
+        $this->UserPLZ = $UserPLZ;
+        $this->UserCity = $UserCity;
         $this->UserName = $UserName;
         $this->UserPassword = $UserPassword;
         $this->UserEMail = $UserEMail;
-        $this->UserCity = $UserCity;
-        $this->UserPLZ = $UserPLZ;
-        $this->UserAddress = $UserAddress;
+        $this->UserImage = $UserImage;
+        $this->UserMoney = $UserMoney;
         $this->UserActive = $UserActive;
+        $this->UserBanned = $UserBanned;
     }
+
 
     /**
      * @return mixed
@@ -77,6 +85,22 @@ class User
     public function setUserGender($UserGender)
     {
         $this->UserGender = $UserGender;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserBirthday()
+    {
+        return $this->UserBirthday;
+    }
+
+    /**
+     * @param mixed $UserBirthday
+     */
+    public function setUserBirthday($UserBirthday)
+    {
+        $this->UserBirthday = $UserBirthday;
     }
 
     /**
@@ -114,33 +138,49 @@ class User
     /**
      * @return mixed
      */
-    public function getUserBirthday()
+    public function getUserAddress()
     {
-        return $this->UserBirthday;
+        return $this->UserAddress;
     }
 
     /**
-     * @param mixed $UserBirthday
+     * @param mixed $UserAddress
      */
-    public function setUserBirthday($UserBirthday)
+    public function setUserAddress($UserAddress)
     {
-        $this->UserBirthday = $UserBirthday;
+        $this->UserAddress = $UserAddress;
     }
 
     /**
      * @return mixed
      */
-    public function getUserImage()
+    public function getUserPLZ()
     {
-        return $this->UserImage;
+        return $this->UserPLZ;
     }
 
     /**
-     * @param mixed $UserImage
+     * @param mixed $UserPLZ
      */
-    public function setUserImage($UserImage)
+    public function setUserPLZ($UserPLZ)
     {
-        $this->UserImage = $UserImage;
+        $this->UserPLZ = $UserPLZ;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserCity()
+    {
+        return $this->UserCity;
+    }
+
+    /**
+     * @param mixed $UserCity
+     */
+    public function setUserCity($UserCity)
+    {
+        $this->UserCity = $UserCity;
     }
 
     /**
@@ -194,49 +234,33 @@ class User
     /**
      * @return mixed
      */
-    public function getUserCity()
+    public function getUserImage()
     {
-        return $this->UserCity;
+        return $this->UserImage;
     }
 
     /**
-     * @param mixed $UserCity
+     * @param mixed $UserImage
      */
-    public function setUserCity($UserCity)
+    public function setUserImage($UserImage)
     {
-        $this->UserCity = $UserCity;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserPLZ()
-    {
-        return $this->UserPLZ;
-    }
-
-    /**
-     * @param mixed $UserPLZ
-     */
-    public function setUserPLZ($UserPLZ)
-    {
-        $this->UserPLZ = $UserPLZ;
+        $this->UserImage = $UserImage;
     }
 
     /**
      * @return mixed
      */
-    public function getUserAddress()
+    public function getUserMoney()
     {
-        return $this->UserAddress;
+        return $this->UserMoney;
     }
 
     /**
-     * @param mixed $UserAddress
+     * @param mixed $UserMoney
      */
-    public function setUserAddress($UserAddress)
+    public function setUserMoney($UserMoney)
     {
-        $this->UserAddress = $UserAddress;
+        $this->UserMoney = $UserMoney;
     }
 
     /**
@@ -254,4 +278,23 @@ class User
     {
         $this->UserActive = $UserActive;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUserBanned()
+    {
+        return $this->UserBanned;
+    }
+
+    /**
+     * @param mixed $UserBanned
+     */
+    public function setUserBanned($UserBanned)
+    {
+        $this->UserBanned = $UserBanned;
+    }
+    private $UserActive;
+    private $UserBanned;
+
 }
