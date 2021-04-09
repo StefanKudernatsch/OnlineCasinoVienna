@@ -4,6 +4,7 @@ require_once 'config/config.php';
 //MODEL
 require_once 'inc/database.php';
 require_once 'inc/User.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="de">

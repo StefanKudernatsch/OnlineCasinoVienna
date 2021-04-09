@@ -20,6 +20,14 @@ class DB
         $this->user = 'onlinecasino_w3';
         $this->password = 'j9l9Qq2UeWkjxvI73KiTcZN21Xr9Kun3yK0ximFa';
         $this->database = 'online_casino_w3_cs_technikum_wien_at';
+        */
+
+
+        $this->host = 'localhost';
+        $this->user = 'root';
+        $this->password = '';
+        $this->database = 'online-casino';
+
 
         $this->connect = new mysqli($this->host, $this->user, $this->password, $this->database);
 
@@ -65,7 +73,7 @@ class DB
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
         $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["UserImage"], $user["Money"], $user["Active"], $user["Banned"]);
-        $tempuser->setUserID($user["UserID"]);
+        $tempuser->setUserID($user["ID"]);
         return $tempuser;
     }
 
@@ -104,7 +112,7 @@ class DB
 
     function registerUser(User $user_object)
     {
-        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email, UserImage, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         $stmt = $this->connect->prepare($sql);
         $gender = $user_object->getUserGender();
         $birthday = $user_object->getUserBirthday();
@@ -140,7 +148,7 @@ class DB
         $address = $user_object->getUserAddress();
         $id = $user_object->getUserID();
 
-        $stmt->bind_param("sssssssisi", $gender, $firstname, $lastname, $birthday, $username, $email, $city, $plz, $address, $id);
+        $stmt->bind_param("sssssisssi", $gender,$birthday, $firstname, $lastname, $address, $plz, $city, $username, $email, $id);
 
         $ergebnis = $stmt->execute();
 

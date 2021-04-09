@@ -48,7 +48,7 @@ if (isset($_POST['DeleteSubmit'])) {
     $UserData = $_POST['UserData'];
     $CheckInput = true;
 
-    if ($UserData[6] != $_POST['PasswordCheck']) {
+    if ($UserData[8] != $_POST['PasswordCheck']) {
 
         $CheckInput = false;
         echo "<script language='JavaScript'>alert('Error | Passwords must be same')</script>";
@@ -104,14 +104,14 @@ if (isset($_POST['DeleteSubmit'])) {
         if ($_POST['SaveSubmit'] == 'Save Details') {
 
             $EditUser->setUserGender($UserData[0]);
-            $EditUser->setUserFirstName($UserData[1]);
-            $EditUser->setUserLastName($UserData[2]);
-            $EditUser->setUserBirthday($UserData[3]);
-            $EditUser->setUserName($UserData[5]);
-            $EditUser->setUserEMail($UserData[7]);
-            $EditUser->setUserCity($UserData[8]);
-            $EditUser->setUserPLZ($UserData[9]);
-            $EditUser->setUserAddress($UserData[10]);
+            $EditUser->setUserBirthday($UserData[1]);
+            $EditUser->setUserFirstName($UserData[2]);
+            $EditUser->setUserLastName($UserData[3]);
+            $EditUser->setUserAddress($UserData[4]);
+            $EditUser->setUserPLZ($UserData[5]);
+            $EditUser->setUserCity($UserData[6]);
+            $EditUser->setUserName($UserData[7]);
+            $EditUser->setUserEMail($UserData[9]);
 
             if ($DB->updateUser($EditUser)) {
 
@@ -133,25 +133,23 @@ if (isset($_POST['DeleteSubmit'])) {
         } else {
 
             if ($_FILES["blob"]["error"] == 4) {
-                $UserData[4] = "./res/img/standard-image.png";
+                $UserData[10] = "./res/img/standard-image.png";
             } else if ($_FILES["blob"]["error"] == 0) {
                 if ($_FILES["blob"]["type"] != "image/jpeg" && $_FILES["blob"]["type"] != "image/png" && $_FILES["blob"]["type"] != "image/jpg") {
                     echo "<script language='JavaScript'>alert('Error | Only upload .jpgs and .png')</script>";
                 } else {
-                    $UserData[4] = $_FILES["blob"]["tmp_name"];
+                    $UserData[10] = $_FILES["blob"]["tmp_name"];
                 }
             } else {
                 echo "<script language='JavaScript'>alert('Error | Upload of image failed')</script>";
             }
 
-            $User = new User($UserData[0], $UserData[1], $UserData[2], $UserData[3], $UserData[4], $UserData[5], $UserData[6], $UserData[7], $UserData[8], $UserData[9], $UserData[10], 1);
+            $User = new User($UserData[0], $UserData[1], $UserData[2], $UserData[3], $UserData[4], $UserData[5], $UserData[6], $UserData[7], $UserData[8], $UserData[9], 0, 1,0);
             if ($DB->registerUser($User)) {
-                $tempuser = $DB->getUser($UserData[5]);
+                $tempuser = $DB->getUserWithName($UserData[7]);
                 $tempuserid = $tempuser->getUserID();
-                $DB->uploadImage($UserData[4], $tempuserid);
+                $DB->uploadImage($UserData[10], $tempuserid);
                 $DB->getUserImage($tempuserid);
-                $temppath = "./users/" . $tempuserid;
-                mkdir($temppath);
 
                 echo "<script language='JavaScript'>alert('Account created successfully')</script>";
             } else {
@@ -338,7 +336,7 @@ if (isset($_POST['DeleteSubmit'])) {
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="far fa-calendar-alt"></i> </span>
                 </div>
-                <input class="form-control" type="date" name="UserData[3]" id="Birthday" placeholder="1.1.2021"
+                <input class="form-control" type="date" name="UserData[1]" id="Birthday" placeholder="1.1.2021"
                        required
                     <?php
                     if (isset($EditUser)) {
@@ -357,7 +355,7 @@ if (isset($_POST['DeleteSubmit'])) {
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fas fa-user"></i> </span>
                 </div>
-                <input class="form-control" type="text" name="UserData[1]" id="FirstName"
+                <input class="form-control" type="text" name="UserData[2]" id="FirstName"
                        placeholder="First Name" required
                     <?php
                     if (isset($EditUser)) {
@@ -374,7 +372,7 @@ if (isset($_POST['DeleteSubmit'])) {
             <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fas fa-user"></i> </span>
             </div>
-            <input class="form-control" type="text" name="UserData[2]" id="LastName" placeholder="Last Name"
+            <input class="form-control" type="text" name="UserData[3]" id="LastName" placeholder="Last Name"
                    required
                 <?php
                 if (isset($EditUser)) {
@@ -392,7 +390,7 @@ if (isset($_POST['DeleteSubmit'])) {
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-home"></i></span>
                 </div>
-                <input class="form-control" type="text" id="Address" name="UserData[10]"
+                <input class="form-control" type="text" id="Address" name="UserData[4]"
                     <?php
                     if (isset($EditUser)) {
                         if ($EditUser->getUserAddress() != 'NULL') {
@@ -421,7 +419,7 @@ if (isset($_POST['DeleteSubmit'])) {
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                     </div>
-                    <input class="form-control" id="PLZ" name="UserData[9]"
+                    <input class="form-control" id="PLZ" name="UserData[5]"
                         <?php
                         if (isset($EditUser)) {
                             if ($EditUser->getUserPLZ() != 0) {
@@ -443,7 +441,7 @@ if (isset($_POST['DeleteSubmit'])) {
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-globe"></i></span>
                     </div>
-                    <input class="form-control" type="text" id="City" name="UserData[8]"
+                    <input class="form-control" type="text" id="City" name="UserData[6]"
                         <?php
                         if (isset($EditUser)) {
                             if ($EditUser->getUserCity() != 'NULL') {
@@ -466,7 +464,7 @@ if (isset($_POST['DeleteSubmit'])) {
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fas fa-user-circle"></i> </span>
                 </div>
-                <input type="text" id="Username" name="UserData[5]" class="form-control" placeholder="Username"
+                <input type="text" id="Username" name="UserData[7]" class="form-control" placeholder="Username"
                        required
                     <?php
                     if (isset($EditUser)) {
@@ -495,7 +493,7 @@ if (isset($_POST['DeleteSubmit'])) {
                     echo "<div class='input-group-prepend'>
                                         <span class='input-group-text'> <i class='fas fa-lock'></i> </span>
                                       </div>
-                                    <input type='password' id='Password' name='UserData[6]' class='form-control' placeholder='Password' required>";
+                                    <input type='password' id='Password' name='UserData[8]' class='form-control' placeholder='Password' required>";
                 }
                 ?>
             </div>
@@ -522,7 +520,7 @@ if (isset($_POST['DeleteSubmit'])) {
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fas fa-envelope"></i> </span>
                 </div>
-                <input class="form-control" type="email" id="EMail" name="UserData[7]" placeholder="email@address.com"
+                <input class="form-control" type="email" id="EMail" name="UserData[9]" placeholder="email@address.com"
                        required
                     <?php
                     if (isset($EditUser)) {
