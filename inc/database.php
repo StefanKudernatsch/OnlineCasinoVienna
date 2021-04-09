@@ -32,74 +32,47 @@ class DB
     function getUserList()
     {
         $users = array();
-        $result = $this->connect->query("SELECT UserID FROM usertable");
+        $result = $this->connect->query("SELECT ID FROM user");
         while ($user = $result->fetch_assoc()) {
-            if ($user["UserID"] != 1) {
-                $tempuser = $this->getUserWithID($user["UserID"]);
-                $tempuser->setUserID($user["UserID"]);
+            if ($user["ID"] != 1) {
+                $tempuser = $this->getUserWithID($user["ID"]);
+                $tempuser->setUserID($user["ID"]);
                 $users[] = $tempuser;
             }
         }
         return $users;
     }
 
-    function getUser($username)     //
-    {
-
-        $sql = "SELECT * FROM usertable WHERE Username = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $tempuser = new User($user["Gender"], $user["FirstName"], $user["LastName"], $user["UserBirthDay"], $user["UserImage"], $user["Username"], $user["Password"], $user["EMailAddress"], $user["City"], $user["PLZ"], $user["UserAddress"], $user["UserActive"]);
-        $tempuser->setUserID($user["UserID"]);
-        return $tempuser;
-    }
-
-    function getUsernameWithID($user_id)
-    {
-
-        $sql = "SELECT Username FROM usertable WHERE UserID = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('i', $user_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $value = $result->fetch_assoc();
-        $tempusername = $value["Username"];
-        return $tempusername;
-    }
-
-    function getUserActiveWithUsername($user_name)
-    {
-        $sql = "SELECT UserActive FROM usertable WHERE Username = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('s', $user_name);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $value = $result->fetch_assoc();
-        $tempuseractive = $value["UserActive"];
-        return $tempuseractive;
-    }
-
     function getUserWithID($user_id)
-    {      //
-
-        $sql = "SELECT * FROM usertable WHERE UserID = ?;";
+    {
+        $sql = "SELECT * FROM user WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-        $tempuser = new User($user["Gender"], $user["FirstName"], $user["LastName"], $user["UserBirthDay"], $user["UserImage"], $user["Username"], $user["Password"], $user["EMailAddress"], $user["City"], $user["PLZ"], $user["UserAddress"], $user["UserActive"]);
+        $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["UserImage"], $user["Money"], $user["Active"], $user["Banned"]);
+        $tempuser->setUserID($user["ID"]);
+        return $tempuser;
+    }
+
+    function getUserWithName($user_username)
+    {
+        $sql = "SELECT * FROM user WHERE UserName = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('s', $user_username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["UserImage"], $user["Money"], $user["Active"], $user["Banned"]);
         $tempuser->setUserID($user["UserID"]);
         return $tempuser;
     }
 
-    function getUserImage($userid) //
+    function getUserImage($user_id)
     {
-        $stmt = $this->connect->prepare("SELECT UserImage FROM usertable WHERE UserID=?");
-        $stmt->bind_param("i", $userid);
+        $stmt = $this->connect->prepare("SELECT UserImage FROM user WHERE ID=?");
+        $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $stmt->store_result();
         $stmt->bind_result($image);
@@ -107,11 +80,11 @@ class DB
         return $image;
     }
 
-    function getUserMail($mail)
+    function getUserMail($user_email)
     {
-        $sql = "SELECT * FROM usertable WHERE EMailAddress = ?;";
+        $sql = "SELECT * FROM user WHERE EMailAddress = ?;";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('s', $mail);
+        $stmt->bind_param('s', $user_email);
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();

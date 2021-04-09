@@ -35,9 +35,8 @@ class User
      * @param $UserActive
      * @param $UserBanned
      */
-    public function __construct($UserID, $UserGender, $UserBirthday, $UserFirstName, $UserLastName, $UserAddress, $UserPLZ, $UserCity, $UserName, $UserPassword, $UserEMail, $UserImage, $UserMoney, $UserActive, $UserBanned)
+    public function __construct($UserGender, $UserBirthday, $UserFirstName, $UserLastName, $UserAddress, $UserPLZ, $UserCity, $UserName, $UserPassword, $UserEMail, $UserImage, $UserMoney, $UserActive, $UserBanned)
     {
-        $this->UserID = $UserID;
         $this->UserGender = $UserGender;
         $this->UserBirthday = $UserBirthday;
         $this->UserFirstName = $UserFirstName;
