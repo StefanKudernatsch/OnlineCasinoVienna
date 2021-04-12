@@ -1,5 +1,13 @@
-.main-center {
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+}
 
+.main-center {
     margin: 0 auto;
     max-width: 600px;
     padding: 0px 40px 20px 40px;
@@ -46,4 +54,65 @@
     height: 30px;
     width: 30px;
     border-radius: 50%;
+}
+
+/*
+NAVBAR
+*/
+
+.navbar {
+    position: fixed;
+    width: 60px;
+    height: 100%;
+    background: #3c3f41;
+    transition: 0.5s;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.navbar ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.navbar ul li{
+    position: relative;
+    width: 100%;
+    list-style: none;
+}
+
+.navbar ul li:hover{
+    background: grey;
+}
+
+.navbar ul li a{
+    position: relative;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    color: white;
+}
+
+.navbar ul li a .icon{
+    position: relative;
+    display: block;
+    min-width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+
+.navbar ul li a .title{
+    position: relative;
+    display: block;
+    padding: 0 10px;
+    height: 60px;
+    line-height: 60px;
+    text-align: start;
+    white-space: nowrap;
+}
+#main{
+    transition: margin-left .5s;
 }
