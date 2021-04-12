@@ -71,6 +71,7 @@ NAVBAR
 }
 
 .navbar ul {
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
@@ -104,6 +105,11 @@ NAVBAR
     text-align: center;
 }
 
+.navbar ul li:last-child{
+    position: absolute;
+    bottom: 0;
+}
+
 .navbar ul li a .title{
     position: relative;
     display: block;
@@ -115,4 +121,11 @@ NAVBAR
 }
 #main{
     transition: margin-left .5s;
+}
+
+@media (max-width: 767px)
+{
+    .navbar{
+        width: 100%;
+    }
 }

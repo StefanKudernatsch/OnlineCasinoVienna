@@ -26,6 +26,12 @@
                 <span class="title">Help</span>
             </a>
         </li>
+        <li class="logout">
+            <a href="?page=logout">
+                <span class="icon"><i class="fas fa-sign-out-alt fa-lg"></i></span>
+                <span class="title">Log Out</span>
+            </a>
+        </li>
     </ul>
 </div>
 

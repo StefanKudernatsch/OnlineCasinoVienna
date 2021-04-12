@@ -128,6 +128,13 @@ if (isset($_POST["Login"])) {
                 include "inc/home.php";
                 break;
             }
+            case 'logout':{
+                setcookie("CookieName", "", time() - 3600);
+                unset($_SESSION["UserName"]);
+                session_destroy();
+                header("Location: index.php");
+                break;
+            }
         }
     }
     ?>
