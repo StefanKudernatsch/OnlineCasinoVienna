@@ -13,9 +13,11 @@ class DB
     public $database;
     public $connect;
 
+
     function __construct()
     {
-        //username - password?
+
+        /*
         $this->host = 'localhost';
         $this->user = 'onlinecasino_w3';
         $this->password = 'j9l9Qq2UeWkjxvI73KiTcZN21Xr9Kun3yK0ximFa';
@@ -37,6 +39,7 @@ class DB
         }
     }
 
+
     function getUserList()
     {
         $users = array();
@@ -51,6 +54,7 @@ class DB
         return $users;
     }
 
+
     function getUserWithID($user_id)
     {
         $sql = "SELECT * FROM user WHERE ID = ?;";
@@ -59,10 +63,11 @@ class DB
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-        $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["UserImage"], $user["Money"], $user["Active"], $user["Banned"]);
+        $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["Money"], $user["Active"], $user["Banned"]);
         $tempuser->setUserID($user["ID"]);
         return $tempuser;
     }
+
 
     function getUserWithName($user_username)
     {
@@ -72,10 +77,22 @@ class DB
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-        $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["UserImage"], $user["Money"], $user["Active"], $user["Banned"]);
+        $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["Money"], $user["Active"], $user["Banned"]);
         $tempuser->setUserID($user["ID"]);
         return $tempuser;
     }
+
+
+    function getUserActiveWithName($user_username) {
+        $sql = "SELECT Active FROM user WHERE UserName = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('s', $user_username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $value = $result->fetch_assoc();
+        return $value["Active"];
+    }
+
 
     function getUserImage($user_id)
     {
@@ -88,6 +105,7 @@ class DB
         return $image;
     }
 
+
     function getUserMail($user_email)
     {
         $sql = "SELECT * FROM user WHERE EMailAddress = ?;";
@@ -99,6 +117,7 @@ class DB
         return new User($user["Gender"], $user["FirstName"], $user["LastName"], $user["UserImage"], $user["UserBirthDay"], $user["Username"], $user["Password"], $user["EMailAddress"], $user["City"], $user["PLZ"], $user["UserAddress"], $user["UserActive"]);
     }
 
+
     function uploadImage($user_image, $user_id) //
     {
         $sql = "UPDATE user SET UserImage=? WHERE ID = " . $user_id . ";";
@@ -107,8 +126,8 @@ class DB
         $stmt->bind_param("b", $null);
         $stmt->send_long_data(0, file_get_contents($user_image));
         return $stmt->execute();
-
     }
+
 
     function registerUser(User $user_object)
     {
@@ -152,88 +171,28 @@ class DB
 
         $ergebnis = $stmt->execute();
 
-        if ($_SESSION["SessionUserName"] == "admin") {
+        if ($_SESSION["UserName"] == "admin") {
             header("Location: ");
         } else {
-            $_SESSION["SessionUserName"] = $username;
+            $_SESSION["UserName"] = $username;
         }
 
         return $ergebnis;
-    }
-
-
-    function deleteUser($user_id) //
-    {
-        /*
-         * 0 - successful removal of all data
-         * 1 - failed at removing all related comments
-         * 2 - failed at removing all related files
-         * 3 - failed at removing all related friends
-         * 4 - failed at removing all related likes
-         * 5 - failed at removing all related messages
-         * 6 - failed at removing all account details
-         */
-        $sql = "DELETE FROM commenttable WHERE UserID = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('i', $user_id);
-        if ($stmt->execute()) {
-            $sql = "DELETE FROM filetable WHERE UserID = ?;";
-            $stmt = $this->connect->prepare($sql);
-            $stmt->bind_param('i', $user_id);
-            if ($stmt->execute()) {
-                $sql = "DELETE FROM friendtable WHERE SenderID = ? OR ReceiverID = ?;";
-                $stmt = $this->connect->prepare($sql);
-                $stmt->bind_param('ii', $user_id, $user_id);
-                if ($stmt->execute()) {
-                    $sql = "DELETE FROM liketable WHERE UserID = ?;";
-                    $stmt = $this->connect->prepare($sql);
-                    $stmt->bind_param('i', $user_id);
-                    if ($stmt->execute()) {
-                        $sql = "DELETE FROM messagetable WHERE SenderID = ? OR ReceiverID = ?;";
-                        $stmt = $this->connect->prepare($sql);
-                        $stmt->bind_param('ii', $user_id, $user_id);
-                        if ($stmt->execute()) {
-                            $sql = "DELETE FROM usertable WHERE UserID = ?;";
-                            $stmt = $this->connect->prepare($sql);
-                            $stmt->bind_param('i', $user_id);
-                            if ($stmt->execute()) {
-                                return 0;
-                            } else {
-                                return 6;
-                            }
-                        } else {
-                            return 5;
-                        }
-                    } else {
-                        return 4;
-                    }
-                } else {
-                    return 3;
-                }
-            } else {
-                return 2;
-            }
-        } else {
-            return 1;
-        }
     }
 
 
     function changeUserActive($user_active, $user_id)
     {
-
-        $sql = "UPDATE usertable SET UserActive = ? WHERE UserID = ?;";
+        $sql = "UPDATE user SET Active = ? WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param("ii", $user_active, $user_id);
-        $ergebnis = $stmt->execute();
-
-        return $ergebnis;
+        return $stmt->execute();
     }
 
 
     function resetPassword($user_email)
     { //
-        $sql = "UPDATE usertable SET Password = ? WHERE EMailAddress = ?;";
+        $sql = "UPDATE user SET Password = ? WHERE Email = ?;";
         $stmt = $this->connect->prepare($sql);
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
@@ -245,304 +204,45 @@ class DB
         mail($user_email, "New password", "$randomString");
         $password = password_hash($randomString, PASSWORD_DEFAULT);
         $stmt->bind_param("ss", $password, $user_email);
-        $ergebnis = $stmt->execute();
-
-        return $ergebnis;
+        return $stmt->execute();
     }
 
 
     function loginUser($username, $password)
     {
         $user = $this->getUserWithName($username);
-
+        //var_dump($user);
+        //var_dump($user->getUserPassword());
+        //var_dump($password);
         if (password_verify($password, $user->getUserPassword())) {
-            $_SESSION["SessionUserName"] = $user->getUserName();
-
+            $_SESSION["UserName"] = $user->getUserName();
             return true;
-        } else {
-
+        }
+        else if($password == $user->getUserPassword()){
+            $_SESSION["UserName"] = $user->getUserName();
+            return true;
+        }
+        else {
             return false;
         }
     }
 
-    function updateUserPW($userid, $oldPW, $newPW) //
+
+    function updateUserPW($user_id, $old_PW, $new_PW) //
     {
-        if (password_verify($oldPW, $this->getUserWithID($userid)->getUserPassword())) {
+        if (password_verify($old_PW, $this->getUserWithID($user_id)->getUserPassword())) {
 
-            $sql = "UPDATE usertable SET Password = ? WHERE UserID = ?;";
+            $sql = "UPDATE user SET Password = ? WHERE ID = ?;";
             $stmt = $this->connect->prepare($sql);
-            $password = password_hash($newPW, PASSWORD_DEFAULT);
-            $stmt->bind_param("si", $password, $userid);
+            $password = password_hash($new_PW, PASSWORD_DEFAULT);
+            $stmt->bind_param("si", $password, $user_id);
             if ($stmt->execute()) {
-
                 return 0;
             } else {
-
                 return 1;
             }
         } else {
             return 2;
         }
-    }
-
-
-    function requestFriend($sender, $receiver, $status)
-    {
-        $sql = "INSERT INTO friendtable (senderid,receiverid,status) VALUES (?,?,?);";
-        $stmt = $this->connect->prepare($sql);
-
-        $stmt->bind_param("iis", $sender, $receiver, $status);
-
-        $ergebnis = $stmt->execute();
-
-        return $ergebnis;
-    }
-
-    function acceptFriend($sender, $receiver)
-    {
-        $status = "accepted";
-        $sql = "UPDATE friendtable SET status = ? WHERE senderid = ? AND receiverid = ?;";
-
-        $stmt = $this->connect->prepare($sql);
-
-        $stmt->bind_param("sii", $status, $sender, $receiver);
-
-        $ergebnis = $stmt->execute();
-
-
-        return $ergebnis;
-
-    }
-
-    function declineFriend($sender, $receiver)
-    {
-        $sql = "DELETE FROM friendtable WHERE senderid = ? AND receiverid = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("ii", $sender, $receiver);
-        $stmt->execute();
-
-        $sql = "DELETE FROM friendtable WHERE senderid = ? AND receiverid = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("ii", $receiver, $sender);
-        $stmt->execute();
-        return true;
-    }
-
-    function getRequestedList($user_id)
-    {
-        $status = "pending";
-        $friendarray = NULL;
-        $sql = "SELECT SenderID FROM friendtable WHERE ReceiverID = ? AND status = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('is', $user_id, $status);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $friendcounter = 0;
-
-        while ($row = $result->fetch_assoc()) {
-            if ($row['SenderID'] != 1) {
-                $friendID = $row['SenderID'];
-                $friendarray[$friendcounter] = $this->getUserWithID($friendID);
-                $friendcounter++;
-            }
-        }
-        return $friendarray;
-    }
-
-    function sentRequest($friend1, $friend2)
-    {
-        $status = "pending";
-        $sql = "SELECT * FROM friendtable where SenderID = ? AND ReceiverID = ? AND Status = ?";
-        $stmt = $this->connect->prepare($sql);
-
-
-        $stmt->bind_param("iis", $friend1, $friend2, $status);
-        $stmt->execute();
-        $stmt->store_result();
-        $rowcount = $stmt->num_rows();
-        if ($rowcount == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function receivedRequest($friend1, $friend2)
-    {
-        $status = "pending";
-        $sql = "SELECT * FROM friendtable where ReceiverID = ? AND SenderID = ? AND Status = ?";
-        $stmt = $this->connect->prepare($sql);
-
-
-        $stmt->bind_param("iis", $friend1, $friend2, $status);
-        $stmt->execute();
-        $stmt->store_result();
-        $rowcount = $stmt->num_rows();
-        if ($rowcount == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    function isFriend($friend1, $friend2)
-    {
-        $status = "accepted";
-        $sql = "SELECT * FROM friendtable where SenderID = ? AND ReceiverID = ? AND Status = ?";
-        $stmt = $this->connect->prepare($sql);
-
-
-        $stmt->bind_param("iis", $friend1, $friend2, $status);
-        $stmt->execute();
-        $stmt->store_result();
-        $rowcount1 = $stmt->num_rows();
-
-
-        $stmt2 = $this->connect->prepare($sql);
-        $stmt2->bind_param("iis", $friend2, $friend1, $status);
-        $stmt2->execute();
-        $stmt2->store_result();
-        $rowcount2 = $stmt2->num_rows();
-
-        if ($rowcount1 == 1 || $rowcount2 == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function getFriendList($user_id)
-    {
-        $status = "accepted";
-        $friendarray = NULL;
-        $sql = "SELECT SenderID FROM friendtable WHERE ReceiverID = ? AND status = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('is', $user_id, $status);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $friendcounter = 0;
-
-        while ($row = $result->fetch_assoc()) {
-            if ($row['SenderID'] != 1) {
-                $friendID = $row['SenderID'];
-                $friendarray[$friendcounter] = $this->getUserWithID($friendID);
-                $friendcounter++;
-            }
-        }
-
-        $sql = "SELECT ReceiverID FROM friendtable WHERE SenderID = ? AND status = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('is', $user_id, $status);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        while ($row = $result->fetch_assoc()) {
-            if ($row['ReceiverID'] != 1) {
-                $friendID = $row['ReceiverID'];
-                $friendarray[$friendcounter] = $this->getUserWithID($friendID);
-                $friendcounter++;
-            }
-        }
-        return $friendarray;
-    }
-
-    function getPendingNumber($receiverid)
-    {
-        $status = "pending";
-        $sql = "SELECT * FROM friendtable where receiverID = ? AND status = ?";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("is", $receiverid, $status);
-        $stmt->execute();
-        $stmt->store_result();
-        $rowcount = $stmt->num_rows();
-        return $rowcount;
-    }
-
-
-    function addMessage($senderid, $receiverid, $messagetext)
-    {
-        $time = date('Y-m-d H:i:s');
-        $status = false;
-        $sql = "INSERT INTO messagetable (messagetext,senderid,receiverid,status,TimeSent) VALUES (?,?,?,?,?);";
-        $stmt = $this->connect->prepare($sql);
-
-        $stmt->bind_param("siiis", $messagetext, $senderid, $receiverid, $status, $time);
-
-        $ergebnis = $stmt->execute();
-
-        return $ergebnis;
-    }
-
-    function ReadMessage($senderid, $receiverid)
-    {
-        $status = true;
-        $sql = "UPDATE messagetable SET Status = ? WHERE SenderID = ? AND ReceiverID = ?;";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("iii", $status, $senderid, $receiverid);
-        $ergebnis = $stmt->execute();
-        return $ergebnis;
-    }
-
-    function getAllUnreadMessages($receiverid)
-    {
-        $status = false;
-        $sql = "SELECT * FROM messagetable where ReceiverID = ? AND status = ?";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("ii", $receiverid, $status);
-        $stmt->execute();
-        $stmt->store_result();
-        $rowcount = $stmt->num_rows();
-        return $rowcount;
-    }
-
-    function getUnreadUserMessage($senderid, $receiverid)
-    {
-        $status = false;
-        $sql = "SELECT * FROM messagetable where SenderID =? AND ReceiverID = ? AND status = ?";
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param("iii", $senderid, $receiverid, $status);
-        $stmt->execute();
-        $stmt->store_result();
-        $rowcount = $stmt->num_rows();
-        return $rowcount;
-    }
-
-
-    function getMessages($senderid, $receiverid)
-    {
-        $messages = array();
-        /*$sql= "SELECT * from comments where fileID = ?";
-        $stmt = $this->db->prepare($sql);
-
-        $stmt->bind_param("i",  $fileID);
-
-        $stmt->execute();*/
-
-        $sql = "SELECT * FROM messagetable WHERE SenderID = ? AND ReceiverID = ?;";
-
-        $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('ii', $senderid, $receiverid);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        while ($message = $result->fetch_assoc()) {
-            $tempmessage = new Message($message["MessageText"], $message["SenderID"], $message["ReceiverID"], $message["Status"], $message["TimeSent"]);
-            $tempmessage->setMessageID($message["MessageID"]);
-            $messages[] = $tempmessage;
-        }
-
-        $sql2 = "SELECT * FROM messagetable WHERE SenderID = ? AND ReceiverID = ?;";
-        $stmt = $this->connect->prepare($sql2);
-        $stmt->bind_param('ii', $receiverid, $senderid);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        while ($message = $result->fetch_assoc()) {
-            $tempmessage = new Message($message["MessageText"], $message["SenderID"], $message["ReceiverID"], $message["Status"], $message["TimeSent"]);
-            $tempmessage->setMessageID($message["MessageID"]);
-            $messages[] = $tempmessage;
-        }
-        return $messages;
     }
 }

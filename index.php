@@ -4,7 +4,37 @@ require_once 'config/config.php';
 //MODEL
 require_once 'classes/DB.php';
 require_once 'classes/User.php';
+$DB = new DB();
 
+if (!isset($_SESSION["UserName"])) {
+    if (isset($_COOKIE["CookieName"])) {
+        $_SESSION["UserName"] = $_COOKIE["UserName"];
+    }
+}
+
+if (isset($_POST["Login"])) {
+    $loginUsername = $_POST["UserName"];
+    $loginPassword = $_POST["Password"];
+    var_dump($loginPassword);
+    var_dump($loginUsername);
+    if($DB->getUserActiveWithName($loginUsername)) {
+        if ($DB->loginUser($loginUsername, $loginPassword)) {
+            if (isset($_POST["RememberMe"])) {
+                setcookie("UserName", $loginUsername, time() + 3600);
+            }
+            echo "<script language='JavaScript'>alert('Login successfully')</script>";
+        } else {
+            echo "<script language='JavaScript'>alert('Login incorrect')</script>";
+        }
+    } else {
+        if($DB->getUser($_POST["UserName"])->getUserName() == NULL) {
+            echo "<script language='JavaScript'>alert('Login incorrect')</script>";
+        } else {
+            echo "<script language='JavaScript'>alert('Account deactivated')</script>";
+        }
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -31,8 +61,80 @@ require_once 'classes/User.php';
 
 </head>
 <body>
-<?php
-require_once "inc/UserForm.php";
-?>
+<header>
+   <?php include "inc/header.php"; ?>
+</header>
+
+<main id="main" style="margin-left: 60px">
+    <span><a style='margin-top: 5px; margin-left: -10px' href="#" class="btn btn-primary float-right" data-toggle="dropdown"><i
+                    class="fas fa-sign-in-alt"></i>
+                    Log In</a><ul id="login-dp" class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="text-center">Log in</h2>
+                                <hr/>
+                                <div class="login-form">
+                                    <form method="post">
+
+                                        <div class="form-group">
+                                            <input type="text" id="username" name="UserName"
+                                                   class="form-control"
+                                                   placeholder="Username" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" id="password" name="Password"
+                                                   class="form-control"
+                                                   placeholder="Password" required>
+                                        </div>
+                                        <div class="clearfix">
+                                            <input type="checkbox" name="RememberMe" id="checkbox">
+                                            <label for="checkbox" class="form-check-label">Remember
+                                                me</label>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" name="Login"
+                                                    class="btn btn-primary btn-block float-left">Log in
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <a href='#resetUserPW' data-toggle='modal'
+                                               class="btn btn-danger btn-block float-left">Forgot Password?</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <a href="?page=UserForm"
+                                               class="btn btn-info btn-block float-left">Register</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul></span>
+    <?php
+    if(!isset($_GET["page"])) {
+        include "inc/home.php";
+    } else {
+        switch ($_GET["page"]) {
+            default: {
+                include "inc/home.php";
+            }
+            case 'UserForm':{
+                include "inc/UserForm.php";
+                break;
+            }
+            case 'home':{
+                include "inc/home.php";
+                break;
+            }
+        }
+    }
+    ?>
+</main>
+
+<footer>
+
+</footer>
 </body>
 </html>

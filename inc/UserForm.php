@@ -72,12 +72,19 @@ if (isset($_POST['DeleteSubmit'])) {
     for ($i = 0; $i < 11; $i++) {
 
         /*
-         * 7 ... EMail
-         * 4 ... UserImage
-         * 6 ... Password
-         * 3 ... Birthday
+         * 0 ... Gender
+         * 1 ... Birthday
+         * 2 ... FirstName
+         * 3 ... LastName
+         * 4 ... Address
+         * 5 ... PLZ
+         * 6 ... City
+         * 7 ... UserName
+         * 8 ... Password
+         * 9 ... Email
+         * 10 ... Image
          */
-        if ($i != 7 && $i != 4 && $i != 6 && $i != 3) {
+        if ($i == 2 || $i == 3 || $i == 4 || $i == 6 || $i == 7) {
 
             if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬;-]/', $UserData[$i])) {
 
@@ -86,14 +93,9 @@ if (isset($_POST['DeleteSubmit'])) {
                 break;
             }
         }
-
-        if (empty($UserData[$i]) == true && ($i == 8 || $i == 9 || $i == 10)) {
-
-            $UserData[$i] = "NULL";
-        }
     }
 
-    if (preg_match('/[\'^£$%&*()}{#~?><>,|=_+¬;-]/', $UserData[7])) {
+    if (preg_match('/[\'^£$%&*()}{#~?><>,|=_+¬;-]/', $UserData[9])) {
 
         $CheckInput = false;
         echo "<script language='JavaScript'>alert('Error2 | Special characters are not allowed')</script>";
@@ -114,7 +116,6 @@ if (isset($_POST['DeleteSubmit'])) {
             $EditUser->setUserEMail($UserData[9]);
 
             if ($DB->updateUser($EditUser)) {
-
                 if ($_FILES["blob"]["error"] == 0) {
                     if ($_FILES["blob"]["type"] != "image/jpeg" && $_FILES["blob"]["type"] != "image/png" && $_FILES["blob"]["type"] != "image/jpg") {
                         echo "<script language='JavaScript'>alert('Error | Only upload .jpgs and .png')</script>";
@@ -126,12 +127,10 @@ if (isset($_POST['DeleteSubmit'])) {
                 }
                 echo "<script language='JavaScript'>alert('Account details changed successfully')</script>";
             } else {
-
                 echo "<script language='JavaScript'>alert('Error | Change account details failed')</script>";
             }
             echo "<script>window.location.href='index.php?page=UserForm';</script>";
         } else {
-
             if ($_FILES["blob"]["error"] == 4) {
                 $UserData[10] = "./res/img/standard-image.png";
             } else if ($_FILES["blob"]["error"] == 0) {
@@ -153,7 +152,6 @@ if (isset($_POST['DeleteSubmit'])) {
 
                 echo "<script language='JavaScript'>alert('Account created successfully')</script>";
             } else {
-
                 echo "<script language='JavaScript'>alert('Error | Create account failed')</script>";
             }
             echo "<script>window.location.href='index.php?page=home';</script>";
@@ -312,7 +310,28 @@ if (isset($_POST['DeleteSubmit'])) {
                         echo "readonly>";
                     } else {
                         if (isset($EditUser)) {
-                            if ($EditUser->getUserGender() == 'Herr') {
+                            $tempgender0 = '';
+                            switch ($EditUser->getUserGender()) {
+                                case 1: {
+                                    $tempgender1 = 'selected';
+                                    $tempgender2 = '';
+                                    $tempgender3 = '';
+                                    break;
+                                }
+                                case 2: {
+                                    $tempgender1 = '';
+                                    $tempgender2 = 'selected';
+                                    $tempgender3 = '';
+                                    break;
+                                }
+                                case 3: {
+                                    $tempgender1 = '';
+                                    $tempgender2 = '';
+                                    $tempgender3 = 'selected';
+                                    break;
+                                }
+                            }
+                            if ($EditUser->getUserGender() == '1') {
                                 $tempgender1 = 'selected';
                             } else {
                                 $tempgender2 = 'selected';
