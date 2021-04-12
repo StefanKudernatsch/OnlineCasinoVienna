@@ -20,7 +20,7 @@ class DB
         $this->user = 'onlinecasino_w3';
         $this->password = 'j9l9Qq2UeWkjxvI73KiTcZN21Xr9Kun3yK0ximFa';
         $this->database = 'online_casino_w3_cs_technikum_wien_at';
-        */
+        
 
 
         $this->host = 'localhost';
