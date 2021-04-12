@@ -2,8 +2,8 @@
 //PHP CONFIG with session_start()
 require_once 'config/config.php';
 //MODEL
-require_once 'inc/database.php';
-require_once 'inc/User.php';
+require_once 'classes/DB.php';
+require_once 'classes/User.php';
 
 ?>
 <!DOCTYPE html>

@@ -267,7 +267,7 @@ if (isset($_POST['DeleteSubmit'])) {
                                         echo "<input type='file' id='upload' name='blob' style='display:none' accept='image/*'>";
                                     }
                                     ?>
-                                </label>
+                                </label
                                 <input class="addfile" type="file" name="blob" accept="image/*"
                                        style="padding-top: 15%">
                                 <div class="image_inner_container">
@@ -322,8 +322,9 @@ if (isset($_POST['DeleteSubmit'])) {
                         }
                         echo "<select name='UserData[0]' id='Gender' class='form-control' required>
                                     <option value='NULL' disabled $tempgender0>Select...</option>
-                                    <option value='Herr' $tempgender1>Herr</option>
-                                    <option value='Frau' $tempgender2>Frau</option>
+                                    <option value='0' $tempgender1>Herr</option>
+                                    <option value='1' $tempgender2>Frau</option>
+                                    <option value='2' $tempgender3>Divers</option>
                                     </select>";
                     }
                     ?>
