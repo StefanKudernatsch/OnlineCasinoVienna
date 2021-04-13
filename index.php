@@ -66,6 +66,7 @@ if (isset($_POST["Login"])) {
 </header>
 
 <main id="main" style="margin-left: 60px">
+
     <span><a style='margin-top: 5px; margin-left: -10px' href="#" class="btn btn-primary float-right" data-toggle="dropdown"><i
                     class="fas fa-sign-in-alt"></i>
                     Log In</a><ul id="login-dp" class="dropdown-menu dropdown-menu-right">

@@ -7,6 +7,23 @@ body{
     min-height: 100vh;
 }
 
+/*HOME SCREEN*/
+
+.home-div .Title {
+    text-align: center;
+    padding-top: 20px;
+    font-family: "Century Gothic";
+}
+
+.Home1 {
+    height: 500px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-image: url("res/img/Background1.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
 .main-center {
     margin: 0 auto;
     max-width: 600px;
@@ -76,6 +93,7 @@ NAVBAR
     top: 0;
     left: 0;
     width: 100%;
+
 }
 
 .navbar ul li{
@@ -129,3 +147,4 @@ NAVBAR
         width: 100%;
     }
 }
+
