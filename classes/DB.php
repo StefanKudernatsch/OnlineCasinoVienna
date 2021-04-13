@@ -245,4 +245,96 @@ class DB
             return 2;
         }
     }
+
+    
+    function getMoney($user_id)
+    {
+        $sql = "SELECT * FROM user WHERE ID = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $moneyarr = $result->fetch_assoc();
+        $money = $moneyarr["Money"];
+        return $money;
+    }
+
+    function addLog($user_id, $reason, $beforemoney, $aftermoney)
+    {
+        $sql = "INSERT INTO moneylog (LogID, LogReason, UserID, MoneyBefore, MoneyAfter, Date) VALUES
+        (NULL, ?, ?, ?, ?, NULL)";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('iiii', $user_id, $reason, $beforemoney, $aftermoney);
+        return $stmt->execute();
+    }
+
+    function getLogs($user_id)
+    {
+        $sql = "SELECT * FROM moneylog WHERE UserID = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $logarr = array();
+
+        while ($row = $result->fetch_assoc()) {
+                $logarr['LogID'] = $row->LogID;
+                $logarr['LogReason'] = $row->LogReason;
+                $logarr['UserID'] = $row->UserID;
+                $logarr['MoneyBefore'] = $row->MoneyBefore;
+                $logarr['MoneyAfter'] = $row->MoneyAfter;
+                $logarr['Date'] = $row->Date;
+            
+        }
+        return $logarr;
+    }
+
+    function addMoney($user_id, $amount, $reason)
+    {
+        $beforemoney = $this->getMoney($user_id);
+        $aftermoney = $beforemoney + $amount;
+
+        $sql = "UPDATE user SET Money=? WHERE UserID = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('ii', $user_id, $aftermoney);
+        $stmt->execute();
+        
+        if($stmt == true)
+        {
+            $this->addlog($user_id, $reason, $beforemoney, $aftermoney);
+        }
+        else
+        {
+            return false;
+        }
+    
+        
+    }
+
+    function rmMoney($user_id, $amount, $reason)
+    {
+        $beforemoney = $this->getMoney($user_id);
+        $aftermoney = $beforemoney - $amount;
+
+        if($aftermoney < 0)
+        {
+            return false;
+        }
+
+        $sql = "UPDATE user SET Money=? WHERE UserID = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param('ii', $user_id, $aftermoney);
+        $stmt->execute();
+        
+        if($stmt == true)
+        {
+            $this->addlog($user_id, $reason, $beforemoney, $aftermoney);
+        }
+        else
+        {
+            return false;
+        }
+    
+        
+    }
 }
