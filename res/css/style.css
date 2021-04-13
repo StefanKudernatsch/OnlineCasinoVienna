@@ -1,7 +1,7 @@
 *{
 margin: 0;
 padding: 0;
-box-sizing: border-box;
+
 }
 body{
     min-height: 100vh;
@@ -9,19 +9,39 @@ body{
 
 /*HOME SCREEN*/
 
-.home-div .Title {
+.header{
+    height: 400px;
+    background-image: url("../img/Background1.jpg");
+    background-size: cover;
     text-align: center;
-    padding-top: 20px;
-    font-family: "Century Gothic";
+    font-family: "Century Gothic", sans-serif;
+    color: white;
 }
 
-.Home1 {
+.LogIn{
     height: 500px;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    background-image: url("res/img/Background1.jpg");
+}
+
+.LogIn .btn{
+    margin: 5px;
+}
+
+.secondpic{
+    height: 600px;
+    background-image: url("../img/Background2.jpg");
     background-size: cover;
-    background-position: center;
+    text-align: center;
+    font-family: "Century Gothic", sans-serif;
+    color: white;
+}
+
+.parallax
+{
+    background-attachment: fixed;
+}
+
+.logo{
+    width: 200px;
 }
 
 .main-center {

@@ -59,6 +59,8 @@ if (isset($_POST["Login"])) {
             integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
             crossorigin="anonymous"></script>
 
+
+
 </head>
 <body>
 <header>
@@ -66,53 +68,6 @@ if (isset($_POST["Login"])) {
 </header>
 
 <main id="main" style="margin-left: 60px">
-
-    <span><a style='margin-top: 5px; margin-left: -10px' href="#" class="btn btn-primary float-right" data-toggle="dropdown"><i
-                    class="fas fa-sign-in-alt"></i>
-                    Log In</a><ul id="login-dp" class="dropdown-menu dropdown-menu-right">
-                    <li>
-                        <div class="row">
-                            <div class="col-12">
-                                <h2 class="text-center">Log in</h2>
-                                <hr/>
-                                <div class="login-form">
-                                    <form method="post">
-
-                                        <div class="form-group">
-                                            <input type="text" id="username" name="UserName"
-                                                   class="form-control"
-                                                   placeholder="Username" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" id="password" name="Password"
-                                                   class="form-control"
-                                                   placeholder="Password" required>
-                                        </div>
-                                        <div class="clearfix">
-                                            <input type="checkbox" name="RememberMe" id="checkbox">
-                                            <label for="checkbox" class="form-check-label">Remember
-                                                me</label>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" name="Login"
-                                                    class="btn btn-primary btn-block float-left">Log in
-                                            </button>
-                                        </div>
-                                        <div class="form-group">
-                                            <a href='#resetUserPW' data-toggle='modal'
-                                               class="btn btn-danger btn-block float-left">Forgot Password?</a>
-                                        </div>
-                                        <div class="form-group">
-                                            <a href="?page=UserForm"
-                                               class="btn btn-info btn-block float-left">Register</a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul></span>
     <?php
     if(!isset($_GET["page"])) {
         include "inc/home.php";
