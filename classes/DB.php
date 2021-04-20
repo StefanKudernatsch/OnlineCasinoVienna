@@ -114,7 +114,7 @@ class DB
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-        return new User($user["Gender"], $user["FirstName"], $user["LastName"], $user["UserImage"], $user["UserBirthDay"], $user["Username"], $user["Password"], $user["EMailAddress"], $user["City"], $user["PLZ"], $user["UserAddress"], $user["UserActive"]);
+        return new User($user["ID"], $user["Gender"], $user["UserBirthDay"], $user["FirstName"], $user["LastName"], $user["UserAddress"], $user["UserImage"], $user["Username"], $user["Password"], $user["EMailAddress"], $user["City"], $user["PLZ"], $user["UserActive"]);
     }
 
 
