@@ -22,6 +22,18 @@ body{
     height: 500px;
 }
 
+.moneyForm{
+    height: 500px;
+    /* background-image: radial-gradient(circle, white, silver); */
+
+}
+
+.addMoney{
+    display: inline-flex;
+    
+}
+
+
 .LogIn .btn{
     margin: 5px;
 }
@@ -33,6 +45,15 @@ body{
     text-align: center;
     font-family: "Century Gothic", sans-serif;
     color: white;
+}
+
+.thirdpic{
+    height: 600px;
+    background-image: url("../img/Background3.jpg");
+    text-align: center;
+    background-size: 125%;
+    background-position: -400px -600px;
+    
 }
 
 .parallax

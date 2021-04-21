@@ -27,13 +27,18 @@ if (isset($_POST["Login"])) {
             echo "<script language='JavaScript'>alert('Login incorrect')</script>";
         }
     } else {
-        if($DB->getUser($_POST["UserName"])->getUserName() == NULL) {
+        if($DB->getUserWithName($_POST["UserName"])->getUserName() == NULL) {
             echo "<script language='JavaScript'>alert('Login incorrect')</script>";
         } else {
             echo "<script language='JavaScript'>alert('Account deactivated')</script>";
         }
     }
-
+}
+else if(isset($_POST["btnAddMoney"])) {
+    $user = $DB->getUserWithName($_SESSION["UserName"]);
+    if ($DB->addMoney($user->getUserID(), intval($_POST["addMoney"]), "test")) {
+        echo "<script language='JavaScript'>alert('Successfully added Money')</script>";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -59,7 +64,8 @@ if (isset($_POST["Login"])) {
             integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
             crossorigin="anonymous"></script>
 
-
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Full JQuery Version, for animations -->
 
 </head>
 <body>

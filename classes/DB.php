@@ -90,6 +90,9 @@ class DB
         $stmt->execute();
         $result = $stmt->get_result();
         $value = $result->fetch_assoc();
+        if (is_null($value)) {
+            return 0;
+        }
         return $value["Active"];
     }
 
@@ -294,14 +297,15 @@ class DB
         $beforemoney = $this->getMoney($user_id);
         $aftermoney = $beforemoney + $amount;
 
-        $sql = "UPDATE user SET Money=? WHERE UserID = ?;";
+        $sql = "UPDATE user SET Money=? WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('ii', $user_id, $aftermoney);
+        $stmt->bind_param('ii', $aftermoney, $user_id);
         $stmt->execute();
         
         if($stmt == true)
         {
-            $this->addlog($user_id, $reason, $beforemoney, $aftermoney);
+            //$this->addlog($user_id, $reason, $beforemoney, $aftermoney);
+            return true;
         }
         else
         {
