@@ -250,6 +250,15 @@ if (isset($_POST['DeleteSubmit'])) {
         </div>
     </div>
 </div>
+
+<section class="header parallax">
+        <div class="container">
+            <img  class="logo" src="res/img/logo.png" alt="Logo">
+            <h1> Online Casino Vienna</h1>
+
+        </div>
+    </section>
+
 <div class="container">
     <div class="main-login main-center">
         <div class="container formtop col-md-12 col-sm-12">
@@ -340,11 +349,11 @@ if (isset($_POST['DeleteSubmit'])) {
                             $tempgender0 = 'selected';
                         }
                         echo "<select name='UserData[0]' id='Gender' class='form-control' required>
-                                    <option value='NULL' disabled $tempgender0>Select...</option>
+                                    <option value='NULL' disabled $tempgender0>Select...</option>          
                                     <option value='0' $tempgender1>Herr</option>
                                     <option value='1' $tempgender2>Frau</option>
                                     <option value='2' $tempgender3>Divers</option>
-                                    </select>";
+                                    </select>";         
                     }
                     ?>
                 </div>
@@ -586,4 +595,116 @@ if (isset($_POST['DeleteSubmit'])) {
         </form>
     </div>
 </div>
+
+                
+
+<section class="thirdpic parallax">
+</section>
+<section class="moneyForm">
+    <div class="container moneyDiv">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center" id="moneyH">Money Management</h2>
+                <button id="moneyBtn" class="btn btn-primary">Press</button>
+                <button id="moneyBtn2" class="btn btn-primary">Number 2</button>
+                <div id="tableDiv">
+                    <table class="table moneyTable" id="moneyTable">
+                        <tr>
+                            <td>Your Balance: </td>
+                            <td id="balance"> <?php 
+                                $user = $DB->getUserWithName($_SESSION["UserName"]);
+                                $balance = $DB->getMoney($user->getUserID());
+                                echo "&nbsp", $balance;
+                            ?> </td>
+                        </tr>
+                        <tr>
+                            <td>Test: </td>
+                            <td id="moneyTest"> Hello </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row addMoneyDiv">
+            <div class="col-12">
+                <div class="alert alert-danger" style="text-align:center" role="alert"> Admin Tools only ! WIP !  </div>
+            </div>
+            <div class="col-12">
+                <form method="post">
+                    <div class="form-group ">
+                        <div class="col-6 addMoney">   
+                            <div class="col-6 addMoney"> <input type="text" id="addMoney" name="addMoney" class="form-control" placeholder="Add Money"> </div>
+                            <div class="col-6 addMoney"> <button type="submit" id="btnAddMoney" name="btnAddMoney" class="btn btn-primary">Add Money</button> </div>
+                        </div>
+                        <div class="col-5 addMoney">       
+                            <div class="col-6 addMoney"> <input type="text" id="rmMoney" name="rmMoney" class="form-control" placeholder="Remove Money"> </div>
+                            <div class="col-6 addMoney"> <button type="submit" id="btnRmMoney" name="btnRmMoney" class="btn btn-primary">Remove Money</button> </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="alertDiv">
+                </div>
+
+            
+        </div>
+        <script>
+            $(document).ready(function() {
+                $("#moneyTest").text("Hello Menschen!");
+
+                $("#moneyBtn").mouseenter(function() {
+                    $("#moneyTest").text("Guten Tag World!");
+                    $("#balance").text("alot");
+                    $("#moneyTest").text( <?php  $user->getUsername() ?>); //WIP
+                })
+                $("#moneyBtn").mouseleave(function() {
+                    $("#moneyTest").text("Hello World!");
+                })
+                $("#moneyBtn").click(function() {
+                    //$("#tableDiv").slideUp(); 
+                    $("#tableDiv").fadeOut(1000);
+                    /*$("#moneyBtn").animate( {
+                        //height: "+=10px",
+                        //width: "+=10px",
+                    }, 30, function() {
+                        $("#moneyBtn").animate( {
+                            height: "-=10px",
+                            width: "-=10px",
+                        })
+                    });*/
+                    animateBtn(this)
+                })
+                $("#moneyBtn2").click(function() {
+                    animateBtn(this)
+                    //$("#tableDiv").slideDown();
+                    $("#tableDiv").fadeIn(1000);
+                    
+                    $("#balance").text(<?php echo $DB->getMoney($user->getUserID()); ?>)
+                })
+                $("#addMoneyBtn").click(function() {
+                    animateBtn(this)
+                })
+                //$("#addMoneyBtn").css( "width", $("#addMoney").width())
+
+                function animateBtn(btn) {
+                    $(btn).animate( {
+                        height: "+=10px",
+                        width: "+=10px",
+                        //bottom: "100px"
+                        
+                        
+                    }, 30, function() {
+                        $(btn).animate( {
+                            height: "-=10px",
+                            width: "-=10px",
+                        })
+                    });
+                }
+            })     
+        </script>
+    </div>
+</section>
+   
 </div>

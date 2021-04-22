@@ -22,18 +22,6 @@ body{
     height: 500px;
 }
 
-.moneyForm{
-    height: 500px;
-    /* background-image: radial-gradient(circle, white, silver); */
-
-}
-
-.addMoney{
-    display: inline-flex;
-    
-}
-
-
 .LogIn .btn{
     margin: 5px;
 }
@@ -189,3 +177,24 @@ NAVBAR
     }
 }
 
+
+/* UserForm */ 
+
+.moneyForm{
+    height: 500px;
+    /* background-image: radial-gradient(circle, white, silver); */
+
+}
+
+.addMoney{
+    display: inline-flex;
+    text-align: center;
+    
+}
+
+.addMoneyDiv {
+    border-top-style: ridge;
+    border-width: 2px;
+    margin: 10px;
+    padding: 10px;
+}

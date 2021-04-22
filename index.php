@@ -5,6 +5,8 @@ require_once 'config/config.php';
 require_once 'classes/DB.php';
 require_once 'classes/User.php';
 $DB = new DB();
+//include
+require_once 'inc/logic.php';
 
 if (!isset($_SESSION["UserName"])) {
     if (isset($_COOKIE["CookieName"])) {
@@ -34,12 +36,7 @@ if (isset($_POST["Login"])) {
         }
     }
 }
-else if(isset($_POST["btnAddMoney"])) {
-    $user = $DB->getUserWithName($_SESSION["UserName"]);
-    if ($DB->addMoney($user->getUserID(), intval($_POST["addMoney"]), "test")) {
-        echo "<script language='JavaScript'>alert('Successfully added Money')</script>";
-    }
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="de">
