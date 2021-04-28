@@ -1,0 +1,142 @@
+<div class="container-fluid">
+    <form>
+    <h3 class="text-dark mb-4">Profile</h3>
+    <div class="row mb-3">
+        <div class="col-lg-4" style="height: 373px;">
+            <div class="card mb-3" style="height: 357px;">
+                <div class="card-body text-center shadow" style="height: 396px;"><img class="rounded-circle mb-3 mt-4"
+                                                                                      src="res/assets/img/dogs/image2.jpeg"
+                                                                                      width="160" height="160">
+                    <div class="mb-3">
+                        <button class="btn btn-secondary btn-sm" type="button"
+                                style="width: 200px;margin-bottom: 10px;">Change Photo
+                        </button>
+                        <button class="btn btn-danger btn-sm" type="button" style="width: 200px;margin-bottom: 10px;">
+                            Change Password
+                        </button>
+                        <button id="save-user" class="btn btn-primary btn-sm" type="button" style="width: 200px;">Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <!--
+            <div class="row mb-3 d-none">
+                <div class="col">
+                    <div class="card textwhite bg-primary text-white shadow">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <p class="m-0">Peformance</p>
+                                    <p class="m-0"><strong>65.2%</strong></p>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                            </div>
+                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card textwhite bg-success text-white shadow">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <p class="m-0">Peformance</p>
+                                    <p class="m-0"><strong>65.2%</strong></p>
+                                </div>
+                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                            </div>
+                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow mb-3">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">User Settings</p>
+                        </div>
+                        <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group mb-3"><label class="form-label" for="inlineFormSelectPref"><strong>Gender</strong></label>
+                                            <select class="form-select" id="inlineFormSelectPref">
+                                                <option disabled selected>Choose...</option>
+                                                <option value="0">Male</option>
+                                                <option value="1">Female</option>
+                                                <option value="2">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-3"><label class="form-label" for="email"><strong>Birthday</strong></label><input
+                                                class="form-control" id="birthday" placeholder="user@example.com"
+                                                name="birthday" type="date"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group mb-3"><label class="form-label" for="username"><strong>Username</strong></label><input
+                                                class="form-control" type="text" id="username" placeholder="user.name"
+                                                name="username"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-3"><label class="form-label" for="email"><strong>Email
+                                            Address</strong></label><input class="form-control" type="email" id="email"
+                                                                           placeholder="user@example.com" name="email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group mb-3"><label class="form-label" for="first_name"><strong>First
+                                            Name</strong></label><input class="form-control" type="text" id="first_name"
+                                                                        placeholder="John" name="first_name"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-3"><label class="form-label" for="last_name"><strong>Last
+                                            Name</strong></label><input class="form-control" type="text" id="last_name"
+                                                                        placeholder="Doe" name="last_name"></div>
+                                    </div>
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-5">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 fw-bold">Contact Settings</p>
+        </div>
+        <div class="card-body">
+
+                <div class="form-group mb-3"><label class="form-label"
+                                                    for="address"><strong>Address</strong></label><input
+                        class="form-control" type="text" id="address" placeholder="Höchstädtpl. 6" name="address">
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mb-3"><label class="form-label"
+                                                            for="city"><strong>City</strong></label><input
+                                class="form-control" type="text" id="city" placeholder="Wien" name="city"></div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mb-3"><label class="form-label"
+                                                            for="country"><strong>Post</strong></label><input
+                                class="form-control" type="number" id="country" placeholder="1200" name="country"
+                                max="9999" min="1000"></div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    </form>
+</div>
