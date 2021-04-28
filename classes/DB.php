@@ -280,7 +280,7 @@ class DB
         $result = $stmt->get_result();
         $logarr = array();
 
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_object()) {
                 $logarr['LogID'] = $row->LogID;
                 $logarr['LogReason'] = $row->LogReason;
                 $logarr['UserID'] = $row->UserID;
