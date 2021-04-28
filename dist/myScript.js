@@ -1,7 +1,6 @@
 $(document).ready(function () {
-
     $("#login-submit").click(function (e) {
-logInUser();
+        logInUser();
     });
 
 });
@@ -21,10 +20,10 @@ function logInUser(){
         cache: false,
         dataType: "json",
         success: function () {
-            location.reload();
+            window.location.href="index.php?page=home";
         },
         error: function (request, status, error) {
-            alert(request.responseText);
+            alert("Username or Password wrong");
         }
     });
 }

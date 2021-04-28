@@ -19,6 +19,7 @@ if ($server_method === "POST") {
 else if($server_method === "GET"){
     $method = $_GET["method"];
     $param = $_GET["param"];
+
 }
 
 
