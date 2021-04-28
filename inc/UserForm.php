@@ -274,8 +274,8 @@ if (isset($_POST['DeleteSubmit'])) {
                                         echo "<input type='file' id='upload' name='blob' style='display:none' accept='image/*'>";
                                     }
                                     ?>
-                                </label
-                                <input class="addfile" type="file" name="blob" accept="image/*"
+                                </label>
+                                <input class="addfile" type="file" name="blob" accept="image/*">
                                        style="padding-top: 15%">
                                 <div class="image_inner_container">
                                     <?php
