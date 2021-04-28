@@ -1,71 +1,97 @@
-<div class="container-fluid">
-    <form>
-    <h3 class="text-dark mb-4">Profile</h3>
-    <div class="row mb-3">
-        <div class="col-lg-4" style="height: 373px;">
-            <div class="card mb-3" style="height: 357px;">
-                <div class="card-body text-center shadow" style="height: 396px;"><img class="rounded-circle mb-3 mt-4"
-                                                                                      src="res/assets/img/dogs/image2.jpeg"
-                                                                                      width="160" height="160">
-                    <div class="mb-3">
-                        <button class="btn btn-secondary btn-sm" type="button"
-                                style="width: 200px;margin-bottom: 10px;">Change Photo
-                        </button>
-                        <button class="btn btn-danger btn-sm" type="button" style="width: 200px;margin-bottom: 10px;">
-                            Change Password
-                        </button>
-                        <button id="save-user" class="btn btn-primary btn-sm" type="button" style="width: 200px;">Save Settings
-                        </button>
+<div class="modal fade" id="password_change_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change Password</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="vote-form">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class=" main-center">
+                            <div class="container col-md-12">
+                                <div class="form-group" id="vote">
+                                    <label for="old_pw" class="cols-sm-2 control-label">Old Password: </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
+                                        </div>
+                                        <input type="password" id="old_pw" name="old_pw"
+                                               class="form-control" required="required">
+                                    </div>
+                                    <label for="new_pw" class="cols-sm-2 control-label">New Password: </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
+                                        </div>
+                                        <input type="password" id="new_pw" name="new_pw"
+                                               class="form-control" required="required">
+                                    </div>
+                                    <label for="re_pw" class="cols-sm-2 control-label">Repeat: </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
+                                        </div>
+                                        <input type="password" id="re_pw" name="re_pw"
+                                               class="form-control" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <div class="container">
+                        <button id="vote-submit" type="submit" class="btn btn-primary btn-block" name="vote-submit" value="0">Vote</button>
+                        <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="col-lg-8">
-            <!--
-            <div class="row mb-3 d-none">
-                <div class="col">
-                    <div class="card textwhite bg-primary text-white shadow">
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <p class="m-0">Peformance</p>
-                                    <p class="m-0"><strong>65.2%</strong></p>
-                                </div>
-                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                            </div>
-                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month
-                            </p>
+    </div>
+</div>
+
+<div class="container">
+    <form>
+        <h3 class="text-dark mb-4">Profile</h3>
+        <div class="row mb-3">
+            <div class="col-lg-4" style="height: 373px;">
+                <div class="card mb-3" style="height: 357px;">
+                    <div class="card-body text-center shadow" style="height: 396px;"><img
+                            class="rounded-circle mb-3 mt-4"
+                            src="res/assets/img/dogs/image2.jpeg"
+                            width="160" height="160">
+
+                        <div class="d-grid gap-1 mb-3">
+                            <button class="btn btn-secondary btn-sm btn-block" type="button">Change Photo
+                            </button>
                         </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card textwhite bg-success text-white shadow">
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <p class="m-0">Peformance</p>
-                                    <p class="m-0"><strong>65.2%</strong></p>
-                                </div>
-                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                            </div>
-                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month
-                            </p>
+                        <div class="d-grid gap-1 mb-3">
+
+                            <button id="change_password_btn" type="button" class="btn btn-danger btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#password_change_modal">
+                                Change Password
+                            </button>
+                        </div>
+                        <div class="d-grid gap-1 mb-3">
+                            <button id="save-user" class="btn btn-primary btn-sm btn-block" type="button" onclick="">Save Settings
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            -->
-            <div class="row">
-                <div class="col">
-                    <div class="card shadow mb-3">
-                        <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">User Settings</p>
-                        </div>
-                        <div class="card-body">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col">
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 fw-bold">User Settings</p>
+                            </div>
+                            <div class="card-body">
 
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="inlineFormSelectPref"><strong>Gender</strong></label>
+                                        <div class="form-group mb-3"><label class="form-label"
+                                                                            for="inlineFormSelectPref"><strong>Gender</strong></label>
                                             <select class="form-select" id="inlineFormSelectPref">
                                                 <option disabled selected>Choose...</option>
                                                 <option value="0">Male</option>
@@ -106,17 +132,17 @@
                                     </div>
                                 </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card shadow mb-5">
-        <div class="card-header py-3">
-            <p class="text-primary m-0 fw-bold">Contact Settings</p>
-        </div>
-        <div class="card-body">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3">
+                <p class="text-primary m-0 fw-bold">Contact Settings</p>
+            </div>
+            <div class="card-body">
 
                 <div class="form-group mb-3"><label class="form-label"
                                                     for="address"><strong>Address</strong></label><input
@@ -136,7 +162,7 @@
                     </div>
                 </div>
 
+            </div>
         </div>
-    </div>
     </form>
 </div>
