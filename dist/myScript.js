@@ -8,8 +8,8 @@ $(document).ready(function () {
 
 function logInUser(){
 
-    let log_user = $('#username').val();
-    let log_pw = $('#password').val();
+    let log_user = $('#log_username').val();
+    let log_pw = $('#log_password').val();
     let data = {LogUser: log_user, LogPW: log_pw};
 
     $.ajax
