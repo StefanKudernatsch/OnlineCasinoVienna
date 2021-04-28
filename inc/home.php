@@ -1,7 +1,9 @@
+<body id="page-top">
+<div id="wrapper">
 
+</body>
     <section class="header parallax">
         <div class="container">
-            <img  class="logo" src="res/img/logo.png" alt="Logo">
             <h1> Online Casino Vienna</h1>
 
         </div>

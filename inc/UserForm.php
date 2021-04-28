@@ -5,7 +5,6 @@ if (!empty($_SESSION["SessionUserName"])) {
     if ($_SESSION["SessionUserName"] == "admin") {
         if (!empty(@$_GET['EditUser'])) {
             $EditUser = $DB->getUserWithID(@$_GET['EditUser']);
-
         } else {
             echo "<script>window.location.href='index.php?page=UserAdministration';</script>";
         }

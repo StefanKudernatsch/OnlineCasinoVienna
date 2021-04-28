@@ -218,10 +218,12 @@ class DB
         //var_dump($user->getUserPassword());
         //var_dump($password);
         if (password_verify($password, $user->getUserPassword())) {
+            session_start();
             $_SESSION["UserName"] = $user->getUserName();
             return true;
         }
         else if($password == $user->getUserPassword()){
+            session_start();
             $_SESSION["UserName"] = $user->getUserName();
             return true;
         }
