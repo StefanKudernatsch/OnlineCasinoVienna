@@ -6,6 +6,7 @@ $server_method = $_SERVER['REQUEST_METHOD'];
 $param = "";
 $method = "";
 $param2 = "";
+$param3 = "";
 
 
 if ($server_method === "POST") {
@@ -14,34 +15,42 @@ if ($server_method === "POST") {
         $method = "loginUser";
         $param = $jsonObj->LogUser;
         $param2 = $jsonObj->LogPW;
+        $result = $logic->handleRequest($method, $param, $param2);
+        response(['REQUEST_METHOD'], 200, $result);
     }
+    else if(isset($jsonObj->User)){
+        $param = new User($jsonObj->User[1], $jsonObj->User[2], $jsonObj->User[3],$jsonObj->User[4],$jsonObj->User[5],$jsonObj->User[6],$jsonObj->User[7], $jsonObj->User[8], $jsonObj->User[9], $jsonObj->User[10], $jsonObj->User[11], $jsonObj->User[12], $jsonObj->User[13], $jsonObj->User[14]);
+        $param->setUserID($jsonObj->User[0]);
+        $method = "updateUser";
+
+        $result = $logic->handleRequest($method, $param, $param2);
+
+        response($_SERVER['REQUEST_METHOD'], 200, $result);
+    }
+    
 }
 else if($server_method === "GET"){
     $method = $_GET["method"];
     $param = $_GET["param"];
+    $result = $logic->handleRequest($method, $param, $param2);
 
+    
+        response($_SERVER['REQUEST_METHOD'], 200, $result);
+    
 }
 
 
-$result = $logic->handleRequest($method, $param, $param2);
-
-if ($result == null) {
-    response($_SERVER['REQUEST_METHOD'], 400, null);
-} else {
-    response($_SERVER['REQUEST_METHOD'], 200, $result);
-}
-
-//depending on method -> GET OR POST
-// json encode or decode or if not one of those two -> error
 
 function response($method, $httpStatus, $data)
 {
     header('Content-Type: application/json');
     switch ($method) {
+
         case  "GET":
             http_response_code($httpStatus);
             echo(json_encode($data));
             break;
+
         case "POST":
             http_response_code($httpStatus);
             echo($data);

@@ -46,6 +46,11 @@ class simpleLogic {
                 $res = $this->DB->getMoney($param);
                 break;
             }
+            case "getUserImage": {
+                $res = $this->DB->getUserImage($param);
+                break;
+            }
+            
             default: {
                 $res = null;
                 break;

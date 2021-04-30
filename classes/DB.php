@@ -154,7 +154,7 @@ class DB
 
     function updateUser(User $user_object)
     {
-        $sql = "UPDATE user SET Gender = ?, Birthday = ?, FirstName = ?, LastName = ?, Address = ?, PostalCode = ?, City = ?, UserName = ?, Password = ?, Email = ?, Money = ?, Active = ?, Banned = ? WHERE ID = ?;";
+        $sql = "UPDATE user SET Gender = ?, Birthday = ?, FirstName = ?, LastName = ?, Address = ?, PostalCode = ?, City = ?, UserName = ?, Email = ? WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
 
         $gender = $user_object->getUserGender();
@@ -171,6 +171,7 @@ class DB
         $stmt->bind_param("sssssisssi", $gender,$birthday, $firstname, $lastname, $address, $plz, $city, $username, $email, $id);
 
         $ergebnis = $stmt->execute();
+        session_start();
 
         if ($_SESSION["UserName"] == "admin") {
             header("Location: ");
@@ -231,7 +232,7 @@ class DB
 
     function updateUserPW($user_id, $old_PW, $new_PW) //
     {
-        if (password_verify($old_PW, $this->getUserWithID($user_id)->getUserPassword())) {
+        if (password_verify($old_PW, $this->getUserWithID($user_id)->getUserPassword()) || $old_PW == $this->getUserWithID($user_id)->getUserPassword()) {
 
             $sql = "UPDATE user SET Password = ? WHERE ID = ?;";
             $stmt = $this->connect->prepare($sql);

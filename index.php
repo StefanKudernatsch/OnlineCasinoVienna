@@ -58,11 +58,39 @@ if (isset($_POST['RegisterUser'])) {
             $tempuser = $DB->getUserWithName($UserData[7]);
             $tempuserid = $tempuser->getUserID();
             $DB->uploadImage("res/assets/img/avatars/standard-image.png", $tempuserid);
-                echo "<script language='JavaScript'>alert('Account created successfully')</script>";
-            } else {
+            echo "<script language='JavaScript'>alert('Account created successfully')</script>";
+        } else {
 
-                echo "<script language='JavaScript'>alert('Error | Create account failed')</script>";
-            }
+            echo "<script language='JavaScript'>alert('Error | Create account failed')</script>";
+        }
+    }
+}
+
+if (isset($_POST["pw-submit"])) {
+
+    $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+    $tempuserid = $tempuser->getUserID();
+    $return_val = $DB->updateUserPW($tempuserid, $_POST["old_pw"], $_POST["new_pw"]);
+    if ($return_val == 0) {
+        echo "<script language='JavaScript'>alert('Password changed')</script>";
+    } else if ($return_val == 1) {
+        echo "<script language='JavaScript'>alert('Failed to change password')</script>";
+    } else if ($return_val == 2) {
+        echo "<script language='JavaScript'>alert('Old password not correct')</script>";
+    }
+}
+
+if (isset($_POST["photo-submit"])) {
+    if ($_FILES["new_photo"]["error"] == 0) {
+        if ($_FILES["new_photo"]["type"] != "image/jpeg" && $_FILES["new_photo"]["type"] != "image/png" && $_FILES["new_photo"]["type"] != "image/jpg") {
+            echo "<script language='JavaScript'>alert('Error | Only upload .jpgs and .png')</script>";
+        } else {
+            $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+            $tempuserid = $tempuser->getUserID();
+            $DB->uploadImage($_FILES["new_photo"]["tmp_name"], $tempuserid);
+        }
+    } else {
+        echo "<script language='JavaScript'>alert('Error | Upload of image failed')</script>";
     }
 }
 
@@ -95,26 +123,46 @@ if (isset($_POST['RegisterUser'])) {
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                                        href="?page=home"><div class="sidebar-brand-icon"><i class="fas fa-home"></i></div><div class="sidebar-brand-text"><span>Home</span></div></a>
+                <li class="nav-item"><a
+                            class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
+                            href="?page=home">
+                        <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
+                        <div class="sidebar-brand-text"><span>Home</span></div>
+                    </a>
                 </li>
                 <?php
                 if (!isset($_SESSION["UserName"])) {
                     ?>
-                    <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                                            href="?page=LogIn"><div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div><div class="sidebar-brand-text"><span>Login</span></div></a>
+                    <li class="nav-item"><a
+                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
+                                href="?page=LogIn">
+                            <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
+                            <div class="sidebar-brand-text"><span>Login</span></div>
+                        </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                                            href="?page=Register"><div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div><div class="sidebar-brand-text"><span>Register</span></div></a>
+                    <li class="nav-item"><a
+                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
+                                href="?page=Register">
+                            <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
+                            <div class="sidebar-brand-text"><span>Register</span></div>
+                        </a>
                     </li>
                     <?php
                 } else {
                     ?>
-                    <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                            href="?page=UserForm"><div class="sidebar-brand-icon"><i class="fas fa-user"></i></div><div class="sidebar-brand-text" style=""><span>Profile</span></div></a>
+                    <li class="nav-item"><a
+                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                href="?page=UserForm">
+                            <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
+                            <div class="sidebar-brand-text" style=""><span>Profile</span></div>
+                        </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                            href="?page=logout"><div class="sidebar-brand-icon"><i class="fas fa-sign-out-alt"></i></div><div class="sidebar-brand-text"><span>Logout</span></div></a>
+                    <li class="nav-item"><a
+                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                href="?page=logout">
+                            <div class="sidebar-brand-icon"><i class="fas fa-sign-out-alt"></i></div>
+                            <div class="sidebar-brand-text"><span>Logout</span></div>
+                        </a>
                     </li>
                     <?php
                 } ?>
@@ -138,25 +186,23 @@ if (isset($_POST['RegisterUser'])) {
                                                                        href="#">
                                     <span id="logged_user"
                                           class=" d-lg-inline me-2 text-gray-600 small"><?php if (isset($_SESSION["UserName"])){
-                                            $image=$DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                        echo $_SESSION["UserName"] . '</span><img
+                                            $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
+                                            echo $_SESSION["UserName"] . '</span><img
                                             class="border rounded-circle img-profile"
-                                            src="data:image/png;base64,'.base64_encode($image).'"></a>'; ?>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a
-                                            class="dropdown-item" href="#"><i
-                                                class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                            src="data:image/png;base64,' . base64_encode($image) . '"></a>'; ?>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                                        class="dropdown-item" href="#"><i
+                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
+                                                        class="dropdown-item" href="#"><i
+                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
                                         log</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="?page=logout"><i
                                                 class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>
-                                <?php } else { ?> </span><img
-                                        class="border rounded-circle img-profile"
-                                        src="res/assets/img/avatars/standard-image.png"></a>
+                                        <?php } else { ?> </span><img
+                                            class="border rounded-circle img-profile"
+                                            src="res/assets/img/avatars/standard-image.png"></a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
                                             class="dropdown-item" href="?page=LogIn"><i
                                                 class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
@@ -183,6 +229,15 @@ if (isset($_POST['RegisterUser'])) {
                         }
                         case 'UserForm':
                         {
+                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+
+
+                            ?>
+                            <script type="text/javascript">
+                                username = "<?=$_SESSION["UserName"]?>";
+                                image_string = "<?= base64_encode($DB->getUserImage($temp_user->getUserID()))?>"
+                            </script>
+                            <?php
                             include "inc/profile.html";
                             break;
                         }
