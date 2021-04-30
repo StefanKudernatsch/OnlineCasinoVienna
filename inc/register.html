@@ -11,54 +11,54 @@
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Create an Account!</h4>
                             </div>
-                            <form class="user" action="" method="post">
+                            <form class="user" action="index.php?page=LogIn" method="post">
                                 <div class="row form-group mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <select id="user[0]" class="form-select" style="height: 53px; padding: 16px;">
-                                            <option disabled selected>Choose...</option>
+                                        <select id="gender" name="user[0]" class="form-select form-control-user" style="height: 53px; padding: 16px;" required>
+                                            <option disabled selected>Choose Gender...</option>
                                             <option value="0">male</option>
                                             <option value="1">female</option>
                                             <option value="2">other</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input class="form-control form-control-user" id="user[1]" name="birthday" type="date">
+                                        <input class="form-control form-control-user" name="user[1]" id="birthday" type="date" required>
                                     </div>
                                 </div>
                                 <div class="row form-group mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input class="form-control form-control-user" type="text" id="user[2]" placeholder="First Name" name="first_name">
+                                        <input class="form-control form-control-user" type="text" name="user[2]" placeholder="First Name" id="first_name" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input class="form-control form-control-user" type="text" id="user[3]" placeholder="Last Name" name="last_name">
+                                        <input class="form-control form-control-user" type="text" name="user[3]" placeholder="Last Name" id="last_name" required>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input class="form-control form-control-user" type="email" id="user[9]" aria-describedby="emailHelp" placeholder="Email Address" name="email" style="padding-top: 16px;">
+                                    <input class="form-control form-control-user" type="email" name="user[9]" aria-describedby="emailHelp" placeholder="Email Address" id="email" style="padding-top: 16px;" required>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input class="form-control form-control-user" type="text" id="user[7]" placeholder="Username" name="user_name" style="padding-top: 16px;">
+                                    <input class="form-control form-control-user" type="text" name="user[7]" placeholder="Username" id="user_name" style="padding-top: 16px;" required>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input class="form-control form-control-user" type="text" id="user[4]" placeholder="Höchstädtpl. 6" name="address" style="padding-top: 16px;">
+                                    <input class="form-control form-control-user" type="text" name="user[4]" placeholder="Höchstädtpl. 6" id="address" style="padding-top: 16px;" required>
                                 </div>
                                 <div class="row form-group mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input class="form-control form-control-user" type="text" id="user[6]" placeholder="City" name="city">
+                                        <input class="form-control form-control-user" type="text" name="user[6]" placeholder="City" id="city" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input class="form-control form-control-user" type="number" id="user[5]" placeholder="Post" name="post_code">
+                                        <input class="form-control form-control-user" type="number" name="user[5]" min="0" max="99999" placeholder="Post" id="post_code" required>
                                     </div>
                                 </div>
                                 <div class="row form-group mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input class="form-control form-control-user" type="password" id="user[8]" placeholder="Password" name="password">
+                                        <input class="form-control form-control-user" type="password" name="user[8]" placeholder="Password" id="password" onchange="validatePassword()" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input class="form-control form-control-user" type="password" id="password_check" placeholder="Repeat Password" name="password_repeat">
+                                        <input class="form-control form-control-user" type="password" id="password_check" onkeyup="validatePassword()" placeholder="Repeat Password" name="password_check" required>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary d-block btn-user w-100" type="submit">Register Account</button>
+                                <button class="btn btn-primary d-block btn-user w-100" type="submit" name="RegisterUser" id="RegisterUser">Register Account</button>
                                 <hr>
                             </form>
                             <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
@@ -69,3 +69,14 @@
             </div>
         </div>
     </div>
+<script>
+    let password = document.getElementById("password");
+    let confirm_password = document.getElementById("password_check");
+    function validatePassword(){
+        if(password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity("Passwort stimmt nicht überein");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+</script>

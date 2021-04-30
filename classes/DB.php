@@ -131,7 +131,8 @@ class DB
 
     function registerUser(User $user_object)
     {
-        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+
+        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email,Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         $stmt = $this->connect->prepare($sql);
         $gender = $user_object->getUserGender();
         $birthday = $user_object->getUserBirthday();
@@ -215,12 +216,10 @@ class DB
         //var_dump($user->getUserPassword());
         //var_dump($password);
         if (password_verify($password, $user->getUserPassword())) {
-            session_start();
             $_SESSION["UserName"] = $user->getUserName();
             return true;
         }
         else if($password == $user->getUserPassword()){
-            session_start();
             $_SESSION["UserName"] = $user->getUserName();
             return true;
         }
