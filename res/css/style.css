@@ -23,3 +23,16 @@
     margin: 10px;
     padding: 10px;
 }
+
+.nav-item i {
+    font-size: 18px!important;
+}
+.sidebar-toggled .nav-item i{
+    font-size: 30px!important;
+}
+
+.nav-item .sidebar-brand-text {
+    font-size: 14px!important;
+    font-weight: normal!important;
+    text-transform: none!important;
+}

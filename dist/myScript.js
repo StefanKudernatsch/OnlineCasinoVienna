@@ -1,12 +1,8 @@
-$(document).ready(function () {
-    $("#login-submit").click(function (e) {
-        logInUser();
-    });
-
-});
 
 
-function logInUser(){
+
+
+/*function logInUser(){
 
     let log_user = $('#log_username').val();
     let log_pw = $('#log_password').val();
@@ -26,4 +22,4 @@ function logInUser(){
             alert("Username or Password wrong");
         }
     });
-}
+}*/
