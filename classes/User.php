@@ -3,19 +3,21 @@
 class User
 {
 
-    private $UserID;
-    private $UserGender;
-    private $UserBirthday;
-    private $UserFirstName;
-    private $UserLastName;
-    private $UserAddress;
-    private $UserPLZ;
-    private $UserCity;
-    private $UserName;
-    private $UserPassword;
-    private $UserEMail;
-    private $UserImage;
-    private $UserMoney;
+    public $UserID;
+    public $UserGender;
+    public $UserBirthday;
+    public $UserFirstName;
+    public $UserLastName;
+    public $UserAddress;
+    public $UserPLZ;
+    public $UserCity;
+    public $UserName;
+    public $UserPassword;
+    public $UserEMail;
+    public $UserImage;
+    public $UserMoney;
+    public $UserActive;
+    public $UserBanned;
 
     /**
      * User constructor.

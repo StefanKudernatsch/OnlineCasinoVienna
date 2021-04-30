@@ -168,7 +168,7 @@ class DB
         $address = $user_object->getUserAddress();
         $id = $user_object->getUserID();
 
-        $stmt->bind_param("sssssisssi", $gender,$birthday, $firstname, $lastname, $address, $plz, $city, $username, $email, $id);
+        $stmt->bind_param("issssisssi", $gender,$birthday, $firstname, $lastname, $address, $plz, $city, $username, $email, $id);
 
         $ergebnis = $stmt->execute();
         session_start();

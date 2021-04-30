@@ -282,7 +282,7 @@ if (isset($_POST["photo-submit"])) {
 <script src="res/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="res/assets/js/chart.min.js"></script>
 <script src="res/assets/js/bs-init.js"></script>
-<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+<!--<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
 <script src="res/assets/js/theme.js"></script>
 </body>
 </html>

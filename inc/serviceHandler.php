@@ -1,4 +1,5 @@
 <?php
+
 include "../classes/simpleLogic.php";
 
 $logic = new simpleLogic();

@@ -24,7 +24,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
                                         </div>
-                                        <input type="password" id="new_pw" name="new_pw"
+                                        <input type="password" id="new_pw" name="new_pw" onchange="validatePassword()"
                                                class="form-control" required="required">
                                     </div>
                                     <label for="re_pw" class="cols-sm-2 control-label">Repeat: </label>
@@ -32,7 +32,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
                                         </div>
-                                        <input type="password" id="re_pw" name="re_pw"
+                                        <input type="password" id="re_pw" name="re_pw" onkeyup="validatePassword()"
                                                class="form-control" required="required">
                                     </div>
                                 </div>
@@ -42,7 +42,44 @@
                 </div>
                 <div class="modal-footer">
                     <div class="container">
-                        <button id="vote-submit" type="submit" class="btn btn-primary btn-block" name="vote-submit" value="0">Vote</button>
+                        <button id="pw-submit" type="submit" class="btn btn-primary btn-block" name="pw-submit" value="0">Change</button>
+                        <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="photo_change_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Change Photo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="photo-form" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class=" main-center">
+                            <div class="container col-md-12">
+                                <div class="form-group" id="photo">
+                                    <div class="input-group" style="border: lightgray solid 1px; border-radius: 10px;">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="new_photo" name="new_photo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="container">
+                        <button id="photo-submit" type="submit" class="btn btn-primary btn-block" name="photo-submit" value="0">Change Photo</button>
                         <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -55,15 +92,17 @@
     <form>
         <h3 class="text-dark mb-4">Profile</h3>
         <div class="row mb-3">
-            <div class="col-lg-4" style="height: 373px;">
-                <div class="card mb-3" style="height: 357px;">
-                    <div class="card-body text-center shadow" style="height: 396px;"><img
+            <div class="col-lg-4">
+                <div class="card mb-3">
+                    <div class="card-body text-center shadow"><img
+                            id="user[11]"
                             class="rounded-circle mb-3 mt-4"
-                            src="res/assets/img/dogs/image2.jpeg"
+
+                            alt=""
                             width="160" height="160">
 
                         <div class="d-grid gap-1 mb-3">
-                            <button class="btn btn-secondary btn-sm btn-block" type="button">Change Photo
+                            <button class="btn btn-secondary btn-sm btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photo_change_modal">Change Photo
                             </button>
                         </div>
                         <div class="d-grid gap-1 mb-3">
@@ -73,7 +112,7 @@
                             </button>
                         </div>
                         <div class="d-grid gap-1 mb-3">
-                            <button id="save-user" class="btn btn-primary btn-sm btn-block" type="button" onclick="">Save Settings
+                            <button id="save-edit-user" class="btn btn-primary btn-sm btn-block" type="button" onclick="editSettings()">Edit Settings
                             </button>
                         </div>
                     </div>
@@ -86,13 +125,12 @@
                             <div class="card-header py-3">
                                 <p class="text-primary m-0 fw-bold">User Settings</p>
                             </div>
-                            <div class="card-body">
-
+                            <div class="card-body" style="padding-top: 30px; padding-bottom: 30px;">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group mb-3"><label class="form-label"
-                                                                            for="inlineFormSelectPref"><strong>Gender</strong></label>
-                                            <select class="form-select" id="inlineFormSelectPref">
+                                                                            for="user[1]"><strong>Gender</strong></label>
+                                            <select class="form-select" id="user[1]" name="user[1]" disabled>
                                                 <option disabled selected>Choose...</option>
                                                 <option value="0">Male</option>
                                                 <option value="1">Female</option>
@@ -101,34 +139,34 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="email"><strong>Birthday</strong></label><input
-                                                class="form-control" id="birthday" placeholder="user@example.com"
-                                                name="birthday" type="date"></div>
+                                        <div class="form-group mb-3"><label class="form-label" for="user[2]"><strong>Birthday</strong></label><input
+                                                class="form-control" id="user[2]"
+                                                name="user[2]" type="date" readonly></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="username"><strong>Username</strong></label><input
-                                                class="form-control" type="text" id="username" placeholder="user.name"
-                                                name="username"></div>
+                                        <div class="form-group mb-3"><label class="form-label" for="user[8]"><strong>Username</strong></label><input
+                                                class="form-control" type="text" id="user[8]" placeholder="user.name"
+                                                name="user[8]" readonly></div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="email"><strong>Email
-                                            Address</strong></label><input class="form-control" type="email" id="email"
-                                                                           placeholder="user@example.com" name="email">
+                                        <div class="form-group mb-3"><label class="form-label" for="user[10]"><strong>Email
+                                            Address</strong></label><input class="form-control" type="email" id="user[10]"
+                                                                           placeholder="user@example.com" name="user[10]" readonly>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="first_name"><strong>First
-                                            Name</strong></label><input class="form-control" type="text" id="first_name"
-                                                                        placeholder="John" name="first_name"></div>
+                                        <div class="form-group mb-3"><label class="form-label" for="user[3]"><strong>First
+                                            Name</strong></label><input class="form-control" type="text" id="user[3]"
+                                                                        placeholder="John" name="user[3]" readonly></div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="last_name"><strong>Last
-                                            Name</strong></label><input class="form-control" type="text" id="last_name"
-                                                                        placeholder="Doe" name="last_name"></div>
+                                        <div class="form-group mb-3"><label class="form-label" for="user[4]"><strong>Last
+                                            Name</strong></label><input class="form-control" type="text" id="user[4]"
+                                                                        placeholder="Doe" name="user[4]" readonly></div>
                                     </div>
                                 </div>
 
@@ -145,20 +183,20 @@
             <div class="card-body">
 
                 <div class="form-group mb-3"><label class="form-label"
-                                                    for="address"><strong>Address</strong></label><input
-                        class="form-control" type="text" id="address" placeholder="Höchstädtpl. 6" name="address">
+                                                    for="user[5]"><strong>Address</strong></label><input
+                        class="form-control" type="text" id="user[5]" placeholder="Höchstädtpl. 6" name="user[5]" readonly>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="form-group mb-3"><label class="form-label"
-                                                            for="city"><strong>City</strong></label><input
-                                class="form-control" type="text" id="city" placeholder="Wien" name="city"></div>
+                                                            for="user[7]"><strong>City</strong></label><input
+                                class="form-control" type="text" id="user[7]" placeholder="Wien" name="user[7]" readonly></div>
                     </div>
                     <div class="col">
                         <div class="form-group mb-3"><label class="form-label"
-                                                            for="country"><strong>Post</strong></label><input
-                                class="form-control" type="number" id="country" placeholder="1200" name="country"
-                                max="9999" min="1000"></div>
+                                                            for="user[6]"><strong>Post</strong></label><input
+                                class="form-control" type="number" id="user[6]" placeholder="1200" name="user[6]"
+                                max="9999" min="1000" readonly></div>
                     </div>
                 </div>
 
@@ -166,3 +204,14 @@
         </div>
     </form>
 </div>
+<script>
+    let password = document.getElementById("new_pw");
+    let confirm_password = document.getElementById("re_pw");
+    function validatePassword(){
+        if(password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity("Passwort stimmt nicht überein");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+</script>
