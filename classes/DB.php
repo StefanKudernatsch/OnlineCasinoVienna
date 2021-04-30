@@ -5,6 +5,8 @@
  * Untouched functions: users, pws, profilepictures, messages, friends
  */
 
+include "User.php";
+
 class DB
 {
     public $host;
@@ -17,18 +19,13 @@ class DB
     function __construct()
     {
 
-        /*
+
         $this->host = 'localhost';
         $this->user = 'onlinecasino_w3';
         $this->password = 'j9l9Qq2UeWkjxvI73KiTcZN21Xr9Kun3yK0ximFa';
         $this->database = 'online_casino_w3_cs_technikum_wien_at';
-        */
 
 
-        $this->host = 'localhost';
-        $this->user = 'root';
-        $this->password = '';
-        $this->database = 'online-casino';
 
 
         $this->connect = new mysqli($this->host, $this->user, $this->password, $this->database);
@@ -218,10 +215,12 @@ class DB
         //var_dump($user->getUserPassword());
         //var_dump($password);
         if (password_verify($password, $user->getUserPassword())) {
+            session_start();
             $_SESSION["UserName"] = $user->getUserName();
             return true;
         }
         else if($password == $user->getUserPassword()){
+            session_start();
             $_SESSION["UserName"] = $user->getUserName();
             return true;
         }
@@ -280,7 +279,7 @@ class DB
         $result = $stmt->get_result();
         $logarr = array();
 
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_object()) {
                 $logarr['LogID'] = $row->LogID;
                 $logarr['LogReason'] = $row->LogReason;
                 $logarr['UserID'] = $row->UserID;

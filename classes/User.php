@@ -292,7 +292,4 @@ class User
     {
         $this->UserBanned = $UserBanned;
     }
-    private $UserActive;
-    private $UserBanned;
-
 }

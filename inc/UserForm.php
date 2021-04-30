@@ -5,7 +5,6 @@ if (!empty($_SESSION["SessionUserName"])) {
     if ($_SESSION["SessionUserName"] == "admin") {
         if (!empty(@$_GET['EditUser'])) {
             $EditUser = $DB->getUserWithID(@$_GET['EditUser']);
-
         } else {
             echo "<script>window.location.href='index.php?page=UserAdministration';</script>";
         }
@@ -274,8 +273,8 @@ if (isset($_POST['DeleteSubmit'])) {
                                         echo "<input type='file' id='upload' name='blob' style='display:none' accept='image/*'>";
                                     }
                                     ?>
-                                </label
-                                <input class="addfile" type="file" name="blob" accept="image/*"
+                                </label>
+                                <input class="addfile" type="file" name="blob" accept="image/*">
                                        style="padding-top: 15%">
                                 <div class="image_inner_container">
                                     <?php
