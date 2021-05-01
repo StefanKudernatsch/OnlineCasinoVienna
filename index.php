@@ -15,7 +15,7 @@ if (isset($_POST["login-submit"])) {
         $ergebnis = $DB->loginUser($loginUsername, $loginPassword);
         if ($ergebnis == true) {
             if (isset($_POST["RememberMe"])) {
-                setcookie("CookieUserName", $loginUsername, time() + 3600);
+                setcookie("CookieName", $loginUsername, time() + 3600);
             }
             echo "<script language='JavaScript'>alert('Login successfully')</script>";
         } else {
@@ -25,8 +25,8 @@ if (isset($_POST["login-submit"])) {
         echo "<script language='JavaScript'>alert('Account deactivated')</script>";
     }
 
-} else if (!isset($_SESSION["UserName"]) && isset($_COOKIE["CookieUserName"])) {
-    $_SESSION["UserName"] = $_COOKIE["CookieUserName"];
+} else if (!isset($_SESSION["UserName"]) && isset($_COOKIE["CookieName"])) {
+    $_SESSION["UserName"] = $_COOKIE["CookieName"];
 }
 
 if (isset($_POST['RegisterUser'])) {
@@ -229,16 +229,22 @@ if (isset($_POST["photo-submit"])) {
                         }
                         case 'UserForm':
                         {
-                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+                            if (isset($_SESSION["UserName"])){
+                                $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
 
 
-                            ?>
-                            <script type="text/javascript">
-                                username = "<?=$_SESSION["UserName"]?>";
-                                image_string = "<?= base64_encode($DB->getUserImage($temp_user->getUserID()))?>"
-                            </script>
-                            <?php
-                            include "inc/profile.html";
+                                ?>
+                                <script type="text/javascript">
+                                    username = "<?=$_SESSION["UserName"]?>";
+                                    image_string = "<?= base64_encode($DB->getUserImage($temp_user->getUserID()))?>"
+                                </script>
+                                <?php
+                                include "inc/profile.html";
+                            }
+                            else {
+                                include "inc/login.html";
+                            }
+
                             break;
                         }
                         case 'home':

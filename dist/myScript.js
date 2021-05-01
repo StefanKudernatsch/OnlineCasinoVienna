@@ -10,12 +10,9 @@ $(document).ready(function () {
     
 });
 
-
 function setUserImg(){
     document.getElementById("user[11]").src = 'data:image/png;base64,'+image_string;
 }
-
-
 function loadProfile() {
 
     console.log(username);
