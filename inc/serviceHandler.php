@@ -28,14 +28,19 @@ if ($server_method === "POST") {
 
         response($_SERVER['REQUEST_METHOD'], 200, $result);
     }
+    else if(isset($jsonObj->UserToBan)){
+        $param = $jsonObj->UserToBan;
+        $method = "changeUserBan";
+        $result = $logic->handleRequest($method, $param, $param2);
+
+        response($_SERVER['REQUEST_METHOD'], 200, $result);
+    }
     
 }
 else if($server_method === "GET"){
     $method = $_GET["method"];
     $param = $_GET["param"];
     $result = $logic->handleRequest($method, $param, $param2);
-
-    
         response($_SERVER['REQUEST_METHOD'], 200, $result);
     
 }

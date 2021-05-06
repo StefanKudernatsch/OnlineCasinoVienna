@@ -50,6 +50,10 @@ class simpleLogic {
                 $res = $this->DB->getUserImage($param);
                 break;
             }
+            case "changeUserBan": {
+                $res = $this->DB->changeUserBan($param);
+                break;
+            }
             
             default: {
                 $res = null;

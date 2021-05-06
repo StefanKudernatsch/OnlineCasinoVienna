@@ -109,13 +109,14 @@ if (isset($_POST["photo-submit"])) {
     <link rel="stylesheet" href="res/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome5-overrides.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script src="dist/myScript.js"></script>
     <link rel="stylesheet" href="res/css/style.css">
 
 </head>
 <body id="page-top">
 <div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
         <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a
                     class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                 <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
@@ -167,31 +168,35 @@ if (isset($_POST["photo-submit"])) {
                     <?php
                 } ?>
             </ul>
-            <div class="text-center d-none d-md-inline">
-                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
-            </div>
         </div>
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
             <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                 <div class="container-fluid">
-                    <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i
+                    <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
                                 class="fas fa-bars"></i></button>
                     <ul class="navbar-nav flex-nowrap ms-auto">
-                        <div class="d-none d-sm-block topbar-divider"></div>
+                        <?php if(isset($_SESSION["UserName"])){
+                        $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+                        echo '<span style="color: green"><br>'.$DB->getMoney($tempuser->getUserID()).'&nbsp<i class="fas fa-euro-sign"></i></span>';
+                        }?>
+
+                        <div class="d-block topbar-divider"></div>
                         <li class="nav-item dropdown no-arrow">
                             <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
                                                                        aria-expanded="false" data-bs-toggle="dropdown"
-                                                                       href="#">
+                                                                       href="#" style="padding-left: 0!important;">
                                     <span id="logged_user"
                                           class=" d-lg-inline me-2 text-gray-600 small"><?php if (isset($_SESSION["UserName"])){
                                             $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                            echo $_SESSION["UserName"] . '</span><img
+                                            echo $_SESSION["UserName"] .'</span><img
                                             class="border rounded-circle img-profile"
-                                            src="data:image/png;base64,' . base64_encode($image) . '"></a>'; ?>
+                                            src="data:image/png;base64,' . base64_encode($image) . '"></a>';
+
+                                            ?>
                                             <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                        class="dropdown-item" href="#"><i
+                                                        class="dropdown-item" href="?page=UserForm"><i
                                                             class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
                                                         class="dropdown-item" href="#"><i
                                                             class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
@@ -229,20 +234,26 @@ if (isset($_POST["photo-submit"])) {
                         }
                         case 'UserForm':
                         {
-                            if (isset($_SESSION["UserName"])){
+                            if (isset($_SESSION["UserName"])) {
                                 $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
-
-
                                 ?>
                                 <script type="text/javascript">
                                     username = "<?=$_SESSION["UserName"]?>";
-                                    image_string = "<?= base64_encode($DB->getUserImage($temp_user->getUserID()))?>"
                                 </script>
                                 <?php
                                 include "inc/profile.html";
-                            }
-                            else {
+                            } else {
                                 include "inc/login.html";
+                            }
+
+                            break;
+                        }
+                        case 'UserList':
+                        {
+                            if ($_SESSION["UserName"] == "admin") {
+                                include "inc/table.html";
+                            } else {
+                                include "inc/profile.html";
                             }
 
                             break;
@@ -284,11 +295,13 @@ if (isset($_POST["photo-submit"])) {
     </div>
     <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="res/assets/js/jquery.min.js"></script>
 <script src="res/assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="res/assets/js/chart.min.js"></script>
 <script src="res/assets/js/bs-init.js"></script>
 <!--<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
 <script src="res/assets/js/theme.js"></script>
+<script src="dist/myScript.js"></script>
 </body>
 </html>
