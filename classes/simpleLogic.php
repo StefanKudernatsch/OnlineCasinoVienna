@@ -50,6 +50,7 @@ class simpleLogic {
                 $res = $this->DB->getUserImage($param);
                 break;
             }
+
             case "searchUser": {
                 $res = $this->DB->searchUser($param);
                 break;
@@ -58,7 +59,10 @@ class simpleLogic {
                 $res = $this->DB->addMoney($param, $param2, $param3);
                 break;
             }
-            
+            case "changeUserBan": {
+                $res = $this->DB->changeUserBan($param);
+                break;
+            }
             default: {
                 $res = null;
                 break;

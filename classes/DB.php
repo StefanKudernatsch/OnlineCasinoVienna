@@ -58,6 +58,7 @@ class DB
         $user = $result->fetch_assoc();
         $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["Money"], $user["Active"], $user["Banned"]);
         $tempuser->setUserID($user["ID"]);
+        $tempuser->setUserImage(base64_encode($this->getUserImage($user["ID"])));
         return $tempuser;
     }
 
@@ -72,6 +73,7 @@ class DB
         $user = $result->fetch_assoc();
         $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["Money"], $user["Active"], $user["Banned"]);
         $tempuser->setUserID($user["ID"]);
+        $tempuser->setUserImage(base64_encode($this->getUserImage($user["ID"])));
         return $tempuser;
     }
 
@@ -184,6 +186,13 @@ class DB
         $sql = "UPDATE user SET Active = ? WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param("ii", $user_active, $user_id);
+        return $stmt->execute();
+    }
+
+    function changeUserBan($username){
+        $sql = "UPDATE user SET Banned = !Banned WHERE UserName = ?;";
+        $stmt = $this->connect->prepare($sql);
+        $stmt->bind_param("s", $username);
         return $stmt->execute();
     }
 

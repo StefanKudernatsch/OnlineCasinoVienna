@@ -1,6 +1,5 @@
 let user = [];
 let username;
-let image_string;
 $(document).ready(function () {
     if(window.location.search === "?page=UserForm") {
         setUserImg();
@@ -10,17 +9,105 @@ $(document).ready(function () {
     
 });
 
-function setUserImg(){
-    document.getElementById("user[11]").src = 'data:image/png;base64,'+image_string;
+function banUser(ban_name){
+    let data = {UserToBan: ban_name};
+    console.log(data);
+    $.ajax
+    ({
+        type: "POST",
+        url: "./inc/serviceHandler.php",
+        data: JSON.stringify(data),
+        cache: false,
+        success: function () {
+        },
+        error: function (request, status, error) {
+            alert(error);
+        }
+    });
 }
-function loadProfile() {
 
-    console.log(username);
+
+function getAllUser(){
     $.ajax
     ({
         type: "GET",
         url: "./inc/serviceHandler.php",
-        data: {method: "getUserWithName", param: username},
+        data: {method: "getUserList", param: null},
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            let table_body = document.getElementById("usertable-body");
+            data.forEach(function (userobject){
+                let temp_tr = document.createElement("tr");
+
+                console.log(userobject);
+
+                let data_arr = [userobject.UserName, userobject.UserEMail, userobject.UserMoney, userobject.UserActive, userobject.UserBanned];
+                for (let i = 0; i < data_arr.length; i++) {
+                    let temp_td = document.createElement("td");
+                    if(i === 0){
+                        let temp_img = document.createElement("img");
+                        temp_img.src = 'data:image/png;base64,'+userobject.UserImage;
+                        temp_img.className = "rounded-circle me-2";
+                        temp_img.height = "30";
+                        temp_img.width = "30";
+                        temp_td.append(temp_img);
+                    }
+                    if(i > 2){
+
+                        let temp_i = document.createElement("i");
+                        if(data_arr[i] === 1){
+                            temp_i.className = "fas fa-check-circle";
+                            temp_i.style.color = "green";
+                        }
+                        else if(data_arr[i] === 0)
+                        {
+                            temp_i.className = "fas fa-times-circle";
+                            temp_i.style.color = "red";
+                        }
+                        if(i === 4){
+                            let temp_a = document.createElement("a");
+                            temp_a.href = "#";
+                            temp_a.onclick = function() {
+                                $("#user_to_ban").html(data_arr[0]);
+                                $('#banModal').modal('show');
+                            };
+                            temp_a.append(temp_i);
+                            temp_td.append(temp_a);
+                        }
+                        else {
+                            temp_td.append(temp_i);
+                        }
+
+
+
+                    }
+                    else {
+                        let temp_textnode = document.createTextNode(data_arr[i]);
+                        temp_td.append(temp_textnode);
+                    }
+
+
+
+                    temp_tr.append(temp_td);
+                }
+                table_body.append(temp_tr);
+            });
+        },
+        error: function (request, status, error) {
+            alert("Failed to get Userdata");
+        }
+    });
+}
+
+function loadProfile(currentUser) {
+
+    console.log(currentUser);
+    $.ajax
+    ({
+        type: "GET",
+        url: "./inc/serviceHandler.php",
+        data: {method: "getUserWithName", param: currentUser},
         cache: false,
         dataType: "json",
         success: function (data) {
@@ -30,13 +117,13 @@ function loadProfile() {
                 i++;
             });
 
-            for (let j = 1; j < 12; j++) {
+            for (let j = 1; j < 11; j++) {
                 if(j != 9) {
                     console.log("Userarray["+j+"]: "+user[j]);
                     document.getElementById("user["+j+"]").value = user[j];
                 }
             }
-
+            document.getElementById("user[11]").src = 'data:image/png;base64,'+user[11];
             console.log("Userarray[12]: "+user[12]);
             console.log("Userarray[13]: "+user[13]);
             console.log("Userarray[14]: "+user[14]);
