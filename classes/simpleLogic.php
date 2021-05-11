@@ -15,7 +15,7 @@ class simpleLogic {
 
     //gets called with method and params
     //executes chosen db class functions (sql statements)
-    function handleRequest($method, $param, $param2) {
+    function handleRequest($method, $param, $param2, $param3) {
         switch ($method) {
             case "getUserList":
             {
@@ -48,6 +48,14 @@ class simpleLogic {
             }
             case "getUserImage": {
                 $res = $this->DB->getUserImage($param);
+                break;
+            }
+            case "searchUser": {
+                $res = $this->DB->searchUser($param);
+                break;
+            }
+            case "addMoney": {
+                $res = $this->DB->addMoney($param, $param2, $param3);
                 break;
             }
             

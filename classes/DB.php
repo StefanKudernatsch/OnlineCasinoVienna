@@ -18,20 +18,16 @@ class DB
 
     function __construct()
     {
-
-
         $this->host = 'localhost';
         $this->user = 'onlinecasino_w3';
         $this->password = 'j9l9Qq2UeWkjxvI73KiTcZN21Xr9Kun3yK0ximFa';
         $this->database = 'online_casino_w3_cs_technikum_wien_at';
 
-
-
+        //$this->database = 'onlinecasino'; //local
 
         $this->connect = new mysqli($this->host, $this->user, $this->password, $this->database);
 
         if ($this->connect->connect_error) {
-
             return 'error';
         }
     }
@@ -131,8 +127,7 @@ class DB
 
     function registerUser(User $user_object)
     {
-
-        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email,Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        $sql = "INSERT INTO user (Gender, Birthday, FirstName, LastName, Address, PostalCode, City, UserName, Password, Email, Money, Active, Banned) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         $stmt = $this->connect->prepare($sql);
         $gender = $user_object->getUserGender();
         $birthday = $user_object->getUserBirthday();
@@ -147,6 +142,7 @@ class DB
         $money = $user_object->getUserMoney();
         $active = $user_object->getUserActive();
         $banned = $user_object->getUserBanned();
+        //echo "g: ", $gender, " b: ", $birthday, " fn: ", $firstname, " ln: ", $lastname, " a: ", $address, " p: ", $plz, " c: ", $city, " u: ", $username, " p: ", $password, " ", $email, ", ", $money, ", ", $active, ", ", $banned;
         $stmt->bind_param("issssissssiii", $gender, $birthday, $firstname, $lastname, $address, $plz, $city, $username, $password, $email, $money, $active, $banned);
         return $stmt->execute();
     }
@@ -339,5 +335,24 @@ class DB
         }
     
         
+    }
+
+    function searchUser($search) {
+        if (empty($search)) return NULL;
+        $searchTerm = "%" . $search . "%";
+        if ($stmt = $this->connect->prepare("SELECT * FROM user WHERE ID LIKE ? OR FirstName LIKE ? OR LastName LIKE ? OR UserName LIKE ?")) {
+            $stmt->bind_param("ssss", $searchTerm, $searchTerm, $searchTerm, $searchTerm);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                while ($user = $result->fetch_assoc()) {
+                    $tempuser = new User($user["Gender"], $user["Birthday"], $user["FirstName"], $user["LastName"], $user["Address"], $user["PostalCode"], $user["City"], $user["UserName"], $user["Password"], $user["Email"], $user["Money"], $user["Active"], $user["Banned"]);
+                    $tempuser->setUserID($user["ID"]);
+                    $userArray[] = $tempuser;
+                }
+                if (isset($userArray)) return $userArray;
+                else return NULL;
+            }
+        }
+        return "Fehler in DB->searchUser()";
     }
 }

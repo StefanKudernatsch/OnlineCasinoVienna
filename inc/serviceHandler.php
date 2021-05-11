@@ -16,7 +16,7 @@ if ($server_method === "POST") {
         $method = "loginUser";
         $param = $jsonObj->LogUser;
         $param2 = $jsonObj->LogPW;
-        $result = $logic->handleRequest($method, $param, $param2);
+        $result = $logic->handleRequest($method, $param, $param2, $param3);
         response(['REQUEST_METHOD'], 200, $result);
     }
     else if(isset($jsonObj->User)){
@@ -24,8 +24,17 @@ if ($server_method === "POST") {
         $param->setUserID($jsonObj->User[0]);
         $method = "updateUser";
 
-        $result = $logic->handleRequest($method, $param, $param2);
+        $result = $logic->handleRequest($method, $param, $param2, $param3);
 
+        response($_SERVER['REQUEST_METHOD'], 200, $result);
+    }
+    else if (isset($jsonObj->money)) {
+        $method = "addMoney";
+        $param = $jsonObj->UserID;
+        $param2 = $jsonObj->money;
+        $param3 = $jsonObj->reason;
+        $result = $logic->handleRequest($method, $param, $param2, $param3);
+    
         response($_SERVER['REQUEST_METHOD'], 200, $result);
     }
     
@@ -33,11 +42,9 @@ if ($server_method === "POST") {
 else if($server_method === "GET"){
     $method = $_GET["method"];
     $param = $_GET["param"];
-    $result = $logic->handleRequest($method, $param, $param2);
-
+    $result = $logic->handleRequest($method, $param, $param2, $param3);
     
-        response($_SERVER['REQUEST_METHOD'], 200, $result);
-    
+    response($_SERVER['REQUEST_METHOD'], 200, $result);
 }
 
 
