@@ -138,13 +138,7 @@ if (isset($_POST["photo-submit"])) {
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a
-                            class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                            href="?page=home">
-                        <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
-                        <div class="sidebar-brand-text"><span>Home</span></div>
-                    </a>
-                </li>
+
                 <?php
                 if (!isset($_SESSION["UserName"])) {
                     ?>
@@ -163,8 +157,15 @@ if (isset($_POST["photo-submit"])) {
                         </a>
                     </li>
                     <?php
-                } else {
-                    if($_SESSION["UserName"] == "admin"){
+                } else { ?>
+                <li class="nav-item"><a
+                            class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
+                            href="?page=home">
+                        <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
+                        <div class="sidebar-brand-text"><span>Home</span></div>
+                    </a>
+                </li>
+                   <?php if($_SESSION["UserName"] == "admin"){
                         ?>
                         <li class="nav-item"><a
                                     class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
@@ -176,7 +177,8 @@ if (isset($_POST["photo-submit"])) {
 
                             <?php
                     } else {
-                    ?><li class="nav-item"><a
+                    ?>
+                        <li class="nav-item"><a
                                     class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
                                     href="?page=UserForm">
                                 <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
@@ -304,7 +306,13 @@ if (isset($_POST["photo-submit"])) {
                         }
                         case 'home':
                         {
-                            include "inc/home.html";
+                            if(isset($_SESSION["UserName"])){
+                                include "inc/home.html";
+                            }
+                            else {
+                                include "inc/login.html";
+                            }
+
                             break;
                         }
                         case 'LogIn':
