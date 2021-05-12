@@ -185,25 +185,27 @@ if (isset($_POST["photo-submit"])) {
         </div>
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content bg-image" style="background-image: url('res/img/home/headerimg.png'); background-repeat: no-repeat;">
+        <div id="content bg-image"
+             style="background-image: url('res/img/home/headerimg.png'); background-repeat: no-repeat;">
             <div class="mask" style="background-color: rgba(0, 0, 0, 0.4);">
-            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                <div class="container-fluid">
-                    <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
-                                class="fas fa-bars"></i></button>
-                    <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
-                        <ul class="navbar-nav flex-nowrap ms-auto">
-                            <?php if (isset($_SESSION["UserName"])) {
-                                $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
-                                echo '<span style="color: green"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
-                            } ?>
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid">
+                        <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
+                                    class="fas fa-bars"></i></button>
+                        <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
+                            <ul class="navbar-nav flex-nowrap ms-auto">
+                                <?php if (isset($_SESSION["UserName"])) {
+                                    $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+                                    echo '<span style="color: green"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
+                                } ?>
 
-                            <div class="d-block topbar-divider"></div>
-                            <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                                           aria-expanded="false"
-                                                                           data-bs-toggle="dropdown"
-                                                                           href="#" style="padding-left: 0!important;">
+                                <div class="d-block topbar-divider"></div>
+                                <li class="nav-item dropdown no-arrow">
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                                               aria-expanded="false"
+                                                                               data-bs-toggle="dropdown"
+                                                                               href="#"
+                                                                               style="padding-left: 0!important;">
                                     <span id="logged_user"
                                           class=" d-lg-inline me-2 text-gray-600 small"><?php if (isset($_SESSION["UserName"])){
                                             $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
@@ -223,49 +225,49 @@ if (isset($_POST["photo-submit"])) {
                                                 class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>
                                         <?php } else { ?> </span><img
-                                                class="border rounded-circle img-profile"
-                                                src="res/assets/img/avatars/standard-image.png"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                class="dropdown-item" href="?page=LogIn"><i
-                                                    class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                                                    class="border rounded-circle img-profile"
+                                                    src="res/assets/img/avatars/standard-image.png"></a>
+                                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                                    class="dropdown-item" href="?page=LogIn"><i
+                                                        class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                                        </div>
+                                        <?php } ?>
                                     </div>
-                                    <?php } ?>
-                                </div>
-                            </li>
-                        </ul>
-                    <?php } ?>
-                </div>
-            </nav>
-            <header>
+                                </li>
+                            </ul>
+                        <?php } ?>
+                    </div>
+                </nav>
+                <header>
 
-            </header>
+                </header>
 
-            <main id="main" >
-                <?php
-                if (!isset($_GET["page"])) {
-                    include "inc/home.php";
-                } else {
-                switch ($_GET["page"]) {
+                <main id="main">
+                    <?php
+                    if (!isset($_GET["page"])) {
+                        include "inc/home.php";
+                    } else {
+                    switch ($_GET["page"]) {
                     default:
                     {
                         include "inc/home.php";
                     }
-                case 'UserForm': {
-                if (isset($_SESSION["UserName"])) {
+                    case 'UserForm': {
+                    if (isset($_SESSION["UserName"])) {
                     $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
-                if ($_SESSION["UserName"] != "admin") {
+                    if ($_SESSION["UserName"] != "admin") {
                     ?>
                     <script type="text/javascript">
                         username = "<?= $_SESSION["UserName"] ?>";
                     </script>
-                <?php
-                } else {
-                if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
-                ?>
+                    <?php
+                    } else {
+                    if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
+                    ?>
                     <script type="text/javascript">
                         selected = "<?= $_GET["selected"] ?>";
                     </script>
-                <?php
+                    <?php
                 }
 
                 }
@@ -298,8 +300,6 @@ if (isset($_POST["photo-submit"])) {
                             header("Location: index.php");
                             break;
                         }
-                break;
-                }
                 case 'UserList':
                 {
                     if ($_SESSION["UserName"] == "admin") {
@@ -341,17 +341,17 @@ if (isset($_POST["photo-submit"])) {
                     <script type="text/javascript">
                         username = "<?= $_SESSION["UserName"] ?>";
                     </script>
-                <?php
+                    <?php
 
-                }
+                    }
                     include "inc/moneyAdmin.html";
                     break;
-                }
-                }
-                }
-                ?>
-            </main>
-        </div>
+                    }
+                    }
+                    }
+                    ?>
+                </main>
+            </div>
         </div>
 
         <footer class="bg-white sticky-footer">
