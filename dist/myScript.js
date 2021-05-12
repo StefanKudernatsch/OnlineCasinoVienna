@@ -17,13 +17,13 @@ $(document).ready(function () {
             loadProfile(username);
     }
     else if(window.location.search === "?page=UserList") {
-
-        if(username !== "admin"){
-            window.location.href = "?page=home";
-        }
-        else {
+        if(username === undefined){
             getAllUser();
         }
+        else {
+            loadProfile(username);
+        }
+
     }
     else if(selected !== username && username !== "admin"){
         window.location.href = "?page=home";
