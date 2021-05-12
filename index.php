@@ -171,7 +171,8 @@ if (isset($_POST["photo-submit"])) {
         </div>
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content">
+        <div id="content bg-image" style="background-image: url('res/img/home/headerimg.png'); background-repeat: no-repeat;">
+            <div class="mask" style="background-color: rgba(0, 0, 0, 0.4);">
             <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                 <div class="container-fluid">
                     <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
@@ -222,7 +223,7 @@ if (isset($_POST["photo-submit"])) {
 
             </header>
 
-            <main id="main">
+            <main id="main" >
                 <?php
                 if (!isset($_GET["page"])) {
                     include "inc/home.php";
@@ -260,7 +261,7 @@ if (isset($_POST["photo-submit"])) {
                         }
                         case 'home':
                         {
-                            include "inc/home.php";
+                            include "inc/home.html";
                             break;
                         }
                         case 'LogIn':
@@ -285,11 +286,12 @@ if (isset($_POST["photo-submit"])) {
                 }
                 ?>
             </main>
-
         </div>
+        </div>
+
         <footer class="bg-white sticky-footer">
             <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2021</span></div>
+                <div class="text-center my-auto copyright font-monospace"><span>Copyright © Brand 2021</span></div>
             </div>
         </footer>
     </div>
