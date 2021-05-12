@@ -164,7 +164,7 @@ if (isset($_POST["photo-submit"])) {
                     </li>
                     <?php
                 } else {
-                    if($_SESSION["UserName"] = "admin"){
+                    if($_SESSION["UserName"] == "admin"){
                         ?>
                         <li class="nav-item"><a
                                     class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
@@ -199,8 +199,7 @@ if (isset($_POST["photo-submit"])) {
         </div>
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content"
-             >
+        <div id="content">
             <div>
                 <nav class="navbar navbar-light navbar-expand bg-white shadow topbar static-top">
                     <div class="container-fluid">
@@ -259,12 +258,12 @@ if (isset($_POST["photo-submit"])) {
                 <main id="main">
                     <?php
                     if (!isset($_GET["page"])) {
-                        include "inc/home.html";
+                        include "inc/login.html";
                     } else {
                         switch ($_GET["page"]) {
                             default:
                             {
-                                include "inc/home.html";
+                                include "inc/login.html";
                             }
                         case 'UserForm': {
                         if (isset($_SESSION["UserName"])) {
