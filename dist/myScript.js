@@ -11,13 +11,19 @@ $(document).ready(function () {
 
     if(window.location.search === "?page=UserForm&selected=" + selected) {
             loadProfile(selected);
-            addMoneyField();
     }
     else if(window.location.search === "?page=UserForm"){
-        loadProfile(username);
+        if(username !== undefined)
+            loadProfile(username);
     }
     else if(window.location.search === "?page=UserList") {
-        getAllUser();
+
+        if(username !== "admin"){
+            window.location.href = "?page=home";
+        }
+        else {
+            getAllUser();
+        }
     }
     else if(selected !== username && username !== "admin"){
         window.location.href = "?page=home";
@@ -338,7 +344,6 @@ function changeMoney(button) {
 }
 
 function buildMoneyAdminPage() {
-    let username = $("#logged_user").text();
     if (username === "admin" /*DEBUG --->*/|| username === "Adrian") {
         let main = document.getElementById("main");
 

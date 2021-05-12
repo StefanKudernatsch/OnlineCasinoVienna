@@ -104,10 +104,17 @@ if (isset($_POST["photo-submit"])) {
     <title>OnlineCasinoVienna</title>
 
     <!-- new -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="res/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -183,22 +190,23 @@ if (isset($_POST["photo-submit"])) {
                 <div class="container-fluid">
                     <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
                                 class="fas fa-bars"></i></button>
-                    <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin"){?>
-                    <ul class="navbar-nav flex-nowrap ms-auto">
-                        <?php if(isset($_SESSION["UserName"])){
-                        $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
-                        echo '<span style="color: green"><br>'.$DB->getMoney($tempuser->getUserID()).'&nbsp<i class="fas fa-euro-sign"></i></span>';
-                        }?>
+                    <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <?php if (isset($_SESSION["UserName"])) {
+                                $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+                                echo '<span style="color: green"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
+                            } ?>
 
-                        <div class="d-block topbar-divider"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                                       aria-expanded="false" data-bs-toggle="dropdown"
-                                                                       href="#" style="padding-left: 0!important;">
+                            <div class="d-block topbar-divider"></div>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                                           aria-expanded="false"
+                                                                           data-bs-toggle="dropdown"
+                                                                           href="#" style="padding-left: 0!important;">
                                     <span id="logged_user"
                                           class=" d-lg-inline me-2 text-gray-600 small"><?php if (isset($_SESSION["UserName"])){
                                             $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                            echo $_SESSION["UserName"] .'</span><img
+                                            echo $_SESSION["UserName"] . '</span><img
                                             class="border rounded-circle img-profile"
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
@@ -214,16 +222,16 @@ if (isset($_POST["photo-submit"])) {
                                                 class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>
                                         <?php } else { ?> </span><img
-                                            class="border rounded-circle img-profile"
-                                            src="res/assets/img/avatars/standard-image.png"></a>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                            class="dropdown-item" href="?page=LogIn"><i
-                                                class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                                                class="border rounded-circle img-profile"
+                                                src="res/assets/img/avatars/standard-image.png"></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                                class="dropdown-item" href="?page=LogIn"><i
+                                                    class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                                    </div>
+                                    <?php } ?>
                                 </div>
-                                <?php } ?>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
                     <?php } ?>
                 </div>
             </nav>
@@ -236,77 +244,85 @@ if (isset($_POST["photo-submit"])) {
                 if (!isset($_GET["page"])) {
                     include "inc/home.php";
                 } else {
-                    switch ($_GET["page"]) {
-                        default:
-                        {
-                            include "inc/home.php";
-                        }
-                        case 'UserForm':
-                        {
-                            if (isset($_SESSION["UserName"])) {
-                                $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
-                                if($_SESSION["UserName"]!= "admin"){
-                                ?>
-                                <script type="text/javascript">
-                                    username = "<?= $_SESSION["UserName"] ?>";
-                                </script>
-                                <?php
-                                } else {
-                                    if($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
-                                ?>
-                                    <script type="text/javascript">
-                                        selected = "<?= $_GET["selected"] ?>";
-                                    </script>
-                                    <?php
-                                    }
-
-                                }
-                                include "inc/profile.html";
-                            } else {
-                                include "inc/login.html";
-                            }
-
-                            break;
-                        }
-                        case 'UserList':
-                        {
-                            if ($_SESSION["UserName"] == "admin") {
-                                include "inc/table.html";
-                            } else {
-                                include "inc/profile.html";
-                            }
-
-                            break;
-                        }
-                        case 'home':
-                        {
-                            include "inc/home.php";
-                            break;
-                        }
-                        case 'LogIn':
-                        {
-                            include "inc/login.html";
-                            break;
-                        }
-                        case 'Register':
-                        {
-                            include "inc/register.html";
-                            break;
-                        }
-                        case 'logout':
-                        {
-                            setcookie("CookieName", "", time() - 3600);
-                            unset($_SESSION["UserName"]);
-                            session_destroy();
-                            header("Location: index.php");
-                            break;
-                        }
-                        case 'moneyAdmin':
-                        {
-                            include "inc/moneyAdmin.html";
-                            break;
-                        }
+                switch ($_GET["page"]) {
+                    default:
+                    {
+                        include "inc/home.php";
                     }
+                case 'UserForm': {
+                if (isset($_SESSION["UserName"])) {
+                    $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+                if ($_SESSION["UserName"] != "admin") {
+                    ?>
+                    <script type="text/javascript">
+                        username = "<?= $_SESSION["UserName"] ?>";
+                    </script>
+                <?php
+                } else {
+                if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
+                ?>
+                    <script type="text/javascript">
+                        selected = "<?= $_GET["selected"] ?>";
+                    </script>
+                <?php
+                }
+
+                }
+                include "inc/profile.html";
+                } else {
+                    include "inc/login.html";
+                }
+
+                break;
+                }
+                case 'UserList':
+                {
+                    if ($_SESSION["UserName"] == "admin") {
+                        include "inc/table.html";
+                    } else {
+                        include "inc/profile.html";
+                    }
+
+                    break;
+                }
+                case 'home':
+                {
+                    include "inc/home.php";
+                    break;
+                }
+                case 'LogIn':
+                {
+                    include "inc/login.html";
+                    break;
+                }
+                case 'Register':
+                {
+                    include "inc/register.html";
+                    break;
+                }
+                case 'logout':
+                {
+                    setcookie("CookieName", "", time() - 3600);
+                    unset($_SESSION["UserName"]);
+                    session_destroy();
+                    header("Location: index.php");
+                    break;
+                }
+                case 'moneyAdmin':
+                {
+                if (isset($_SESSION["UserName"])) {
+
+                ?>
+                    <script type="text/javascript">
+                        username = "<?= $_SESSION["UserName"] ?>";
+                    </script>
+                <?php
+
+                }
+                    include "inc/moneyAdmin.html";
+                    break;
+                }
+                }
                 }
                 ?>
             </main>
