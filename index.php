@@ -199,10 +199,10 @@ if (isset($_POST["photo-submit"])) {
         </div>
     </nav>
     <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content bg-image"
-             style="background-image: url('res/img/home/headerimg.png'); background-repeat: no-repeat;">
-            <div class="mask" style="background-color: rgba(0, 0, 0, 0.4);">
-                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+        <div id="content"
+             >
+            <div>
+                <nav class="navbar navbar-light navbar-expand bg-white shadow topbar static-top">
                     <div class="container-fluid">
                         <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
                                     class="fas fa-bars"></i></button>
