@@ -1,13 +1,121 @@
 let user = [];
 let username;
+let selected;
+
+
 $(document).ready(function () {
-    if(window.location.search === "?page=UserForm") {
-        setUserImg();
-        loadProfile();
-        
+
+    console.log(username);
+    console.log(selected);
+
+
+    if(window.location.search === "?page=UserForm&selected=" + selected) {
+            loadProfile(selected);
+            addMoneyField();
     }
-    
+    else if(window.location.search === "?page=UserForm"){
+        loadProfile(username);
+    }
+    else if(window.location.search === "?page=UserList") {
+        getAllUser();
+    }
+    else if(selected !== username && username !== "admin"){
+        window.location.href = "?page=home";
+    }
+    $("#banUserSubmit").click(function(){
+        banUser($("#user_to_ban").html())
+    });
 });
+
+
+
+function getAllUser(){
+    $.ajax
+    ({
+        type: "GET",
+        url: "./inc/serviceHandler.php",
+        data: {method: "getUserList", param: null},
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            let table_body = document.getElementById("usertable-body");
+            data.forEach(function (userobject){
+                let temp_tr = document.createElement("tr");
+                //temp_tr.className = "d-flex";
+                console.log(userobject);
+
+                let data_arr = [userobject.UserName, userobject.UserEMail, userobject.UserMoney, userobject.UserActive, userobject.UserBanned];
+                for (let i = 0; i < data_arr.length; i++) {
+                    let temp_td = document.createElement("td");
+                    temp_td.style.borderWidth = "0";
+                    let temp_textnode = document.createTextNode(data_arr[i]);
+                    switch (i) {
+                        case 0: {
+                            let temp_img = document.createElement("img");
+                            temp_img.src = 'data:image/png;base64,'+userobject.UserImage;
+                            temp_img.className = "rounded-circle me-2";
+                            temp_img.height = "30";
+                            temp_img.width = "30";
+                            temp_td.className = "col-4";
+                            temp_td.onclick = function() {
+                                window.location.href = "?page=UserForm&selected=" + data_arr[0];
+                            };
+                            temp_td.append(temp_img);
+                            temp_td.append(temp_textnode);
+                            break;
+                        }
+                        case 1: {
+                            temp_td.className = "col-4";
+                            temp_td.append(temp_textnode);
+                            break;
+                        }
+                        case 2: {
+                            temp_td.className = "col-2";
+                            temp_td.append(temp_textnode);
+                            break;
+                        }
+                        case 3: {
+
+                        }
+                        case 4: {
+                            temp_td.className = "col-1";
+                            let temp_i = document.createElement("i");
+                            if(data_arr[i] === 1){
+                                temp_i.className = "fas fa-check-circle";
+                                temp_i.style.color = "green";
+                            }
+                            else if(data_arr[i] === 0)
+                            {
+                                temp_i.className = "fas fa-times-circle";
+                                temp_i.style.color = "red";
+                            }
+                            if(i === 4){
+                                let temp_a = document.createElement("a");
+                                temp_a.href = "#";
+                                temp_a.onclick = function() {
+                                    $("#user_to_ban").html(data_arr[0]);
+                                    $('#banModal').modal('show');
+                                };
+                                temp_a.append(temp_i);
+                                temp_td.append(temp_a);
+                            }
+                            else {
+                                temp_td.append(temp_i);
+                            }
+                            break;
+                        }
+                    }
+                    temp_tr.append(temp_td);
+                }
+                table_body.append(temp_tr);
+            });
+        },
+        error: function (request, status, error) {
+            alert("Failed to get Userdata");
+        }
+    });
+}
+
 
 function banUser(ban_name){
     let data = {UserToBan: ban_name};
@@ -27,79 +135,6 @@ function banUser(ban_name){
 }
 
 
-function getAllUser(){
-    $.ajax
-    ({
-        type: "GET",
-        url: "./inc/serviceHandler.php",
-        data: {method: "getUserList", param: null},
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-            let table_body = document.getElementById("usertable-body");
-            data.forEach(function (userobject){
-                let temp_tr = document.createElement("tr");
-
-                console.log(userobject);
-
-                let data_arr = [userobject.UserName, userobject.UserEMail, userobject.UserMoney, userobject.UserActive, userobject.UserBanned];
-                for (let i = 0; i < data_arr.length; i++) {
-                    let temp_td = document.createElement("td");
-                    if(i === 0){
-                        let temp_img = document.createElement("img");
-                        temp_img.src = 'data:image/png;base64,'+userobject.UserImage;
-                        temp_img.className = "rounded-circle me-2";
-                        temp_img.height = "30";
-                        temp_img.width = "30";
-                        temp_td.append(temp_img);
-                    }
-                    if(i > 2){
-
-                        let temp_i = document.createElement("i");
-                        if(data_arr[i] === 1){
-                            temp_i.className = "fas fa-check-circle";
-                            temp_i.style.color = "green";
-                        }
-                        else if(data_arr[i] === 0)
-                        {
-                            temp_i.className = "fas fa-times-circle";
-                            temp_i.style.color = "red";
-                        }
-                        if(i === 4){
-                            let temp_a = document.createElement("a");
-                            temp_a.href = "#";
-                            temp_a.onclick = function() {
-                                $("#user_to_ban").html(data_arr[0]);
-                                $('#banModal').modal('show');
-                            };
-                            temp_a.append(temp_i);
-                            temp_td.append(temp_a);
-                        }
-                        else {
-                            temp_td.append(temp_i);
-                        }
-
-
-
-                    }
-                    else {
-                        let temp_textnode = document.createTextNode(data_arr[i]);
-                        temp_td.append(temp_textnode);
-                    }
-
-
-
-                    temp_tr.append(temp_td);
-                }
-                table_body.append(temp_tr);
-            });
-        },
-        error: function (request, status, error) {
-            alert("Failed to get Userdata");
-        }
-    });
-}
-
 function loadProfile(currentUser) {
 
     console.log(currentUser);
@@ -118,7 +153,7 @@ function loadProfile(currentUser) {
             });
 
             for (let j = 1; j < 11; j++) {
-                if(j != 9) {
+                if(j !== 9) {
                     console.log("Userarray["+j+"]: "+user[j]);
                     document.getElementById("user["+j+"]").value = user[j];
                 }

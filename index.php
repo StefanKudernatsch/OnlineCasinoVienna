@@ -176,6 +176,7 @@ if (isset($_POST["photo-submit"])) {
                 <div class="container-fluid">
                     <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
                                 class="fas fa-bars"></i></button>
+                    <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin"){?>
                     <ul class="navbar-nav flex-nowrap ms-auto">
                         <?php if(isset($_SESSION["UserName"])){
                         $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
@@ -216,6 +217,7 @@ if (isset($_POST["photo-submit"])) {
                             </div>
                         </li>
                     </ul>
+                    <?php } ?>
                 </div>
             </nav>
             <header>
@@ -236,11 +238,22 @@ if (isset($_POST["photo-submit"])) {
                         {
                             if (isset($_SESSION["UserName"])) {
                                 $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+                                if($_SESSION["UserName"]!= "admin"){
                                 ?>
                                 <script type="text/javascript">
-                                    username = "<?=$_SESSION["UserName"]?>";
+                                    username = "<?= $_SESSION["UserName"] ?>";
                                 </script>
                                 <?php
+                                } else {
+                                    if($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
+                                ?>
+                                    <script type="text/javascript">
+                                        selected = "<?= $_GET["selected"] ?>";
+                                    </script>
+                                    <?php
+                                    }
+
+                                }
                                 include "inc/profile.html";
                             } else {
                                 include "inc/login.html";
