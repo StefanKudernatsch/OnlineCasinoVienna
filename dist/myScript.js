@@ -11,10 +11,10 @@ $(document).ready(function () {
 
     if(window.location.search === "?page=UserForm&selected=" + selected) {
             loadProfile(selected);
-            addMoneyField();
     }
     else if(window.location.search === "?page=UserForm"){
-        loadProfile(username);
+        if(username !== undefined)
+            loadProfile(username);
     }
     else if(window.location.search === "?page=UserList") {
         getAllUser();
