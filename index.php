@@ -132,7 +132,7 @@ if (isset($_POST["photo-submit"])) {
 <div id="wrapper">
     <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
         <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a
-                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
                 <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
                 <div class="sidebar-brand-text mx-3"><span>OCV</span></div>
             </a>
@@ -164,14 +164,28 @@ if (isset($_POST["photo-submit"])) {
                     </li>
                     <?php
                 } else {
-                    ?>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=UserForm">
-                            <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
-                            <div class="sidebar-brand-text" style=""><span>Profile</span></div>
-                        </a>
-                    </li>
+                    if($_SESSION["UserName"] = "admin"){
+                        ?>
+                        <li class="nav-item"><a
+                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                    href="?page=UserList">
+                                <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
+                                <div class="sidebar-brand-text" style=""><span>Users</span></div>
+                            </a>
+                        </li>
+
+                            <?php
+                    } else {
+                    ?><li class="nav-item"><a
+                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                    href="?page=UserForm">
+                                <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
+                                <div class="sidebar-brand-text" style=""><span>Profile</span></div>
+                            </a>
+                        </li>
+
+                    <?php
+                    } ?>
                     <li class="nav-item"><a
                                 class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
                                 href="?page=logout">
@@ -179,7 +193,7 @@ if (isset($_POST["photo-submit"])) {
                             <div class="sidebar-brand-text"><span>Logout</span></div>
                         </a>
                     </li>
-                    <?php
+                <?php
                 } ?>
             </ul>
         </div>
@@ -245,36 +259,48 @@ if (isset($_POST["photo-submit"])) {
                 <main id="main">
                     <?php
                     if (!isset($_GET["page"])) {
-                        include "inc/home.php";
+                        include "inc/home.html";
                     } else {
-                    switch ($_GET["page"]) {
-                    default:
-                    {
-                        include "inc/home.php";
-                    }
-                    case 'UserForm': {
-                    if (isset($_SESSION["UserName"])) {
-                    $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
-                    if ($_SESSION["UserName"] != "admin") {
-                    ?>
-                    <script type="text/javascript">
-                        username = "<?= $_SESSION["UserName"] ?>";
-                    </script>
-                    <?php
-                    } else {
-                    if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
-                    ?>
-                    <script type="text/javascript">
-                        selected = "<?= $_GET["selected"] ?>";
-                    </script>
-                    <?php
-                }
+                        switch ($_GET["page"]) {
+                            default:
+                            {
+                                include "inc/home.html";
+                            }
+                        case 'UserForm': {
+                        if (isset($_SESSION["UserName"])) {
+                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+                        if ($_SESSION["UserName"] != "admin") {
+                            ?>
+                            <script type="text/javascript">
+                                username = "<?= $_SESSION["UserName"] ?>";
+                            </script>
+                        <?php
+                        } else {
+                        if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
+                        ?>
+                            <script type="text/javascript">
+                                selected = "<?= $_GET["selected"] ?>";
+                            </script>
+                        <?php
+                        }
 
-                }
-                include "inc/profile.html";
-                } else {
-                    include "inc/login.html";
-                }
+                        }
+                        include "inc/profile.html";
+                        } else {
+                            include "inc/login.html";
+                        }
+                        break;
+                        }
+
+
+                        case 'UserList':
+                        {
+                            if ($_SESSION["UserName"] == "admin") {
+                                include "inc/table.html";
+                            } else {
+                                include "inc/profile.html";
+                            }
+
                             break;
                         }
                         case 'home':
@@ -300,54 +326,21 @@ if (isset($_POST["photo-submit"])) {
                             header("Location: index.php");
                             break;
                         }
-                case 'UserList':
-                {
-                    if ($_SESSION["UserName"] == "admin") {
-                        include "inc/table.html";
-                    } else {
-                        include "inc/profile.html";
-                    }
+                        case 'moneyAdmin':
+                        {
+                        if (isset($_SESSION["UserName"])) {
 
-                    break;
-                }
-                case 'home':
-                {
-                    include "inc/home.php";
-                    break;
-                }
-                case 'LogIn':
-                {
-                    include "inc/login.html";
-                    break;
-                }
-                case 'Register':
-                {
-                    include "inc/register.html";
-                    break;
-                }
-                case 'logout':
-                {
-                    setcookie("CookieName", "", time() - 3600);
-                    unset($_SESSION["UserName"]);
-                    session_destroy();
-                    header("Location: index.php");
-                    break;
-                }
-                case 'moneyAdmin':
-                {
-                if (isset($_SESSION["UserName"])) {
+                        ?>
+                            <script type="text/javascript">
+                                username = "<?= $_SESSION["UserName"] ?>";
+                            </script>
+                            <?php
 
-                ?>
-                    <script type="text/javascript">
-                        username = "<?= $_SESSION["UserName"] ?>";
-                    </script>
-                    <?php
-
-                    }
-                    include "inc/moneyAdmin.html";
-                    break;
-                    }
-                    }
+                        }
+                            include "inc/moneyAdmin.html";
+                            break;
+                        }
+                        }
                     }
                     ?>
                 </main>
