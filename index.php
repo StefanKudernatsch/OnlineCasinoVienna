@@ -122,6 +122,7 @@ if (isset($_POST["photo-submit"])) {
     <link rel="stylesheet" href="res/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="res/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome5-overrides.min.css">
+        <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script src="dist/myScript.js"></script>
@@ -260,7 +261,7 @@ if (isset($_POST["photo-submit"])) {
                 <main id="main">
                     <?php
                     if (!isset($_GET["page"])) {
-                        include "inc/login.html";
+                        include "inc/startPage.html";
                     } else {
                         switch ($_GET["page"]) {
                             default:
