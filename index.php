@@ -130,6 +130,61 @@ if (isset($_POST["photo-submit"])) {
 
 </head>
 <body id="page-top">
+<nav class="navbar navbar-dark navbar-expand shadow topbar static-top" style="background-color: #212529"  id="navbar">
+    <div class="container-fluid">
+        <a
+                class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>Online Casino Vienna</span></div>
+        </a>
+        <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
+                    class="fas fa-bars" style="color: white"></i></button>
+        <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
+            <ul class="navbar-nav flex-nowrap ms-auto">
+                <?php if (isset($_SESSION["UserName"])) {
+                    $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+                    echo '<span style="color: #ffffff"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
+                } ?>
+
+                <div class="d-block topbar-divider"></div>
+                <li class="nav-item dropdown no-arrow">
+                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                               aria-expanded="false"
+                                                               data-bs-toggle="dropdown"
+                                                               href="#"
+                                                               style="padding-left: 0!important;">
+                                    <span id="logged_user"
+                                          class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])){
+                                            $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
+                                            echo $_SESSION["UserName"] . '</span><img
+                                            class="border rounded-circle img-profile" style="background-color: white"
+                                            src="data:image/png;base64,' . base64_encode($image) . '"></a>';
+
+                                            ?>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                                        class="dropdown-item" href="?page=UserForm"><i
+                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
+                                                        class="dropdown-item" href="#"><i
+                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                        log</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="?page=logout"><i
+                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                </div>
+                                        <?php } else { ?> </span><img
+                                    class="border rounded-circle img-profile"
+                                    src="res/assets/img/avatars/standard-image.png"></a>
+                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                    class="dropdown-item" href="?page=LogIn"><i
+                                        class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                        </div>
+                        <?php } ?>
+                    </div>
+                </li>
+            </ul>
+        <?php } ?>
+    </div>
+</nav>
 <div id="wrapper">
     <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
         <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a
@@ -204,64 +259,18 @@ if (isset($_POST["photo-submit"])) {
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
             <div>
-                <nav class="navbar navbar-light navbar-expand bg-white shadow topbar static-top">
-                    <div class="container-fluid">
-                        <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
-                                    class="fas fa-bars"></i></button>
-                        <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
-                            <ul class="navbar-nav flex-nowrap ms-auto">
-                                <?php if (isset($_SESSION["UserName"])) {
-                                    $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
-                                    echo '<span style="color: green"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
-                                } ?>
-
-                                <div class="d-block topbar-divider"></div>
-                                <li class="nav-item dropdown no-arrow">
-                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                                               aria-expanded="false"
-                                                                               data-bs-toggle="dropdown"
-                                                                               href="#"
-                                                                               style="padding-left: 0!important;">
-                                    <span id="logged_user"
-                                          class=" d-lg-inline me-2 text-gray-600 small"><?php if (isset($_SESSION["UserName"])){
-                                            $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                            echo $_SESSION["UserName"] . '</span><img
-                                            class="border rounded-circle img-profile"
-                                            src="data:image/png;base64,' . base64_encode($image) . '"></a>';
-
-                                            ?>
-                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                        class="dropdown-item" href="?page=UserForm"><i
-                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                                        class="dropdown-item" href="#"><i
-                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                        log</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="?page=logout"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                </div>
-                                        <?php } else { ?> </span><img
-                                                    class="border rounded-circle img-profile"
-                                                    src="res/assets/img/avatars/standard-image.png"></a>
-                                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                    class="dropdown-item" href="?page=LogIn"><i
-                                                        class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
-                                        </div>
-                                        <?php } ?>
-                                    </div>
-                                </li>
-                            </ul>
-                        <?php } ?>
-                    </div>
-                </nav>
-                <header>
-
-                </header>
 
                 <main id="main">
                     <?php
                     if (!isset($_GET["page"])) {
-                        include "inc/startPage.html";
+
+                        if(isset($_SESSION["UserName"])){
+                            include "inc/home.html";
+                        }
+                        else{
+                            include "inc/startPage.html";
+                        }
+
                     } else {
                         switch ($_GET["page"]) {
                             default:
@@ -293,8 +302,6 @@ if (isset($_POST["photo-submit"])) {
                         }
                         break;
                         }
-
-
                         case 'UserList':
                         {
                             if ($_SESSION["UserName"] == "admin") {
@@ -311,7 +318,7 @@ if (isset($_POST["photo-submit"])) {
                                 include "inc/home.html";
                             }
                             else {
-                                include "inc/login.html";
+                                include "inc/startPage.html";
                             }
 
                             break;
@@ -348,18 +355,32 @@ if (isset($_POST["photo-submit"])) {
                             include "inc/moneyAdmin.html";
                             break;
                         }
+                        case 'BlackJack':
+                        {
+                            if (isset($_SESSION["UserName"])) {
+
+                            ?>
+                            <script type="text/javascript">
+                                username = "<?= $_SESSION["UserName"] ?>";
+                            </script>
+                            <?php
+                            include "inc/blackjack.html";
+                        }else{
+                                include "inc/startPage.html";
+                        }
+                        }
                         }
                     }
                     ?>
                 </main>
             </div>
         </div>
-
-        <footer class="bg-white sticky-footer">
+<!--
+        <footer class="sticky-footer" style="background-color: #a6a6a6 !important; border-left: 1px solid #868686; height: 20px!important; padding: 25px;">
             <div class="container my-auto">
                 <div class="text-center my-auto copyright font-monospace"><span>Copyright © Brand 2021</span></div>
             </div>
-        </footer>
+        </footer> -->
     </div>
     <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 </div>

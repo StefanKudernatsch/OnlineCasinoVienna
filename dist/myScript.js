@@ -1,10 +1,15 @@
 let user = [];
 let username;
 let selected;
+let cardDeck = [];
 
+function resizeMain(){
+    document.getElementById("main").style.height = "0px";
+    document.getElementById("main").style.height = document.getElementById("content").offsetHeight  + "px";
+}
 
 $(document).ready(function () {
-
+    console.log(window.innerHeight)
     console.log(username);
     console.log(selected);
 
