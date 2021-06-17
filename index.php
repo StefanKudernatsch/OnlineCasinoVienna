@@ -24,7 +24,6 @@ if (isset($_POST["login-submit"])) {
     } else {
         echo "<script language='JavaScript'>alert('Account deactivated')</script>";
     }
-
 } else if (!isset($_SESSION["UserName"]) && isset($_COOKIE["CookieName"])) {
     $_SESSION["UserName"] = $_COOKIE["CookieName"];
 }
@@ -98,299 +97,254 @@ if (isset($_POST["photo-submit"])) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OnlineCasinoVienna</title>
 
     <!-- new -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="res/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="res/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome5-overrides.min.css">
-        <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script src="dist/myScript.js"></script>
     <link rel="stylesheet" href="res/css/style.css">
 
 </head>
-<body id="page-top">
-<nav class="navbar navbar-dark navbar-expand shadow topbar static-top" style="background-color: #212529"  id="navbar">
-    <div class="container-fluid">
-        <a
-                class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
-            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
-            <div class="sidebar-brand-text mx-3"><span>Online Casino Vienna</span></div>
-        </a>
-        <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
-                    class="fas fa-bars" style="color: white"></i></button>
-        <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
-            <ul class="navbar-nav flex-nowrap ms-auto">
-                <?php if (isset($_SESSION["UserName"])) {
-                    $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
-                    echo '<span style="color: #ffffff"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
-                } ?>
 
-                <div class="d-block topbar-divider"></div>
-                <li class="nav-item dropdown no-arrow">
-                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                               aria-expanded="false"
-                                                               data-bs-toggle="dropdown"
-                                                               href="#"
-                                                               style="padding-left: 0!important;">
-                                    <span id="logged_user"
-                                          class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])){
-                                            $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                            echo $_SESSION["UserName"] . '</span><img
+<body id="page-top">
+    <nav class="navbar navbar-dark navbar-expand shadow topbar static-top" style="background-color: #212529" id="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
+                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
+                <div class="sidebar-brand-text mx-3"><span class="d-none d-md-block">Online Casino Vienna</span></div>
+            </a>
+            <button class="btn btn-link rounded-circle me-3 ml-auto" id="sidebarToggleTop" type="button"><i class="fas fa-bars" style="color: white"></i></button>
+            <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
+                <ul class="navbar-nav flex-nowrap">
+                    <?php if (isset($_SESSION["UserName"])) {
+                        $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+                        echo '<span style="color: #ffffff"><br>' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span>';
+                    } ?>
+
+                    <div class="d-block topbar-divider"></div>
+                    <li class="nav-item dropdown no-arrow">
+                        <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="padding-left: 0!important;">
+                                <span id="logged_user" class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])) {
+                                                                                                                                $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
+                                                                                                                                echo $_SESSION["UserName"] . '</span><img
                                             class="border rounded-circle img-profile" style="background-color: white"
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
-                                            ?>
-                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                        class="dropdown-item" href="?page=UserForm"><i
-                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                                        class="dropdown-item" href="#"><i
-                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                        log</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="?page=logout"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                </div>
-                                        <?php } else { ?> </span><img
-                                    class="border rounded-circle img-profile"
-                                    src="res/assets/img/avatars/standard-image.png"></a>
-                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                    class="dropdown-item" href="?page=LogIn"><i
-                                        class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
-                        </div>
+                                                                                                                            ?>
+                                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                                log</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="?page=logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                        </div>
+                                    <?php } else { ?>
+                                </span><img class="border rounded-circle img-profile" src="res/assets/img/avatars/standard-image.png"></a>
+                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                            </div>
                         <?php } ?>
-                    </div>
-                </li>
-            </ul>
-        <?php } ?>
-    </div>
-</nav>
-<div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
-        <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a
-                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
-                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
-                <div class="sidebar-brand-text mx-3"><span>OCV</span></div>
-            </a>
-            <hr class="sidebar-divider my-0">
-            <ul class="navbar-nav text-light" id="accordionSidebar">
-
-                <?php
-                if (!isset($_SESSION["UserName"])) {
-                    ?>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                                href="?page=LogIn">
-                            <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
-                            <div class="sidebar-brand-text"><span>Login</span></div>
-                        </a>
+                        </div>
                     </li>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                                href="?page=Register">
-                            <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
-                            <div class="sidebar-brand-text"><span>Register</span></div>
-                        </a>
-                    </li>
-                    <?php
-                } else { ?>
-                <li class="nav-item"><a
-                            class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0"
-                            href="?page=home">
-                        <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
-                        <div class="sidebar-brand-text"><span>Home</span></div>
-                    </a>
-                </li>
-                   <?php if($_SESSION["UserName"] == "admin"){
-                        ?>
-                        <li class="nav-item"><a
-                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                    href="?page=UserList">
-                                <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
-                                <div class="sidebar-brand-text" style=""><span>Users</span></div>
-                            </a>
-                        </li>
-
-                            <?php
-                    } else {
-                    ?>
-                        <li class="nav-item"><a
-                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                    href="?page=UserForm">
-                                <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
-                                <div class="sidebar-brand-text" style=""><span>Profile</span></div>
-                            </a>
-                        </li>
-
-                    <?php
-                    } ?>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=logout">
-                            <div class="sidebar-brand-icon"><i class="fas fa-sign-out-alt"></i></div>
-                            <div class="sidebar-brand-text"><span>Logout</span></div>
-                        </a>
-                    </li>
-                <?php
-                } ?>
-            </ul>
+                </ul>
+            <?php } ?>
         </div>
     </nav>
-    <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content">
-            <div>
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
+            <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>OCV</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
 
-                <main id="main">
                     <?php
-                    if (!isset($_GET["page"])) {
-
-                        if(isset($_SESSION["UserName"])){
-                            include "inc/home.html";
-                        }
-                        else{
-                            include "inc/startPage.html";
-                        }
-
-                    } else {
-                        switch ($_GET["page"]) {
-                            default:
-                            {
-                                include "inc/login.html";
-                            }
-                        case 'UserForm': {
-                        if (isset($_SESSION["UserName"])) {
-                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
-                        if ($_SESSION["UserName"] != "admin") {
-                            ?>
-                            <script type="text/javascript">
-                                username = "<?= $_SESSION["UserName"] ?>";
-                            </script>
-                        <?php
-                        } else {
-                        if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]){
-                        ?>
-                            <script type="text/javascript">
-                                selected = "<?= $_GET["selected"] ?>";
-                            </script>
-                        <?php
-                        }
-
-                        }
-                        include "inc/profile.html";
-                        } else {
-                            include "inc/login.html";
-                        }
-                        break;
-                        }
-                        case 'UserList':
-                        {
-                            if ($_SESSION["UserName"] == "admin") {
-                                include "inc/table.html";
-                            } else {
-                                include "inc/profile.html";
-                            }
-
-                            break;
-                        }
-                        case 'home':
-                        {
-                            if(isset($_SESSION["UserName"])){
-                                include "inc/home.html";
-                            }
-                            else {
-                                include "inc/startPage.html";
-                            }
-
-                            break;
-                        }
-                        case 'LogIn':
-                        {
-                            include "inc/login.html";
-                            break;
-                        }
-                        case 'Register':
-                        {
-                            include "inc/register.html";
-                            break;
-                        }
-                        case 'logout':
-                        {
-                            setcookie("CookieName", "", time() - 3600);
-                            unset($_SESSION["UserName"]);
-                            session_destroy();
-                            header("Location: index.php");
-                            break;
-                        }
-                        case 'moneyAdmin':
-                        {
-                        if (isset($_SESSION["UserName"])) {
-
-                        ?>
-                            <script type="text/javascript">
-                                username = "<?= $_SESSION["UserName"] ?>";
-                            </script>
-                            <?php
-
-                        }
-                            include "inc/moneyAdmin.html";
-                            break;
-                        }
-                        case 'BlackJack':
-                        {
-                            if (isset($_SESSION["UserName"])) {
-
-                            ?>
-                            <script type="text/javascript">
-                                username = "<?= $_SESSION["UserName"] ?>";
-                            </script>
-                            <?php
-                            include "inc/blackjack.html";
-                        }else{
-                                include "inc/startPage.html";
-                        }
-                        }
-                        }
-                    }
+                    if (!isset($_SESSION["UserName"])) {
                     ?>
-                </main>
+                        <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=LogIn">
+                                <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
+                                <div class="sidebar-brand-text"><span>Login</span></div>
+                            </a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=Register">
+                                <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
+                                <div class="sidebar-brand-text"><span>Register</span></div>
+                            </a>
+                        </li>
+                    <?php
+                    } else { ?>
+                        <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
+                                <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
+                                <div class="sidebar-brand-text"><span>Home</span></div>
+                            </a>
+                        </li>
+                        <?php if ($_SESSION["UserName"] == "admin") {
+                        ?>
+                            <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserList">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
+                                    <div class="sidebar-brand-text" style=""><span>Users</span></div>
+                                </a>
+                            </li>
+
+                        <?php
+                        } else {
+                        ?>
+                            <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserForm">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
+                                    <div class="sidebar-brand-text" style=""><span>Profile</span></div>
+                                </a>
+                            </li>
+
+                        <?php
+                        } ?>
+                        <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=logout">
+                                <div class="sidebar-brand-icon"><i class="fas fa-sign-out-alt"></i></div>
+                                <div class="sidebar-brand-text"><span>Logout</span></div>
+                            </a>
+                        </li>
+                    <?php
+                    } ?>
+                </ul>
             </div>
-        </div>
-<!--
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div>
+
+                    <main id="main">
+                        <?php
+                        if (!isset($_GET["page"])) {
+
+                            if (isset($_SESSION["UserName"])) {
+                                include "inc/home.html";
+                            } else {
+                                include "inc/startPage.html";
+                            }
+                        } else {
+                            switch ($_GET["page"]) {
+                                default: {
+                                        include "inc/login.html";
+                                    }
+                                case 'UserForm': {
+                                        if (isset($_SESSION["UserName"])) {
+                                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+                                            if ($_SESSION["UserName"] != "admin") {
+                        ?>
+                                                <script type="text/javascript">
+                                                    username = "<?= $_SESSION["UserName"] ?>";
+                                                </script>
+                                                <?php
+                                            } else {
+                                                if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]) {
+                                                ?>
+                                                    <script type="text/javascript">
+                                                        selected = "<?= $_GET["selected"] ?>";
+                                                    </script>
+                                            <?php
+                                                }
+                                            }
+                                            include "inc/profile.html";
+                                        } else {
+                                            include "inc/login.html";
+                                        }
+                                        break;
+                                    }
+                                case 'UserList': {
+                                        if ($_SESSION["UserName"] == "admin") {
+                                            include "inc/table.html";
+                                        } else {
+                                            include "inc/profile.html";
+                                        }
+
+                                        break;
+                                    }
+                                case 'home': {
+                                        if (isset($_SESSION["UserName"])) {
+                                            include "inc/home.html";
+                                        } else {
+                                            include "inc/startPage.html";
+                                        }
+
+                                        break;
+                                    }
+                                case 'LogIn': {
+                                        include "inc/login.html";
+                                        break;
+                                    }
+                                case 'Register': {
+                                        include "inc/register.html";
+                                        break;
+                                    }
+                                case 'logout': {
+                                        setcookie("CookieName", "", time() - 3600);
+                                        unset($_SESSION["UserName"]);
+                                        session_destroy();
+                                        header("Location: index.php");
+                                        break;
+                                    }
+                                case 'moneyAdmin': {
+                                        if (isset($_SESSION["UserName"])) {
+
+                                            ?>
+                                            <script type="text/javascript">
+                                                username = "<?= $_SESSION["UserName"] ?>";
+                                            </script>
+                                        <?php
+
+                                        }
+                                        include "inc/moneyAdmin.html";
+                                        break;
+                                    }
+                                case 'BlackJack': {
+                                        if (isset($_SESSION["UserName"])) {
+
+                                        ?>
+                                            <script type="text/javascript">
+                                                username = "<?= $_SESSION["UserName"] ?>";
+                                            </script>
+                        <?php
+                                            include "inc/blackjack.html";
+                                        } else {
+                                            include "inc/startPage.html";
+                                        }
+                                    }
+                            }
+                        }
+                        ?>
+                    </main>
+                </div>
+            </div>
+            <!--
         <footer class="sticky-footer" style="background-color: #a6a6a6 !important; border-left: 1px solid #868686; height: 20px!important; padding: 25px;">
             <div class="container my-auto">
                 <div class="text-center my-auto copyright font-monospace"><span>Copyright © Brand 2021</span></div>
             </div>
         </footer> -->
+        </div>
+        <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="res/assets/js/jquery.min.js"></script>
-<script src="res/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="res/assets/js/chart.min.js"></script>
-<script src="res/assets/js/bs-init.js"></script>
-<!--<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
-<script src="res/assets/js/theme.js"></script>
-<script src="dist/myScript.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="res/assets/js/jquery.min.js"></script>
+    <script src="res/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="res/assets/js/chart.min.js"></script>
+    <script src="res/assets/js/bs-init.js"></script>
+    <!--<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
+    <script src="res/assets/js/theme.js"></script>
+    <script src="dist/myScript.js"></script>
 </body>
+
 </html>
