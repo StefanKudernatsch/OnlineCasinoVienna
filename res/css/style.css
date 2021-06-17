@@ -24,12 +24,10 @@
     padding: 10px;
 }
 
-
-
-
-
 .nav-item .sidebar-brand-text {
     font-size: 14px !important;
     font-weight: normal !important;
     text-transform: none !important;
 }
+
+.topbar-icon{font-size: 1.5rem;}
