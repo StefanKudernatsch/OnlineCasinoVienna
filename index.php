@@ -139,25 +139,72 @@ if (isset($_POST["photo-submit"])) {
 
                     <div class="d-block topbar-divider"></div>
                     <li class="nav-item dropdown no-arrow">
-                        <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="padding-left: 0!important;">
-                                <span id="logged_user" class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])) {
-                                                                                                                                $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                                                                                                                echo $_SESSION["UserName"] . '</span><img
+                       
+                        <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
+                                                                   aria-expanded="false"
+                                                                   data-bs-toggle="dropdown"
+                                                                   href="#"
+                                                                   style="padding-left: 0!important;">
+                                    <span id="logged_user"
+                                          class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])){
+                                            $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
+                                            echo $_SESSION["UserName"] . '</span><img
                                             class="border rounded-circle img-profile" style="background-color: white"
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
-                                                                                                                            ?>
-                                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                                log</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="?page=logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                        </div>
-                                    <?php } else { ?>
-                                </span><img class="border rounded-circle img-profile" src="res/assets/img/avatars/standard-image.png"></a>
-                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                                            ?>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                                        class="dropdown-item" href="?page=UserForm"><i
+                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
+                                                        class="dropdown-item" href="#"><i
+                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                        log</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="?page=logout"><i
+                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                </div>
+                                        <?php } else { ?> </span><img
+                                        class="border rounded-circle img-profile"
+                                        src="res/assets/img/avatars/standard-image.png"></a>
+                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
+                                        class="dropdown-item" href="?page=LogIn"><i
+                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
                             </div>
-                        <?php } ?>
+                            <?php } ?>
                         </div>
+                    </li>
+                </ul>
+            <?php } ?>
+        </div>
+    </nav>
+</header>
+
+<div id="wrapper">
+    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
+        <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a
+                    class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
+                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
+                <div class="sidebar-brand-text mx-3"><span>OCV</span></div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
+
+                <?php
+                if (!isset($_SESSION["UserName"])) {
+                    ?>
+                    <li class="nav-item"><a
+                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                href="?page=LogIn">
+                            <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
+                            <div class="sidebar-brand-text"><span>Login</span></div>
+                        </a>
+                    </li>
+                    <li class="nav-item"><a
+                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                href="?page=Register">
+                            <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
+                            <div class="sidebar-brand-text"><span>Register</span></div>
+                        </a>
                     </li>
                 </ul>
             <?php } ?>

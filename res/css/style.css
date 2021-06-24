@@ -23,6 +23,7 @@
     text-transform: none !important;
 }
 
+
 /* Home-Seite */
 
 .bg-image {
@@ -98,3 +99,5 @@
   opacity:1!important;
 }
 /* Home-Seite */
+.topbar-icon{font-size: 1.5rem;}
+
