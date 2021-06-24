@@ -4,17 +4,241 @@
 
 
 /* UserForm */
+#wrapper {padding-top: 70px !important;}
 
-.moneyForm{
-    height: 500px;
+.deck {
+    box-shadow: inset 0px 0px 0px 30px #3d2e09;
+    background-image:
+            radial-gradient(
+                    70% 100vh at center,
+                    green,
+                    #002b08
+            );;
+}
+
+#page-top {margin-left: 14rem;}
+
+#page-top.sidebar-toggled {margin-left: 0!important;}
+
+#deck {
+    height: 160px;
+    width: 105px;
+    margin-left: 5px;
+    background-size: cover;
+    background-image: url("../img/cards/current/red_back.png");
+}
+
+#playerhand {
+    height: 30%;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dealerhand {
+    margin-bottom: 0;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#middlepart {
+    width: 100%;
+    height: calc(40% - 48px);
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#middlewrapper {
+   width: calc(100% - 105px);
+    display: flex;
+    justify-content: center
+}
+
+#middlehand {
+    height: 160px;
+    width: calc(5 * 115px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#middlehand .playercard {float: right;}
+
+#controls {
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+}
+
+#controls .btn-lg {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.playercard {
+    height: 160px;
+    width: 105px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.short-text { display: none; }
+
+#bottombar {
+    display: none;
+    padding-top: 12px!important;
+}
+
+#bottombar .nav-link {
+    height: 3rem !important;
+    justify-content: center;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+#sidebar {
+    position: fixed;
+    margin-top: 70px;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.main {padding: 30px;}
+
+
+@media (max-width: 1400px) {
+    #deck {
+        height: 120px;
+        width: 79px;
+    }
+
+    .playercard {
+        height: 120px;
+        width: 79px;
+    }
+
+    .deck {box-shadow: inset 0px 0px 0px 20px #3d2e09;}
+
+    #controls .btn-lg {
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        border-radius: .35rem;
+    }
+
+    .main {padding: 20px;}
+
+    #middlepart {height: calc(40% - 38px);}
+
+    #sidebar {
+        width: 4rem !important;
+        overflow: hidden !important;
+    }
+
+    #sidebar .sidebar-brand-text {display: none !important;}
+
+    #sidebarToggleTop {display: none;}
+
+    #middlehand {
+        height: 120px;
+        width: calc(5 * 89px);
+    }
+
+    #middlewrapper {width: calc(100% - 79px);}
+
+    #page-top {margin-left: 4rem;}
+}
+
+
+@media (max-width: 767px) {
+    #deck {
+        height: 80px;
+        width: 53px;
+        margin-left: 0;
+    }
+
+    .playercard {
+        height: 80px;
+        width: 53px;
+    }
+
+    .container-fluid {font-size: 12px;}
+
+    .short-text { display: inline-block; }
+
+    .full-text { display: none; }
+
+    #sidebar { display: none; }
+
+    #bottombar {display: block;}
+
+    #sidebarToggleTop {display: none;}
+
+    #wrapper {min-height: calc(100vh - 70px);}
+
+    #controls .btn-lg{
+        padding: .25rem .5rem;
+        font-size: 0.875rem;
+        border-radius: .2rem;
+    }
+
+    .deck {box-shadow: inset 0px 0px 0px 15px #3d2e09;}
+
+    .main {padding: 15px;}
+
+    #middlepart {height: calc(40% - 31px);}
+
+    #middlehand {
+        height: 80px;
+        width: calc(5 * 57px);
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    #middlehand .playercard {
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    #middlewrapper {width: calc(100% - 53px);}
+
+    #wrapper {margin-bottom: 70px;}
+
+    #page-top {margin-left: 0;}
+}
+
+
+.active .page-link {background-color: #2e2f37 !important;}
+
+
+.moneyForm {height: 500px;
     /* background-image: radial-gradient(circle, white, silver); */
 
 }
 
-.addMoney{
+.addMoney {
     display: inline-flex;
     text-align: center;
 }
+
 
 .addMoneyDiv {
     border-top-style: ridge;
@@ -23,10 +247,11 @@
     padding: 10px;
 }
 
-.nav-item .sidebar-brand-text {
-    font-size: 14px !important;
-    font-weight: normal !important;
-    text-transform: none !important;
+#usertable-head {position: sticky;}
+
+#usertable-body {
+    height: 50px !important;
+    overflow-y: auto;
 }
 
 
