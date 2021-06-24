@@ -97,31 +97,37 @@ if (isset($_POST["photo-submit"])) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OnlineCasinoVienna</title>
 
     <!-- new -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="res/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="res/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
+        <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script src="dist/myScript.js"></script>
     <link rel="stylesheet" href="res/css/style.css">
 
 </head>
-
 <body id="page-top">
     <nav class="navbar navbar-dark navbar-expand shadow topbar static-top" style="background-color: #212529" id="navbar">
         <div class="container-fluid">
@@ -139,7 +145,6 @@ if (isset($_POST["photo-submit"])) {
 
                     <div class="d-block topbar-divider"></div>
                     <li class="nav-item dropdown no-arrow">
-                       
                         <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
                                                                    aria-expanded="false"
                                                                    data-bs-toggle="dropdown"
@@ -206,32 +211,6 @@ if (isset($_POST["photo-submit"])) {
                             <div class="sidebar-brand-text"><span>Register</span></div>
                         </a>
                     </li>
-                </ul>
-            <?php } ?>
-        </div>
-    </nav>
-    <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0">
-            <div class="container-fluid d-flex justify-content-center align-items-center p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>OCV</span></div>
-                </a>
-                <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
-
-                    <?php
-                    if (!isset($_SESSION["UserName"])) {
-                    ?>
-                        <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=LogIn">
-                                <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
-                                <div class="sidebar-brand-text"><span>Login</span></div>
-                            </a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=Register">
-                                <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
-                                <div class="sidebar-brand-text"><span>Register</span></div>
-                            </a>
-                        </li>
                     <?php
                     } else { ?>
                         <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand m-0" href="?page=home">
@@ -241,11 +220,13 @@ if (isset($_POST["photo-submit"])) {
                         </li>
                         <?php if ($_SESSION["UserName"] == "admin") {
                         ?>
-                            <li class="nav-item"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserList">
-                                    <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
-                                    <div class="sidebar-brand-text" style=""><span>Users</span></div>
-                                </a>
-                            </li>
+                        <li class="nav-item"><a
+                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
+                                    href="?page=UserList">
+                                <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
+                                <div class="sidebar-brand-text" style=""><span>Users</span></div>
+                            </a>
+                        </li>
 
                         <?php
                         } else {
@@ -393,5 +374,4 @@ if (isset($_POST["photo-submit"])) {
     <script src="res/assets/js/theme.js"></script>
     <script src="dist/myScript.js"></script>
 </body>
-
 </html>
