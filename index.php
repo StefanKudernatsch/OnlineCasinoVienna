@@ -97,161 +97,153 @@ if (isset($_POST["photo-submit"])) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OnlineCasinoVienna</title>
 
     <!-- new -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="res/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="res/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome5-overrides.min.css">
-        <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="res/assets/fonts/simple-line-icons.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script src="dist/myScript.js"></script>
     <link rel="stylesheet" href="res/css/style.css">
 
 </head>
+
 <body id="page-top">
-<header>
-    <nav class="navbar navbar-dark navbar-expand topbar" style="background-color: #212529"  id="topbar">
-        <div class="container-fluid">
-            <div
-                    class="d-flex align-items-center m-0">
-                <a class="d-flex navbar-brand justify-content-center align-items-center" href="?page=home"><div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span class="full-text">Online Casino Vienna</span>
-                        <span class="short-text">OCV</span></div></a>
-                <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i
-                            class="fas fa-bars" style="color: white"></i></button>
-            </div>
+    <header>
+        <nav class="navbar navbar-dark navbar-expand topbar" style="background-color: #212529" id="topbar">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center m-0">
+                    <a class="d-flex navbar-brand justify-content-center align-items-center zoom-in" href="?page=home">
+                        <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-dice"></i></div>
+                        <div class="sidebar-brand-text mx-3"><span class="full-text">Online Casino Vienna</span>
+                            <span class="short-text">OCV</span>
+                        </div>
+                    </a>
+                    <button class="btn btn-link rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars" style="color: white"></i></button>
+                </div>
 
-            <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
-                <ul class="navbar-nav flex-nowrap ms-auto">
-                    <?php if (isset($_SESSION["UserName"])) {
-                        $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
-                        echo '<a style="display: flex; align-items: center"><span style="color: #ffffff;" class="d-lg-inline me-2 text-white-600 small">' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span></a>';
-                    } ?>
+                <?php if (isset($_SESSION["UserName"]) && $_SESSION["UserName"] != "admin") { ?>
+                    <ul class="navbar-nav flex-nowrap ms-auto">
+                        <?php if (isset($_SESSION["UserName"])) {
+                            $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
+                            echo '<a style="display: flex; align-items: center"><span style="color: #ffffff;" class="d-lg-inline me-2 text-white-600 small">' . $DB->getMoney($tempuser->getUserID()) . '&nbsp<i class="fas fa-euro-sign"></i></span></a>';
+                        } ?>
 
-                    <div class="d-block topbar-divider"></div>
-                    <li class="nav-item dropdown no-arrow">
-                        <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link"
-                                                                   aria-expanded="false"
-                                                                   data-bs-toggle="dropdown"
-                                                                   href="#"
-                                                                   style="padding-left: 0!important;">
-                                    <span id="logged_user"
-                                          class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])){
-                                            $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
-                                            echo $_SESSION["UserName"] . '</span><img
+                        <div class="d-block topbar-divider"></div>
+                        <li class="nav-item dropdown no-arrow">
+                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link zoom-in" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="padding-left: 0!important;">
+                                    <span id="logged_user" class=" d-lg-inline me-2 text-white-600 small" style="color: white"><?php if (isset($_SESSION["UserName"])) {
+                                                                                                                                    $image = $DB->getUserImage($DB->getUserWithName($_SESSION["UserName"])->getUserID());
+                                                                                                                                    echo $_SESSION["UserName"] . '</span><img
                                             class="border rounded-circle img-profile" style="background-color: white"
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
-                                            ?>
-                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                        class="dropdown-item" href="?page=UserForm"><i
-                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                                        class="dropdown-item" href="#"><i
-                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                        log</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="?page=logout"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                                                                                                                ?>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                                    log</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="?page=logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                            </div>
+                                        <?php } else { ?>
+                                    </span><img class="border rounded-circle img-profile" src="res/assets/img/avatars/standard-image.png"></a>
+                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
                                 </div>
-                                        <?php } else { ?> </span><img
-                                        class="border rounded-circle img-profile"
-                                        src="res/assets/img/avatars/standard-image.png"></a>
-                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                        class="dropdown-item" href="?page=LogIn"><i
-                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
-                            </div>
                             <?php } ?>
-                        </div>
-                    </li>
-                </ul>
-            <?php } ?>
-        </div>
-    </nav>
-</header>
+                            </div>
+                        </li>
+                    </ul>
+                <?php } ?>
+            </div>
+        </nav>
+    </header>
 
-<div id="wrapper">
-    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0" id="sidebar" style="border-top: 1px solid #28282f">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0" id="sidebar" style="border-top: 1px solid #28282f">
 
-        <div class="container-fluid d-flex justify-content-center align-items-center p-0">
-            <hr class="sidebar-divider my-0">
-            <ul class="navbar-nav text-light" id="accordionSidebar">
+            <div class="container-fluid d-flex justify-content-center align-items-center p-0">
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
 
-                <?php
-                if (!isset($_SESSION["UserName"])) {
-                    ?>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=LogIn">
-                            <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
-                            <div class="sidebar-brand-text"><span>Login</span></div>
-                        </a>
-                    </li>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=Register">
-                            <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
-                            <div class="sidebar-brand-text"><span>Register</span></div>
-                        </a>
-                    </li>
                     <?php
-                } else { ?>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=home">
-                            <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
-                            <div class="sidebar-brand-text"><span>Home</span></div>
-                        </a>
-                    </li>
-                    <?php if($_SESSION["UserName"] == "admin"){
-                        ?>
-                        <li class="nav-item"><a
-                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                    href="?page=UserList">
-                                <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
-                                <div class="sidebar-brand-text" style=""><span>Users</span></div>
+                    if (!isset($_SESSION["UserName"])) {
+                    ?>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=LogIn">
+                                <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
+                                <div class="sidebar-brand-text"><span>Login</span></div>
                             </a>
                         </li>
-
-                        <?php
-                    } else {
-                        ?>
-                        <li class="nav-item"><a
-                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                    href="?page=UserForm">
-                                <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
-                                <div class="sidebar-brand-text" style=""><span>Profile</span></div>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Register">
+                                <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
+                                <div class="sidebar-brand-text"><span>Register</span></div>
                             </a>
                         </li>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
+                                <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
+                                <div class="sidebar-brand-text"><span>Guidance</span></div>
+                            </a>
+                        </li>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
+                                <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
+                                <div class="sidebar-brand-text"><span>Imprint</span></div>
+                            </a>
+                        </li>
+                    <?php
+                    } else { ?>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=home">
+                                <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
+                                <div class="sidebar-brand-text"><span>Home</span></div>
+                            </a>
+                        </li>
+                        <?php if ($_SESSION["UserName"] == "admin") {
+                        ?>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserList">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
+                                    <div class="sidebar-brand-text"><span>Users</span></div>
+                                </a>
+                            </li>
 
                         <?php
-                    }
-                } ?>
-            </ul>
-        </div>
-    </nav>
-    <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content">
-            <div>
+                        } else {
+                        ?>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserForm">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
+                                    <div class="sidebar-brand-text"><span>Profile</span></div>
+                                </a>
+                            </li>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
+                                    <div class="sidebar-brand-text"><span>Guidance</span></div>
+                                </a>
+                            </li>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
+                                    <div class="sidebar-brand-text"><span>Imprint</span></div>
+                                </a>
+                            </li>
+
+                    <?php
+                        }
+                    } ?>
+                </ul>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div>
 
                     <main id="main">
                         <?php
@@ -317,6 +309,14 @@ if (isset($_POST["photo-submit"])) {
                                         include "inc/register.html";
                                         break;
                                     }
+                                case 'Guidance': {
+                                        include "inc/anleitungen.html";
+                                        break;
+                                    }
+                                case 'Imprint': {
+                                        include "inc/impressum.html";
+                                        break;
+                                    }
                                 case 'logout': {
                                         setcookie("CookieName", "", time() - 3600);
                                         unset($_SESSION["UserName"]);
@@ -340,88 +340,79 @@ if (isset($_POST["photo-submit"])) {
                                 case 'BlackJack': {
                                         if (isset($_SESSION["UserName"])) {
 
-                            ?>
-                            <script type="text/javascript">
-                                username = "<?= $_SESSION["UserName"] ?>";
-                            </script>
-                            <?php
-                            include "inc/blackjack.html";
-                        }else{
-                                include "inc/startPage.html";
+                                        ?>
+                                            <script type="text/javascript">
+                                                username = "<?= $_SESSION["UserName"] ?>";
+                                            </script>
+                        <?php
+                                            include "inc/blackjack.html";
+                                        } else {
+                                            include "inc/startPage.html";
+                                        }
+                                    }
+                            }
                         }
-                        }
-                        }
-                    }
-                    ?>
-                </main>
+                        ?>
+                    </main>
+                </div>
             </div>
-        </div>
 
-        <footer>
-            <nav class="navbar navbar-dark navbar-expand topbar nav-fill w-100" style="background-color: #212529"  id="bottombar">
+            <footer>
+                <nav class="navbar navbar-dark navbar-expand topbar nav-fill w-100" style="background-color: #212529" id="bottombar">
                     <ul class="navbar-nav text-light">
 
                         <?php
                         if (!isset($_SESSION["UserName"])) {
-                            ?>
-                            <li class="nav-item"><a
-                                        class="nav-link"
-                                        href="?page=LogIn">
+                        ?>
+                            <li class="nav-item"><a class="nav-link" href="?page=LogIn">
                                     <div class="topbar-icon"><i class="fas fa-sign-in-alt"></i></div>
                                 </a>
                             </li>
-                            <li class="nav-item"><a
-                                        class="nav-link"
-                                        href="?page=Register">
+                            <li class="nav-item"><a class="nav-link" href="?page=Register">
                                     <div class="topbar-icon"><i class="far fa-user-circle"></i></div>
                                 </a>
                             </li>
-                            <?php
+                        <?php
                         } else { ?>
-                            <li class="nav-item"><a
-                                        class="nav-link"
-                                        href="?page=home">
+                            <li class="nav-item"><a class="nav-link" href="?page=home">
                                     <div class="topbar-icon"><i class="fas fa-home"></i></div>
                                 </a>
                             </li>
-                            <?php if($_SESSION["UserName"] == "admin"){
-                                ?>
-                                <li class="nav-item"><a
-                                            class="nav-link"
-                                            href="?page=UserList">
+                            <?php if ($_SESSION["UserName"] == "admin") {
+                            ?>
+                                <li class="nav-item"><a class="nav-link" href="?page=UserList">
                                         <div class="topbar-icon"><i class="fas fa-users"></i></div>
                                     </a>
                                 </li>
 
-                                <?php
+                            <?php
                             } else {
-                                ?>
-                                <li class="nav-item"><a
-                                            class="nav-link"
-                                            href="?page=UserForm">
+                            ?>
+                                <li class="nav-item"><a class="nav-link" href="?page=UserForm">
                                         <div class="topbar-icon"><i class="fas fa-user"></i></div>
                                     </a>
                                 </li>
 
-                                <?php
+                        <?php
                             }
                         } ?>
                     </ul>
-            </nav>
-        </footer>
-    </div>
-    <!--
+                </nav>
+            </footer>
+        </div>
+        <!--
     <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     -->
 
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="res/assets/js/jquery.min.js"></script>
-<script src="res/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="res/assets/js/chart.min.js"></script>
-<script src="res/assets/js/bs-init.js"></script>
-<!--<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
-<script src="res/assets/js/theme.js"></script>
-<script src="dist/myScript.js"></script>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="res/assets/js/jquery.min.js"></script>
+    <script src="res/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="res/assets/js/chart.min.js"></script>
+    <script src="res/assets/js/bs-init.js"></script>
+    <!--<script src="res/https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
+    <script src="res/assets/js/theme.js"></script>
+    <script src="dist/myScript.js"></script>
 </body>
+
 </html>
