@@ -13,13 +13,20 @@ $(document).ready(function () {
     console.log(username);
     console.log(selected);
 
-
     if(window.location.search === "?page=UserForm&selected=" + selected) {
             loadProfile(selected);
     }
     else if(window.location.search === "?page=UserForm"){
         if(username !== undefined)
             loadProfile(username);
+    }
+    else if(window.location.search === "?page=BlackJack"){
+        document.getElementById("content").className = "deck";
+        resizeMain();
+        document.getElementById("main").className = "main";
+        window.addEventListener('resize', resizeMain);
+        if(username !== undefined)
+            loadBlackJack();
     }
     else if(window.location.search === "?page=UserList") {
         if(username === undefined){
@@ -28,7 +35,6 @@ $(document).ready(function () {
         else {
             loadProfile(username);
         }
-
     }
     else if(selected !== username && username !== "admin"){
         window.location.href = "?page=home";
@@ -37,8 +43,6 @@ $(document).ready(function () {
         banUser($("#user_to_ban").html())
     });
 });
-
-
 
 function getAllUser(){
     $.ajax
@@ -127,7 +131,6 @@ function getAllUser(){
     });
 }
 
-
 function banUser(ban_name){
     let data = {UserToBan: ban_name};
     console.log(data);
@@ -143,6 +146,158 @@ function banUser(ban_name){
             alert(error);
         }
     });
+}
+
+function loadBlackJack() {
+    console.log("Blackjack script loaded");
+    //let div = document.getElementById("dealerhand");
+    let div_deck = document.getElementById("deck");
+    let temp_img;
+    for (let i = 0; i < 52; i++) {
+        temp_img = document.createElement("img");
+        temp_img.id = i;
+        temp_img.className = "playercard";
+        temp_img.src = "res/img/cards/current/" + i +".png";
+        cardDeck.push(temp_img);
+    }
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function getCards(){
+
+        getCard("playerhand");
+
+    setTimeout(function () {
+        getCard("dealerhand");
+    }, 1500);
+
+
+}
+
+function drawCommunityCard(number){
+    let randomCardIndex = getRandomInt(cardDeck.length);
+    let image = cardDeck[randomCardIndex];
+    //let image = cardDeck[number];
+
+    cardDeck.splice(randomCardIndex,1);
+
+
+    let div = document.getElementById("deck");
+    let middlepart = document.getElementById("middlepart");
+    let middlehand = document.getElementById("middlehand");
+    let middlewrapper = document.getElementById("middlewrapper");
+    let count = middlehand.childElementCount;
+    let main = document.getElementById("main");
+    let screenwidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    let card_padding = 10;
+    if(screenwidth < 768){
+        card_padding = 4;
+    }
+    let main_padding = parseInt(window.getComputedStyle(main, null).getPropertyValue('padding'), 10);
+    console.log("ter " + middlepart.offsetLeft);
+
+    div.append(image);
+
+    let x = middlehand.offsetWidth + middlewrapper.offsetLeft + div.offsetWidth - 2.5 - (count*(div.offsetWidth + card_padding));
+
+    /*if(screenwidth < 768){
+        x = middlehand.offsetWidth - (count*(div.offsetWidth + card_padding)) - 2;
+    }*/
+
+
+    setTimeout(function () {
+        image.style.zIndex = '10000';
+        image.style.transitionDuration = '1s';
+        image.style.transform = 'translate('+ x + 'px,'+ 0 +'px)';
+        setTimeout(function () {
+            image.style.transitionDuration = '';
+            image.style.transform = '';
+            image.style.zIndex = '0';
+            middlehand.append(image);
+        }, 1000);
+    }, 2);
+}
+
+function getCard(hand){
+
+    let div = document.getElementById("deck");
+
+    let main =  document.getElementById("main");
+    let div1 = document.getElementById(hand);
+    let middle = document.getElementById("middlepart");
+    console.log(div1.clientWidth);
+    let count = div1.childElementCount;
+
+
+    let main_padding = parseInt(window.getComputedStyle(main, null).getPropertyValue('padding'), 10);
+    console.log("max:"+main_padding);
+    let screenwidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    let x = main.clientWidth/2 - main_padding - (div.clientWidth/2) - 10 + (count * ((div.clientWidth/2)+5));
+
+    if(screenwidth < 768){
+        x += 5;
+    }
+    let children = div1.children;
+
+
+        for (let i = 0; i < children.length; i++) {
+            let child = children[i];
+            console.log("Xasd " + child.offsetLeft);
+            //child.style.left = '"'+child.offsetLeft - (count*((div.clientWidth/2)+5)) + 'px"';
+            //child.style.marginRight = "50px";
+            setTimeout(function (){
+                child.style.transitionDuration = '1s';
+                child.style.transform = 'translate('+ -((div.clientWidth/2)+5)  + 'px,'+ 0 +'px)';
+                setTimeout(function () {
+                    child.style.transitionDuration = '';
+                    child.style.transform = '';
+                }, 1000);
+            }, 0);
+
+        }
+
+
+
+
+    let y;
+    switch (hand){
+        case "dealerhand": {
+            y = -middle.offsetHeight/2 - (div1.offsetHeight/2);
+            break;
+        }
+        case "playerhand":{
+            y = middle.offsetHeight/2 + (div1.offsetHeight/2) + document.getElementById("controls").offsetHeight;
+            break;
+        }
+    }
+
+    console.log("X " + x);
+    let randomCardIndex = getRandomInt(cardDeck.length);
+    let image = cardDeck[randomCardIndex];
+
+    console.log("Wdidht " + screenwidth);
+    cardDeck.splice(randomCardIndex,1);
+    div.append(image);
+    setTimeout(function () {
+        image.style.zIndex = '10000';
+        image.style.transitionDuration = '1s';
+        image.style.transform = 'translate('+ x + 'px,'+ y +'px)';
+        setTimeout(function () {
+            image.style.transitionDuration = '';
+            image.style.transform = '';
+            image.style.zIndex = '0';
+            div1.append(image);
+        }, 1000);
+    }, 2);
+//167,795 + 143,845 + 48  hälfte middlepart + h#lfte von playerhand + controls height --> y
+
+    //main width / 2 - shadow width - card width / 2 - 10px margin -->x
+
+
+
 }
 
 
@@ -188,7 +343,6 @@ function editSettings() {
     $("#save-edit-user").attr("onclick","saveSettings()");
 }
 
-
 function saveSettings() {
     console.log("Saved");
     console.log("ID: " + user[0]);
@@ -220,7 +374,6 @@ function saveSettings() {
         }
     });
 }
-
 
 function changePassword(){
     let id = user[0];
