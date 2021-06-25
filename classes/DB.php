@@ -224,12 +224,7 @@ class DB
         if (password_verify($password, $user->getUserPassword())) {
             $_SESSION["UserName"] = $user->getUserName();
             return true;
-        }
-        else if($password == $user->getUserPassword()){
-            $_SESSION["UserName"] = $user->getUserName();
-            return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
