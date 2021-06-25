@@ -47,7 +47,7 @@
 
 #middlepart {
     width: 100%;
-    height: calc(40% - 48px);
+    height: calc(40% - 88px);
     display: flex;
     align-items: center;
     margin-right: auto;
@@ -71,6 +71,16 @@
 
 #controls {
     height: fit-content;
+    display: flex;
+    justify-content: center;
+}
+
+
+#pot_main {
+    height: 40px;
+    font-size: 26px;
+    color: white;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
 }
@@ -146,7 +156,7 @@ header {
 
     .main {padding: 20px;}
 
-    #middlepart {height: calc(40% - 38px);}
+    #middlepart {height: calc(40% - 79px);}
 
     #sidebar {
         width: 4rem !important;
@@ -165,6 +175,11 @@ header {
     #middlewrapper {width: calc(100% - 79px);}
 
     #page-top {margin-left: 4rem;}
+
+    #pot_main {
+        height: 38px;
+        font-size: 24px;
+    }
 }
 
 
@@ -204,7 +219,7 @@ header {
 
     .main {padding: 15px;}
 
-    #middlepart {height: calc(40% - 31px);}
+    #middlepart {height: calc(40% - 62px);}
 
     #middlehand {
         height: 80px;
@@ -223,6 +238,11 @@ header {
     #wrapper {margin-bottom: 70px;}
 
     #page-top {margin-left: 0;}
+
+    #pot_main {
+        height: 31px;
+        font-size: 20px;
+    }
 }
 
 

@@ -21,12 +21,26 @@ $(document).ready(function () {
             loadProfile(username);
     }
     else if(window.location.search === "?page=BlackJack"){
-        document.getElementById("content").className = "deck";
-        resizeMain();
-        document.getElementById("main").className = "main";
-        window.addEventListener('resize', resizeMain);
-        if(username !== undefined)
-            loadBlackJack();
+
+        if(username !== undefined){
+            getUserMoney(username);
+            $('#startModal').modal({backdrop: 'static', keyboard: false})
+            $("#startModal").modal('show');
+            document.getElementById("game-button-1").setAttribute("onclick", "BJHit()");
+            document.getElementById("game-button-1").textContent = "Hit";
+            document.getElementById("game-button-2").setAttribute("onclick", "BJStand()");
+            document.getElementById("game-button-2").textContent = "Stand";
+            document.getElementById("game-button-3").setAttribute("onclick", "BJDoubleDown()");
+            document.getElementById("game-button-3-full").textContent = "Double Down";
+            document.getElementById("game-button-3-short").textContent = "DD";
+            document.getElementById("game-button-4").setAttribute("onclick", "BJSurrender()");
+            document.getElementById("game-button-4-full").textContent = "Surrender";
+            document.getElementById("game-button-4-short").textContent = "Surr";
+            document.getElementById("content").className = "deck";
+            resizeMain();
+            document.getElementById("main").className = "main";
+            window.addEventListener('resize', resizeMain);
+        }
     }
     else if(window.location.search === "?page=UserList") {
         if(username === undefined){
@@ -43,6 +57,16 @@ $(document).ready(function () {
         banUser($("#user_to_ban").html())
     });
 });
+
+function submitRaise(){
+    $("#raiseModal").modal('hide');
+    if($("#InputRaise").val() !== ""){
+        pot = parseInt(pot) + parseInt($("#InputRaise").val());
+        removeMoney($("#InputRaise").val());
+        $("#pot").html(pot);
+        $("#InputRaise").val("");
+    }
+}
 
 function getAllUser(){
     $.ajax
@@ -148,41 +172,10 @@ function banUser(ban_name){
     });
 }
 
-function loadBlackJack() {
-    console.log("Blackjack script loaded");
-    //let div = document.getElementById("dealerhand");
-    let div_deck = document.getElementById("deck");
-    let temp_img;
-    for (let i = 0; i < 52; i++) {
-        temp_img = document.createElement("img");
-        temp_img.id = i;
-        temp_img.className = "playercard";
-        temp_img.src = "res/img/cards/current/" + i +".png";
-        cardDeck.push(temp_img);
-    }
-}
-
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
-
-function getCards(){
-
-        getCard("playerhand");
-
-    setTimeout(function () {
-        getCard("dealerhand");
-    }, 1500);
-
-
-}
-
 function drawCommunityCard(number){
-    let randomCardIndex = getRandomInt(cardDeck.length);
-    let image = cardDeck[randomCardIndex];
-    //let image = cardDeck[number];
-
-    cardDeck.splice(randomCardIndex,1);
+    let image = document.createElement("img");
+    image.className = "playercard";
+    image.src = "res/img/cards/current/" + number +".png";
 
 
     let div = document.getElementById("deck");
@@ -190,38 +183,28 @@ function drawCommunityCard(number){
     let middlehand = document.getElementById("middlehand");
     let middlewrapper = document.getElementById("middlewrapper");
     let count = middlehand.childElementCount;
-    let main = document.getElementById("main");
     let screenwidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    let card_padding = 10;
+    let card_padding = 5;
     if(screenwidth < 768){
-        card_padding = 4;
+        card_padding = 2;
     }
-    let main_padding = parseInt(window.getComputedStyle(main, null).getPropertyValue('padding'), 10);
-    console.log("ter " + middlepart.offsetLeft);
-
     div.append(image);
-
-    let x = middlehand.offsetWidth + middlewrapper.offsetLeft + div.offsetWidth - 2.5 - (count*(div.offsetWidth + card_padding));
-
-    /*if(screenwidth < 768){
-        x = middlehand.offsetWidth - (count*(div.offsetWidth + card_padding)) - 2;
-    }*/
-
+    let x = middlepart.offsetWidth - div.offsetWidth - ((middlewrapper.offsetWidth - middlehand.offsetWidth) / 2) - (card_padding*3) - (count * (div.offsetWidth + (card_padding*2)));
 
     setTimeout(function () {
         image.style.zIndex = '10000';
-        image.style.transitionDuration = '1s';
+        image.style.transitionDuration = '0.5s';
         image.style.transform = 'translate('+ x + 'px,'+ 0 +'px)';
         setTimeout(function () {
             image.style.transitionDuration = '';
             image.style.transform = '';
             image.style.zIndex = '0';
             middlehand.append(image);
-        }, 1000);
-    }, 2);
+        }, 500);
+    }, 1);
 }
 
-function getCard(hand){
+function drawCard(hand,number,open){
 
     let div = document.getElementById("deck");
 
@@ -249,49 +232,55 @@ function getCard(hand){
             //child.style.left = '"'+child.offsetLeft - (count*((div.clientWidth/2)+5)) + 'px"';
             //child.style.marginRight = "50px";
             setTimeout(function (){
-                child.style.transitionDuration = '1s';
+                child.style.transitionDuration = '0.5s';
                 child.style.transform = 'translate('+ -((div.clientWidth/2)+5)  + 'px,'+ 0 +'px)';
                 setTimeout(function () {
                     child.style.transitionDuration = '';
                     child.style.transform = '';
-                }, 1000);
-            }, 0);
+                }, 500);
+            }, 1);
 
         }
 
-
-
-
     let y;
+    let image = document.createElement("img");
+    image.className = "playercard";
     switch (hand){
         case "dealerhand": {
-            y = -middle.offsetHeight/2 - (div1.offsetHeight/2);
+            y = -middle.offsetHeight/2 - (div1.offsetHeight/2) - document.getElementById("pot_main").offsetHeight;
+            if(open){
+                image.src = "res/img/cards/current/" + number +".png";
+            }
+            else {
+                image.src = "res/img/cards/current/red_back.png";
+            }
             break;
         }
         case "playerhand":{
             y = middle.offsetHeight/2 + (div1.offsetHeight/2) + document.getElementById("controls").offsetHeight;
+            image.src = "res/img/cards/current/" + number +".png";
             break;
         }
     }
 
     console.log("X " + x);
-    let randomCardIndex = getRandomInt(cardDeck.length);
-    let image = cardDeck[randomCardIndex];
+
+
+
 
     console.log("Wdidht " + screenwidth);
-    cardDeck.splice(randomCardIndex,1);
     div.append(image);
     setTimeout(function () {
         image.style.zIndex = '10000';
-        image.style.transitionDuration = '1s';
+        image.style.transitionDuration = '0.5s';
         image.style.transform = 'translate('+ x + 'px,'+ y +'px)';
         setTimeout(function () {
             image.style.transitionDuration = '';
             image.style.transform = '';
             image.style.zIndex = '0';
             div1.append(image);
-        }, 1000);
-    }, 2);
+        }, 500);
+    }, 1);
 //167,795 + 143,845 + 48  hälfte middlepart + h#lfte von playerhand + controls height --> y
 
     //main width / 2 - shadow width - card width / 2 - 10px margin -->x
@@ -371,6 +360,24 @@ function saveSettings() {
         },
         error: function (request, status, error) {
             alert("Failed to update User");
+        }
+    });
+}
+
+function removeMoney(money){
+    let data = {user: username, rmMoney: money};
+    $.ajax
+    ({
+        type: "POST",
+        url: "./inc/serviceHandler.php",
+        data: JSON.stringify(data),
+        cache: false,
+        dataType: "json",
+        success: function () {
+            getUserMoney(username);
+        },
+        error: function (request, status, error) {
+            alert("Error");
         }
     });
 }

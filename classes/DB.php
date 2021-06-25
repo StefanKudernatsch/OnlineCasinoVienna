@@ -256,22 +256,22 @@ class DB
     
     function getMoney($user_id)
     {
-        $sql = "SELECT * FROM user WHERE ID = ?;";
+        $sql = "SELECT Money FROM user WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $moneyarr = $result->fetch_assoc();
-        $money = $moneyarr["Money"];
-        return $money;
+        $money = $result->fetch_assoc();
+        return $money["Money"];
     }
+
 
     function addLog($user_id, $reason, $beforemoney, $aftermoney)
     {
         $sql = "INSERT INTO moneylog (LogID, LogReason, UserID, MoneyBefore, MoneyAfter, Date) VALUES
         (NULL, ?, ?, ?, ?, NULL)";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('iiii', $user_id, $reason, $beforemoney, $aftermoney);
+        $stmt->bind_param('iiii', $reason,$user_id, $beforemoney, $aftermoney);
         return $stmt->execute();
     }
 
@@ -319,31 +319,21 @@ class DB
         
     }
 
-    function rmMoney($user_id, $amount, $reason)
+    function rmMoney($user_id, $amount)
     {
         $beforemoney = $this->getMoney($user_id);
-        $aftermoney = $beforemoney - $amount;
+        $aftermoney =   $beforemoney - $amount;
 
         if($aftermoney < 0)
         {
             return false;
         }
 
-        $sql = "UPDATE user SET Money=? WHERE UserID = ?;";
+        $sql = "UPDATE user SET Money = ? WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('ii', $user_id, $aftermoney);
-        $stmt->execute();
-        
-        if($stmt == true)
-        {
-            $this->addlog($user_id, $reason, $beforemoney, $aftermoney);
-        }
-        else
-        {
-            return false;
-        }
-    
-        
+        $stmt->bind_param('di', $aftermoney, $user_id);
+        return $stmt->execute();
+
     }
 
     function searchUser($search) {
