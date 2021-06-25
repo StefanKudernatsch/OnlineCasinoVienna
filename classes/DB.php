@@ -224,7 +224,12 @@ class DB
         if (password_verify($password, $user->getUserPassword())) {
             $_SESSION["UserName"] = $user->getUserName();
             return true;
-        } else {
+        }
+        else if($password == $user->getUserPassword()){
+            $_SESSION["UserName"] = $user->getUserName();
+            return true;
+        }
+        else {
             return false;
         }
     }
@@ -251,22 +256,22 @@ class DB
     
     function getMoney($user_id)
     {
-        $sql = "SELECT Money FROM user WHERE ID = ?;";
+        $sql = "SELECT * FROM user WHERE ID = ?;";
         $stmt = $this->connect->prepare($sql);
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $money = $result->fetch_assoc();
-        return $money["Money"];
+        $moneyarr = $result->fetch_assoc();
+        $money = $moneyarr["Money"];
+        return $money;
     }
-
 
     function addLog($user_id, $reason, $beforemoney, $aftermoney)
     {
         $sql = "INSERT INTO moneylog (LogID, LogReason, UserID, MoneyBefore, MoneyAfter, Date) VALUES
         (NULL, ?, ?, ?, ?, NULL)";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('iiii', $reason,$user_id, $beforemoney, $aftermoney);
+        $stmt->bind_param('iiii', $user_id, $reason, $beforemoney, $aftermoney);
         return $stmt->execute();
     }
 
@@ -314,21 +319,31 @@ class DB
         
     }
 
-    function rmMoney($user_id, $amount)
+    function rmMoney($user_id, $amount, $reason)
     {
         $beforemoney = $this->getMoney($user_id);
-        $aftermoney =   $beforemoney - $amount;
+        $aftermoney = $beforemoney - $amount;
 
         if($aftermoney < 0)
         {
             return false;
         }
 
-        $sql = "UPDATE user SET Money = ? WHERE ID = ?;";
+        $sql = "UPDATE user SET Money=? WHERE UserID = ?;";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('di', $aftermoney, $user_id);
-        return $stmt->execute();
-
+        $stmt->bind_param('ii', $user_id, $aftermoney);
+        $stmt->execute();
+        
+        if($stmt == true)
+        {
+            $this->addlog($user_id, $reason, $beforemoney, $aftermoney);
+        }
+        else
+        {
+            return false;
+        }
+    
+        
     }
 
     function searchUser($search) {
