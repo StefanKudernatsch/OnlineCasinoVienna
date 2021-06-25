@@ -47,7 +47,7 @@
 
 #middlepart {
     width: 100%;
-    height: calc(40% - 48px);
+    height: calc(40% - 88px);
     display: flex;
     align-items: center;
     margin-right: auto;
@@ -71,6 +71,16 @@
 
 #controls {
     height: fit-content;
+    display: flex;
+    justify-content: center;
+}
+
+
+#pot_main {
+    height: 40px;
+    font-size: 26px;
+    color: white;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
 }
@@ -146,7 +156,7 @@ header {
 
     .main {padding: 20px;}
 
-    #middlepart {height: calc(40% - 38px);}
+    #middlepart {height: calc(40% - 79px);}
 
     #sidebar {
         width: 4rem !important;
@@ -165,6 +175,11 @@ header {
     #middlewrapper {width: calc(100% - 79px);}
 
     #page-top {margin-left: 4rem;}
+
+    #pot_main {
+        height: 38px;
+        font-size: 24px;
+    }
 }
 
 
@@ -204,7 +219,7 @@ header {
 
     .main {padding: 15px;}
 
-    #middlepart {height: calc(40% - 31px);}
+    #middlepart {height: calc(40% - 62px);}
 
     #middlehand {
         height: 80px;
@@ -223,6 +238,11 @@ header {
     #wrapper {margin-bottom: 70px;}
 
     #page-top {margin-left: 0;}
+
+    #pot_main {
+        height: 31px;
+        font-size: 20px;
+    }
 }
 
 
@@ -254,43 +274,6 @@ header {
     overflow-y: auto;
 }
 
-/* Anleitungen-Seite */
-
-.mask {
-    background: rgba(0,0,0,0.8);
-    background-blend-mode: darken;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    min-height: calc(100vh - 70px);
-}
-
-.fag-blackjack { 
-    background: url('../img/home/blackjack.jpg'), rgba(0,0,0,0.8);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    z-index: -2;
-    border-radius: 10px;
-}
-
-.fag-textHoldemPoker { 
-    background: url('../img/home/texasHoldem.jpg'), rgba(0,0,0,0.8);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    z-index: -2;
-    border-radius: 10px;
-}
-
-.fag-fiveCards { 
-    background: url('../img/home/fiveCards.jpg'), rgba(0,0,0,0.8);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    z-index: -2;
-    border-radius: 10px;
-}
 
 /* Home-Seite */
 
@@ -358,13 +341,52 @@ header {
 
 /* Maybe even support hover opacity shifts */
 .opacity-0h5 {
-  opacity:1!important;
+  opacity:0!important;
   transition: opacity .25s ease-in-out!important;
   -moz-transition: opacity .25s ease-in-out!important;
   -webkit-transition: opacity .25s ease-in-out!important;
 }
 .opacity-0h5:hover {
-  opacity:0.9!important;
+  opacity:1!important;
 }
 /* Home-Seite */
 .topbar-icon{font-size: 1.5rem;}
+
+/* Anleitungen-Seite */
+
+.mask {
+    background: rgba(0,0,0,0.8);
+    background-blend-mode: darken;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: calc(100vh - 70px);
+}
+
+.fag-blackjack {
+    background: url('../img/home/blackjack.jpg'), rgba(0,0,0,0.8);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    z-index: -2;
+    border-radius: 10px;
+}
+
+.fag-textHoldemPoker {
+    background: url('../img/home/texasHoldem.jpg'), rgba(0,0,0,0.8);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    z-index: -2;
+    border-radius: 10px;
+}
+
+.fag-fiveCards {
+    background: url('../img/home/fiveCards.jpg'), rgba(0,0,0,0.8);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    z-index: -2;
+    border-radius: 10px;
+}
+
