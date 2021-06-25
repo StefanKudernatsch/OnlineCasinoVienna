@@ -97,6 +97,7 @@ if (isset($_POST["photo-submit"])) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -105,8 +106,7 @@ if (isset($_POST["photo-submit"])) {
     <!-- new -->
 
     <link rel="stylesheet" href="res/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="res/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="res/assets/fonts/fontawesome5-overrides.min.css">
@@ -154,58 +154,58 @@ if (isset($_POST["photo-submit"])) {
                                             class="border rounded-circle img-profile" style="background-color: white"
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
-                                            ?>
-                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                                        class="dropdown-item" href="?page=UserForm"><i
-                                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a
-                                                        class="dropdown-item" href="#"><i
-                                                            class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                        log</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="?page=logout"><i
-                                                class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                                                                                                                ?>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
+                                                    log</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="?page=logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                            </div>
+                                        <?php } else { ?>
+                                    </span><img class="border rounded-circle img-profile" src="res/assets/img/avatars/standard-image.png"></a>
+                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
                                 </div>
-                                        <?php } else { ?> </span><img
-                                        class="border rounded-circle img-profile"
-                                        src="res/assets/img/avatars/standard-image.png"></a>
-                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a
-                                        class="dropdown-item" href="?page=LogIn"><i
-                                            class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
-                            </div>
                             <?php } ?>
-                        </div>
-                    </li>
-                </ul>
-            <?php } ?>
-        </div>
-    </nav>
-</header>
+                            </div>
+                        </li>
+                    </ul>
+                <?php } ?>
+            </div>
+        </nav>
+    </header>
+
 
 <div id="wrapper">
     <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-dark p-0" id="sidebar"
          style="border-top: 1px solid #28282f">
 
-        <div class="container-fluid d-flex justify-content-center align-items-center p-0">
-            <hr class="sidebar-divider my-0">
-            <ul class="navbar-nav text-light" id="accordionSidebar">
 
-                <?php
-                if (!isset($_SESSION["UserName"])) {
+            <div class="container-fluid d-flex justify-content-center align-items-center p-0">
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+
+                    <?php
+                    if (!isset($_SESSION["UserName"])) {
                     ?>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=LogIn">
-                            <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
-                            <div class="sidebar-brand-text"><span>Login</span></div>
-                        </a>
-                    </li>
-                    <li class="nav-item"><a
-                                class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                href="?page=Register">
-                            <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
-                            <div class="sidebar-brand-text"><span>Register</span></div>
-                        </a>
-                    </li>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=LogIn">
+                                <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
+                                <div class="sidebar-brand-text"><span>Login</span></div>
+                            </a>
+                        </li>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Register">
+                                <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
+                                <div class="sidebar-brand-text"><span>Register</span></div>
+                            </a>
+                        </li>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
+                                <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
+                                <div class="sidebar-brand-text"><span>Guidance</span></div>
+                            </a>
+                        </li>
+                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
+                                <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
+                                <div class="sidebar-brand-text"><span>Imprint</span></div>
+                            </a>
+                        </li>
                     <?php
                 } else { ?>
                     <li class="nav-item"><a
@@ -222,29 +222,45 @@ if (isset($_POST["photo-submit"])) {
                                     href="?page=UserList">
                                 <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
                                 <div class="sidebar-brand-text" style=""><span>Users</span></div>
+
                             </a>
                         </li>
-
-                        <?php
-                    } else {
+                        <?php if ($_SESSION["UserName"] == "admin") {
                         ?>
-                        <li class="nav-item"><a
-                                    class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
-                                    href="?page=UserForm">
-                                <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
-                                <div class="sidebar-brand-text" style=""><span>Profile</span></div>
-                            </a>
-                        </li>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserList">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
+                                    <div class="sidebar-brand-text"><span>Users</span></div>
+                                </a>
+                            </li>
 
                         <?php
-                    }
-                } ?>
-            </ul>
-        </div>
-    </nav>
-    <div class="d-flex flex-column" id="content-wrapper">
-        <div id="content">
-            <div>
+                        } else {
+                        ?>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserForm">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
+                                    <div class="sidebar-brand-text"><span>Profile</span></div>
+                                </a>
+                            </li>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
+                                    <div class="sidebar-brand-text"><span>Guidance</span></div>
+                                </a>
+                            </li>
+                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
+                                    <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
+                                    <div class="sidebar-brand-text"><span>Imprint</span></div>
+                                </a>
+                            </li>
+
+                    <?php
+                        }
+                    } ?>
+                </ul>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <div>
 
                 <main id="main">
                     <?php
@@ -303,33 +319,37 @@ if (isset($_POST["photo-submit"])) {
                                 }
                                 break;
                             }
-                            case 'LogIn':
-                            {
-                                include "inc/login.html";
-                                break;
-                            }
-                            case 'Register':
-                            {
-                                include "inc/register.html";
-                                break;
-                            }
-                            case 'logout':
-                            {
-                                setcookie("CookieName", "", time() - 3600);
-                                unset($_SESSION["UserName"]);
-                                session_destroy();
-                                header("Location: index.php");
-                                break;
-                            }
-                            case 'moneyAdmin': {
-                                if (isset($_SESSION["UserName"])) {
-
-                                    ?>
+                           
+                                case 'LogIn': {
+                                        include "inc/login.html";
+                                        break;
+                                    }
+                                case 'Register': {
+                                        include "inc/register.html";
+                                        break;
+                                    }
+                                case 'Guidance': {
+                                        include "inc/anleitungen.html";
+                                        break;
+                                    }
+                                case 'Imprint': {
+                                        include "inc/impressum.html";
+                                        break;
+                                    }
+                                case 'logout': {
+                                        setcookie("CookieName", "", time() - 3600);
+                                        unset($_SESSION["UserName"]);
+                                        session_destroy();
+                                        header("Location: index.php");
+                                        break;
+                                    }
+                                case 'moneyAdmin': {
+                                        if (isset($_SESSION["UserName"])) {
+                                           ?>
                             <script type="text/javascript">
                                 username = "<?= $_SESSION["UserName"] ?>";
                             </script>
-                        <?php
-
+                        <?php             
                                 }
                                 include "inc/moneyAdmin.html";
                                 break;
@@ -354,16 +374,15 @@ if (isset($_POST["photo-submit"])) {
                             break;
                             }
                         }
-                    }
-                    ?>
-                </main>
+                        ?>
+                    </main>
+                </div>
             </div>
-        </div>
-
         <footer>
             <nav class="navbar navbar-dark navbar-expand topbar nav-fill w-100" style="background-color: #212529"
                  id="bottombar">
                 <ul class="navbar-nav text-light">
+
 
                     <?php
                     if (!isset($_SESSION["UserName"])) {
@@ -425,5 +444,7 @@ if (isset($_POST["photo-submit"])) {
 <script src="res/assets/js/bs-init.js"></script>
 <script src="res/assets/js/theme.js"></script>
 <script src="dist/myScript.js"></script>
+
 </body>
+
 </html>
