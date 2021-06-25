@@ -34,11 +34,19 @@ if ($server_method === "POST") {
         $param2 = $jsonObj->money;
         $param3 = $jsonObj->reason;
         $result = $logic->handleRequest($method, $param, $param2, $param3);
+        response($_SERVER['REQUEST_METHOD'], 200, $result);
+    }
+    else if (isset($jsonObj->rmMoney)) {
+        $method = "rmMoney";
+        $param = $jsonObj->user;
+        $param2 = $jsonObj->rmMoney;
+        $result = $logic->handleRequest($method, $param, $param2,$param3);
+        response($_SERVER['REQUEST_METHOD'], 200, $result);
     }
     else if(isset($jsonObj->UserToBan)){
         $param = $jsonObj->UserToBan;
         $method = "changeUserBan";
-        $result = $logic->handleRequest($method, $param, $param2);
+        $result = $logic->handleRequest($method, $param, $param2, $param3);
 
         response($_SERVER['REQUEST_METHOD'], 200, $result);
     }

@@ -1,0 +1,109 @@
+
+
+
+    <div id="dealerhand" class="container">
+    </div>
+
+    <div id="pot_main">
+
+        <div>Pot:&nbsp</div>  <div id="pot">0</div>€
+    </div>
+
+
+<div id="middlepart">
+    <div id="deck">
+    </div>
+    <div id="middlewrapper">
+        <div id="middlehand">
+
+        </div>
+    </div>
+
+</div>
+
+
+    <div id="controls">
+        <button class="btn btn-lg" id="game-button-1" style="background-image:
+            radial-gradient(
+                    40% 100vh at center,
+                    #3d444b,
+                    #212529
+            );; color: white; width: 25%;"></button>
+        <button class="btn btn-lg" id="game-button-2" style="background-image:
+            radial-gradient(
+                    40% 100vh at center,
+                    #ffffff,
+                    #a6a6a6
+            );;  color: black; width: 25%;"></button>
+        <button class="btn btn-lg" id="game-button-3" style="background-image:
+            radial-gradient(
+                    40% 100vh at center,
+                    #ff8700,
+                    #b35f00
+            );;  color: white; width: 25%;"><span id="game-button-3-full" class="full-text"></span><span id="game-button-3-short" class="short-text"></span></button>
+
+        <button class="btn btn-lg" id="game-button-4" style="background-image:
+            radial-gradient(
+                    40% 100vh at center,
+                    #b30000,
+                    #570000
+            );;color: white; width: 25%;"><span id="game-button-4-full" class="full-text"></span><span id="game-button-4-short" class="short-text"></span></button>
+    </div>
+
+
+    <div id="playerhand" class="container">
+    </div>
+
+
+    <div id="startModal" class='modal fade'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <form method='post'>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Welcome!</h4>
+                    </div>
+                    <div class='modal-body'>
+                        <div class="col">
+                            <p> <strong>Before you can start the game, you will have to set a bet amount!</strong></p>
+                            <h5>How much do you want to bet?</h5>
+                            <div class="input-group mb-3"><input
+                                    class="form-control" type="number" placeholder="100" name="InputBet"
+                                    id="InputBet" required><span class="input-group-text">€</span></div>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
+                               value='Cancel' id="cancel">
+                        <input type='button' onclick="checkInput()" class='btn btn-primary' name='BetPostSubmit'
+                               value='Submit Bet' id="BetSubmit" style="float: right">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="raiseModal" class='modal fade'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <form method='post'>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Raise!</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class='modal-body'>
+                        <div class="col">
+                            <h5>How much do you want to Raise?</h5>
+                            <div class="input-group mb-3"><input
+                                    class="form-control" type="number" placeholder="100" name="InputRaise"
+                                    id="InputRaise" required><span class="input-group-text">€</span></div>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+
+                        <input type='button' onclick="submitRaise()" class='btn btn-primary' name='RaiseSubmit'
+                               value='Submit Raise' id="RaiseSubmit" style="width: 100%">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
