@@ -293,8 +293,14 @@ if (isset($_POST["photo-submit"])) {
                             include "inc/moneyAdmin.html";
                             break;
                         }
+                        case 'FiveCardsDraw': 
+                        {
+                            include "inc/FiveCardsDraw.html";
+                            break;
+                        }
                     }
                 }
+                
                 ?>
             </main>
 

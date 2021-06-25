@@ -6,6 +6,10 @@ $(document).ready(function () {
         loadProfile();
         
     }
+    else if (window.location.search === "?page=FiveCardsDraw") {
+        loadFiveCards();
+    }
+
     
 });
 
@@ -197,6 +201,7 @@ function changePassword(){
     });
 }
 
+/* MoneyAdmin Page */
 var tableHeader = "<tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Money</th></tr>";
 function searchUsers() {
     let search = $("#searchInput").val();
@@ -342,3 +347,184 @@ function buildMoneyAdminPage() {
         main.appendChild(p);
     }
 }
+
+/************************ Five Cards Draw ***************************/
+let fcdJSON = { //Five Cards Draw JSON
+    currentPlayer : 0,
+    round: 0,
+    pot: 0,
+    cardsPlayer1 : [],
+    cardsPlayer2 : [],
+    betPlayer1 : 0,
+    betPlayer2 : 0,
+    moneyPlayer1 : 0,
+    moneyPlayer2 : 0,
+    deck: [],
+    userIDPlayer1 : null,
+
+};
+function loadFiveCards() {
+
+    // Fill fcdJSON.deck with identifiers of every possible card.
+    let k = 0;
+    let id, value, color = "";
+    for (let i = 1; i < 14; i++) {
+        id = "";
+        switch (i) {
+            case 1: { value = "A"; break; }
+            case 11:{ value = "J"; break; }
+            case 12:{ value = "Q"; break; }
+            case 13:{ value = "K"; break; }
+            default: value = i; break;
+        }
+        for (let j = 0; j < 4; j++) {
+            switch (j) {
+                case 0: { color = "S"; break; }
+                case 1: { color = "C"; break; }
+                case 2: { color = "D"; break; }
+                case 3: { color = "H"; break; }
+            }  
+            id = value + color;
+            fcdJSON.deck.push(id);
+        }
+    }
+
+    // get usermoney from DB and save it in fcdJSON.
+    let currentUser = document.getElementById("logged_user").innerHTML;
+    $.ajax
+    ({
+        type: "GET",
+        url: "./inc/serviceHandler.php",
+        data: {method: "getUserWithName", param: currentUser},
+        cache: false,
+        dataType: "json",
+        async: false, //make ajax wait until response. Only run code after the response came
+
+        success: function (data) {
+            let i = 0;
+            Object.keys(data).forEach(function (userkey) {
+                user[i] = data[userkey];
+                i++;
+                
+            });
+            fcdJSON.moneyPlayer1 = user[12];
+            fcdJSON.userIDPlayer1 = user[0];
+        },
+        error: function (request, status, error) {
+            console.log("Failed to get Userdata");
+        }
+    });
+
+    fcdJSON.moneyPlayer2 = 1000;
+    playFiveCardsDraw();    
+}
+
+function playFiveCardsDraw() {
+    refreshFiveCardsDraw();
+
+    //Ante in the pot
+    let ANTE = 10;
+    fcdJSON.moneyPlayer1 -= ANTE;
+    fcdJSON.betPlayer1 += ANTE;
+    fcdJSON.pot += fcdJSON.betPlayer1;
+
+    fcdJSON.moneyPlayer2 -= ANTE;
+    fcdJSON.betPlayer2 += ANTE;
+    fcdJSON.pot += fcdJSON.betPlayer2;
+
+    refreshFiveCardsDraw();
+    console.log(fcdJSON);
+
+
+    // Players cards
+    // pick and remove five random identifiers from the fcdJSON.deck. 
+    // Then build the html elements with it and insert it in the site.
+    for (let i = 0; i < 5; i++) {
+        let id = "empty";
+        while (id === "empty") {
+            let randCard = Math.floor(Math.random() * 52);
+            id = fcdJSON.deck[randCard];
+            fcdJSON.deck[randCard] = "empty";
+        }
+
+        let newCard = document.createElement("img");
+        newCard.setAttribute("id", i);
+        newCard.setAttribute("src", "res/img/" + id + ".png");
+        newCard.setAttribute("alt", id);
+        newCard.setAttribute("style", "width:120px;height:176px;");
+        newCard.setAttribute("class", "card-img-top");
+        fcdJSON.cardsPlayer1[i] = newCard;
+        document.getElementById("fiveCardsDraw-Cards").appendChild(newCard);    
+    }
+    //oponent gets five cards
+    for (let i = 0; i < 5; i++) {
+        let id = "empty";
+        while (id === "empty") {
+            let randCard = Math.floor(Math.random() * 52);
+            id = fcdJSON.deck[randCard];
+            fcdJSON.deck[randCard] = "empty";
+        }
+        fcdJSON.cardsPlayer2[i] = id;
+    }
+    
+}
+
+function refreshFiveCardsDraw() {
+    document.getElementById("betP1").innerHTML = "Einsatz: " + fcdJSON.betPlayer1 + "€";
+    document.getElementById("betP2").innerHTML = "Einsatz: " + fcdJSON.betPlayer2 + "€";
+    document.getElementById("pot").innerHTML = "Pot: " + fcdJSON.pot + "€";
+    document.getElementById("moneyP1").innerHTML = "Money: " + fcdJSON.moneyPlayer1 + "€";
+    document.getElementById("moneyP2").innerHTML = "Money: " + fcdJSON.moneyPlayer2 + "€";
+
+    //save money in database
+    //wann und wo das geld mit der DB angeglichen wird, ist noch nicht ganz fix
+    console.log(fcdJSON);   
+
+    moneyDelta = - fcdJSON.betPlayer1
+    userID = fcdJSON.userIDPlayer1;
+    let data = {"UserID": userID, "money": moneyDelta, "reason": "Five Cards Draw"};
+    console.log("data: " + JSON.stringify(data));
+    $.ajax({
+        type: "POST",
+        url: "./inc/serviceHandler.php",
+        data: JSON.stringify(data),   //<------- ERROR BOOKMARK ! ! ! ! ! ! 
+        cache: false,
+        dataType: "json",
+        success: function() {
+            console.log("Money of User has been changed by " + moneyDelta);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log ("ERROR! ", textStatus, errorThrown);
+        }
+    })
+
+}
+
+function raise() {
+    console.log($("#einsatzInput").val());
+    $("#betP1").text("Einsatz: " + $("#einsatzInput").val() + "€");
+    console.log(fcdJSON.currentPlayer);
+}
+
+/* 
+TODO:
+---------- Mittwoch ----------
+    - Ante in den Pot - WIP 
+    - danach erst Karten geben - DONE 
+    - Gegner auch fünf random karten geben - DONE
+    - Erste Wettrunde (MAJOR TASK) - OPEN
+        - Bluff des Gegners (?)
+        - ...
+    
+---------- Donnerstag ----------
+    - Kartentausch
+
+---------- Freitag ----------
+    - Zweite Wettrunde
+    - Showdown (MAJOR TASK)
+    - Geld in DB erst am Ende der Runde verändern.
+
+---------- Samstag ----------
+    - Mit Gruppe absprechen wegen Frontend des Spiels.
+    - Video machen (MAJOR TASK)
+*/

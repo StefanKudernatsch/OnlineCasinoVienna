@@ -1,0 +1,55 @@
+<h1>This is the Five Cards Draw Site</h1>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="card" style="width: 15rem;">
+            <img class="card-img-top" src="res/assets/img/avatars/standard-image.png" alt="(Image Src)">
+            <div class="card-body">
+              <h5 class="card-title">Poker Peter</h5>
+              <p id="moneyP2" class="card-text">Money: 200€</p>
+              <p id="betP2" class="card-text">Einsatz: 10€</p>
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="card" style="width: 10rem;">
+            <div class="card-body">
+                <h5 id="pot" class="card-title">Pot: 0€</h5>
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-6">
+            <div class="card" style="width:15rem; align-items:center;">
+                <p class="card-text" id="betP1" style="align-items: center;">Einsatz: 10€</p>
+                <img class="card-img-top" src="res/assets/img/avatars/standard-image.png" alt="(Image Src)">
+                <div class="card-body">
+                    <h5 class="card-title">My Player</h5>
+                    <p id="moneyP1" class="card-text">Money: 200€</p>
+                    <div class="input-group">
+                        <button class="btn btn-warning FCD-buttons form-control" onclick="raise()">Bet/Raise</button>
+                        <input class="form-control" id="einsatzInput">
+                    </div>
+                    <button class="btn btn-success FCD-buttons">Call</button>
+                    <button class="btn btn-secondary FCD-buttons">Check</button>
+                    <button class="btn btn-danger FCD-buttons">Fold</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-6">
+            <div class="card-body" id = "fiveCardsDraw-Cards">
+                <h5 class="card-title">Your Cards</h5>
+
+            <!--
+                <img class="card-img-top" src="res/img/10C.png" alt="(Image Src)" style="width:120px;height:176px;">
+                <img class="card-img-top" src="res/img/10S.png" alt="(Image Src)" style="width:120px;height:176px;"> 
+                <img class="card-img-top" src="res/img/KH.png" alt="(Image Src)" style="width:120px;height:176px;"> 
+                <img class="card-img-top" src="res/img/AS.png" alt="(Image Src)" style="width:120px;height:176px;"> 
+                <img class="card-img-top" src="res/img/4D.png" alt="(Image Src)" style="width:120px;height:176px;"> 
+            -->
+            </div>
+        </div>
+    </div>
+</div>
