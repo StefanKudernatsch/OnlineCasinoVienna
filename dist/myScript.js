@@ -183,6 +183,7 @@ function RaiseModal(){
 }
 
 function StartModal() {
+    $(":button").prop("disabled", false);
     getUserMoney(username);
     $('#startModal').modal({backdrop: 'static', keyboard: false})
     $("#startModal").modal('show');
@@ -475,6 +476,7 @@ function playFiveCardDraw() {
 }
 
 function playTexasHoldem() {
+    gamerunning = true;
     rounds = 0;
     createDeck(1);
     $(':button').prop('disabled', true);
