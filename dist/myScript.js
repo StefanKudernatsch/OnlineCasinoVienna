@@ -1,16 +1,7 @@
 let user = [];
 let username;
 let selected;
-var deck = [];
-var playerhand = [];
-var dealerhand = [];
-var middlehand = [];
-let pot = 0;
-let playerbet = 0;
-let dealerbet = 0;
-let playerbudget = 0;
-let gamerunning = false;
-let rounds = 0;
+let cardDeck = [];
 
 function resizeMain(){
     document.getElementById("main").style.height = "0px";
@@ -30,57 +21,12 @@ $(document).ready(function () {
             loadProfile(username);
     }
     else if(window.location.search === "?page=BlackJack"){
-
-        if(username !== undefined){
-            getUserMoney(username);
-            $('#startModal').modal({backdrop: 'static', keyboard: false})
-            $("#startModal").modal('show');
-            document.getElementById("game-button-1").setAttribute("onclick", "BJHit()");
-            document.getElementById("game-button-1").textContent = "Hit";
-            document.getElementById("game-button-2").setAttribute("onclick", "BJStand()");
-            document.getElementById("game-button-2").textContent = "Stand";
-            document.getElementById("game-button-3").setAttribute("onclick", "BJDoubleDown()");
-            document.getElementById("game-button-3-full").textContent = "Double Down";
-            document.getElementById("game-button-3-short").textContent = "DD";
-            document.getElementById("game-button-4").setAttribute("onclick", "BJSurrender()");
-            document.getElementById("game-button-4-full").textContent = "Surrender";
-            document.getElementById("game-button-4-short").textContent = "Surr";
-            document.getElementById("content").className = "deck";
-            resizeMain();
-            document.getElementById("main").className = "main";
-            window.addEventListener('resize', resizeMain);
-        }
-    }
-    else if(window.location.search === "?page=TexasHoldem" || window.location.search === "?page=FiveCardDraw") {
-
-        if(username !== undefined){
-            getUserMoney(username);
-            $('#startModal').modal({backdrop: 'static', keyboard: false})
-            $("#startModal").modal('show');
-            document.getElementById("game-button-1").setAttribute("onclick", "PokerCall()");
-            document.getElementById("game-button-1").textContent = "Call";
-            document.getElementById("game-button-3").setAttribute("onclick", "RaiseModal()");
-            document.getElementById("game-button-3-full").textContent = "Raise";
-            document.getElementById("game-button-3-short").textContent = "Raise";
-            document.getElementById("game-button-4-full").textContent = "Fold";
-            document.getElementById("game-button-4-short").textContent = "Fold";
-
-            if(window.location.search === "?page=TexasHoldem") {
-                document.getElementById("game-button-4").setAttribute("onclick", "PokerFold('TH')");
-                document.getElementById("game-button-2").remove();
-
-            } else if(window.location.search === "?page=FiveCardDraw") {
-                document.getElementById("game-button-4").setAttribute("onclick", "PokerFold('FCD')");
-                document.getElementById("game-button-2").setAttribute("onclick", "PokerDraw()");
-                document.getElementById("game-button-2").textContent = "Draw";
-
-            }
-
-            document.getElementById("content").className = "deck";
-            resizeMain();
-            document.getElementById("main").className = "main";
-            window.addEventListener('resize', resizeMain);
-        }
+        document.getElementById("content").className = "deck";
+        resizeMain();
+        document.getElementById("main").className = "main";
+        window.addEventListener('resize', resizeMain);
+        if(username !== undefined)
+            loadBlackJack();
     }
     else if(window.location.search === "?page=UserList") {
         if(username === undefined){
@@ -96,67 +42,7 @@ $(document).ready(function () {
     $("#banUserSubmit").click(function(){
         banUser($("#user_to_ban").html())
     });
-
-    $("a").click(function(){
-        if(this.id !== document.getElementById("user_dropdown").id) {
-            if(gamerunning && !confirm("Quit Game?")) {
-                return false;
-            }
-        }
-
-    });
 });
-
-function submitRaise(){
-    $("#raiseModal").modal('hide');
-    if($("#InputRaise").val() !== ""){
-        pot = parseInt(pot) + parseInt($("#InputRaise").val());
-        removeMoney($("#InputRaise").val());
-        $("#pot").html(pot);
-        $("#InputRaise").val("");
-    }
-}
-
-function checkInput() {
-    getUserMoney(username);
-    if($("#InputBet").val() >= 10 && $("#InputBet").val() <= playerbudget){
-        $("#startModal").modal('hide');
-        pot = $("#InputBet").val();
-        removeMoney($("#InputBet").val());
-        $("#pot").html(pot);
-        if(window.location.search === "?page=BlackJack") {
-            playBlackJack();
-        }
-        else if(window.location.search === "?page=TexasHoldem"){
-            playTexasHoldem();
-        }
-        else if(window.location.search === "?page=FiveCardDraw"){
-            playFiveCardDraw();
-        }
-    }
-}
-
-function getUserMoney(user){
-    $.ajax
-    ({
-        type: "GET",
-        url: "./inc/serviceHandler.php",
-        data: {method: "getMoneyWithName", param: user},
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-            playerbudget = data;
-            $("#userMoney").html(playerbudget + '&nbsp<i class="fas fa-euro-sign"></i>');
-        },
-        error: function (request, status, error) {
-            alert("Failed to get Money");
-        }
-    });
-}
-
-function RaiseModal(){
-    $("#raiseModal").modal('show');
-}
 
 function getAllUser(){
     $.ajax
@@ -262,10 +148,41 @@ function banUser(ban_name){
     });
 }
 
+function loadBlackJack() {
+    console.log("Blackjack script loaded");
+    //let div = document.getElementById("dealerhand");
+    let div_deck = document.getElementById("deck");
+    let temp_img;
+    for (let i = 0; i < 52; i++) {
+        temp_img = document.createElement("img");
+        temp_img.id = i;
+        temp_img.className = "playercard";
+        temp_img.src = "res/img/cards/current/" + i +".png";
+        cardDeck.push(temp_img);
+    }
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function getCards(){
+
+        getCard("playerhand");
+
+    setTimeout(function () {
+        getCard("dealerhand");
+    }, 1500);
+
+
+}
+
 function drawCommunityCard(number){
-    let image = document.createElement("img");
-    image.className = "playercard";
-    image.src = "res/img/cards/current/" + number +".png";
+    let randomCardIndex = getRandomInt(cardDeck.length);
+    let image = cardDeck[randomCardIndex];
+    //let image = cardDeck[number];
+
+    cardDeck.splice(randomCardIndex,1);
 
 
     let div = document.getElementById("deck");
@@ -273,28 +190,38 @@ function drawCommunityCard(number){
     let middlehand = document.getElementById("middlehand");
     let middlewrapper = document.getElementById("middlewrapper");
     let count = middlehand.childElementCount;
+    let main = document.getElementById("main");
     let screenwidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    let card_padding = 5;
+    let card_padding = 10;
     if(screenwidth < 768){
-        card_padding = 2;
+        card_padding = 4;
     }
+    let main_padding = parseInt(window.getComputedStyle(main, null).getPropertyValue('padding'), 10);
+    console.log("ter " + middlepart.offsetLeft);
+
     div.append(image);
-    let x = middlepart.offsetWidth - div.offsetWidth - ((middlewrapper.offsetWidth - middlehand.offsetWidth) / 2) - (card_padding*3) - (count * (div.offsetWidth + (card_padding*2)));
+
+    let x = middlehand.offsetWidth + middlewrapper.offsetLeft + div.offsetWidth - 2.5 - (count*(div.offsetWidth + card_padding));
+
+    /*if(screenwidth < 768){
+        x = middlehand.offsetWidth - (count*(div.offsetWidth + card_padding)) - 2;
+    }*/
+
 
     setTimeout(function () {
         image.style.zIndex = '10000';
-        image.style.transitionDuration = '0.5s';
+        image.style.transitionDuration = '1s';
         image.style.transform = 'translate('+ x + 'px,'+ 0 +'px)';
         setTimeout(function () {
             image.style.transitionDuration = '';
             image.style.transform = '';
             image.style.zIndex = '0';
             middlehand.append(image);
-        }, 500);
-    }, 1);
+        }, 1000);
+    }, 2);
 }
 
-function drawCard(hand,number,open){
+function getCard(hand){
 
     let div = document.getElementById("deck");
 
@@ -322,302 +249,57 @@ function drawCard(hand,number,open){
             //child.style.left = '"'+child.offsetLeft - (count*((div.clientWidth/2)+5)) + 'px"';
             //child.style.marginRight = "50px";
             setTimeout(function (){
-                child.style.transitionDuration = '0.5s';
+                child.style.transitionDuration = '1s';
                 child.style.transform = 'translate('+ -((div.clientWidth/2)+5)  + 'px,'+ 0 +'px)';
                 setTimeout(function () {
                     child.style.transitionDuration = '';
                     child.style.transform = '';
-                }, 500);
-            }, 1);
+                }, 1000);
+            }, 0);
 
         }
 
+
+
+
     let y;
-    let image = document.createElement("img");
-    image.className = "playercard";
     switch (hand){
         case "dealerhand": {
-            y = -middle.offsetHeight/2 - (div1.offsetHeight/2) - document.getElementById("pot_main").offsetHeight;
-            if(open){
-                image.src = "res/img/cards/current/" + number +".png";
-            }
-            else {
-                image.src = "res/img/cards/current/red_back.png";
-            }
+            y = -middle.offsetHeight/2 - (div1.offsetHeight/2);
             break;
         }
         case "playerhand":{
             y = middle.offsetHeight/2 + (div1.offsetHeight/2) + document.getElementById("controls").offsetHeight;
-            image.src = "res/img/cards/current/" + number +".png";
             break;
         }
     }
 
     console.log("X " + x);
-
-
-
+    let randomCardIndex = getRandomInt(cardDeck.length);
+    let image = cardDeck[randomCardIndex];
 
     console.log("Wdidht " + screenwidth);
+    cardDeck.splice(randomCardIndex,1);
     div.append(image);
     setTimeout(function () {
         image.style.zIndex = '10000';
-        image.style.transitionDuration = '0.5s';
+        image.style.transitionDuration = '1s';
         image.style.transform = 'translate('+ x + 'px,'+ y +'px)';
         setTimeout(function () {
             image.style.transitionDuration = '';
             image.style.transform = '';
             image.style.zIndex = '0';
             div1.append(image);
-        }, 500);
-    }, 1);
+        }, 1000);
+    }, 2);
 //167,795 + 143,845 + 48  hälfte middlepart + h#lfte von playerhand + controls height --> y
 
     //main width / 2 - shadow width - card width / 2 - 10px margin -->x
-}
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
 
-function createDeck(deckamounts) {
-    deck = new Array(deckamounts * 52);
-    for (let i = 0; i < deck.length; i++) {
-        deck[i] = i % 52;
-    }
-}
-
-function getCard(hand,open) {
-    let randomCardIndex = getRandomInt(deck.length);
-    switch (hand) {
-        case 'dealerhand': {
-            dealerhand.push(deck[randomCardIndex]);
-            drawCard(hand,deck[randomCardIndex],open);
-            break;
-        }
-        case 'playerhand': {
-            playerhand.push(deck[randomCardIndex]);
-            drawCard(hand,deck[randomCardIndex],open);
-            break;
-        }
-        case 'middlehand': {
-            middlehand.push(deck[randomCardIndex]);
-            drawCommunityCard(deck[randomCardIndex]);
-            break;
-        }
-    }
-
-    deck.splice(randomCardIndex,1);
-}
-
-function playFiveCardDraw() {
-    gamerunning = true;
-    rounds = 0;
-    createDeck(1);
-    setTimeout(function () {getCard("dealerhand", false);}, 1000);
-    setTimeout(function () {getCard("playerhand", true);}, 2000);
-    setTimeout(function () {getCard("dealerhand", false);}, 3000);
-    setTimeout(function () {getCard("playerhand", true);}, 4000);
-    setTimeout(function () {getCard("dealerhand", false);}, 5000);
-    setTimeout(function () {getCard("playerhand", true);}, 6000);
-    setTimeout(function () {getCard("dealerhand", false);}, 7000);
-    setTimeout(function () {getCard("playerhand", true);}, 8000);
-    setTimeout(function () {getCard("dealerhand", false);}, 9000);
-    setTimeout(function () {getCard("playerhand", true);}, 10000);
-}
-
-function playTexasHoldem() {
-    gamerunning = true;
-    rounds = 0;
-    createDeck(1);
-    setTimeout(function () {getCard("dealerhand", false);}, 1000);
-    setTimeout(function () {getCard("playerhand", true);}, 2000);
-    setTimeout(function () {getCard("dealerhand", false);}, 3000);
-    setTimeout(function () {getCard("playerhand", true);}, 4000);
-}
-
-function playBlackJack() {
-    gamerunning = true;
-    createDeck(4);
-    setTimeout(function () {getCard("dealerhand", false);}, 1000);
-    setTimeout(function () {getCard("playerhand", true);}, 2000);
-    setTimeout(function () {getCard("dealerhand", true);}, 3000);
-    setTimeout(function () {getCard("playerhand", true);}, 4000);
-}
-
-function PokerCall() {
-    getUserMoney(username);
-    if(playerbet < dealerbet && playerbudget >= dealerbet - playerbet) {
-        //take player money
-    }
-    PokerDealerMove();
-}
-
-function PokerRaise(isplayerbet, raise) {
-    getUserMoney(username);
-    pot += raise;
-
-    if(isplayerbet && raise <= playerbudget) {
-        playerbet += raise;
-        PokerDealerMove();
-    } else {
-        dealerbet += raise;
-    }
-}
-
-function PokerFold(pokertype) {
-    //confirm window
-    if(confirm("Fold Cards?")){
-        gamerunning = false;
-        endGame();
-        if(pokertype === "TH") {
-            playTexasHoldem();
-        } else if(pokertype === "FCD"){
-            playFiveCardDraw();
-        }
-    }
 
 }
 
-function PokerDealerMove() {
-    $("button").disabled = true;
-    if(dealerbet < playerbet) {
-        PokerRaise(false, playerbet - dealerbet);
-    }
-    else if(dealerbet === playerbet) {
-        switch (rounds) {
-            case 0: {
-                setTimeout(function () {getCard("middlehand", true);}, 500);
-                setTimeout(function () {getCard("middlehand", true);}, 1000);
-                setTimeout(function () {getCard("middlehand", true);}, 2000);
-                break;
-            }
-            case 1: {
-                setTimeout(function () {getCard("middlehand", true);}, 500);
-                break;
-            }
-            case 2: {
-                setTimeout(function () {getCard("middlehand", true);}, 500);
-                break;
-            }
-            case 3: {
-                checkTexasHoldem();
-                break;
-            }
-        }
-        rounds++;
-    }
-
-    $("button").disabled = false;
-}
-
-function  checkTexasHoldem() {
-    alert("Showdown" + dealerhand[0] + ", " + dealerhand[1]);
-    endGame();
-}
-
-function checkPokerHand(hand) {
-    let ofakind = 0;
-    let color = [];
-    color[0] = 0;
-    color[1] = 0;
-    color[2] = 0;
-    color[3] = 0;
-    let samecolor = false;
-
-    for (let i = 0; i < 5; i++) {
-        if(hand[i] >= 0 && hand[i] <= 12) {
-            color[0]++;
-        } else if(hand[i] >= 13 && hand[i] <= 25) {
-            color[1]++;
-        } else if(hand[i] >= 26 && hand[i] <= 38) {
-            color[2]++;
-        } else if(hand[i] >= 39 && hand[i] <= 51) {
-            color[3]++;
-        }
-
-        //sortier array
-        //geh durch ob aufeinanderfolgend
-
-        for (let j = 0; j < 5; j++) {
-            if (i !== j && (hand[i] % 13 + 1) === (hand[j] % 13 + 1)) {
-                ofakind++;
-            }
-        }
-    }
-
-    for(let i = 0; i < 4; i++) {
-        if(samecolor && color[i] !== 0) {
-            samecolor = false;
-            break;
-        }
-
-        if(color[i] > 0) {
-            samecolor = true;
-        }
-    }
-    ofakind /= 2;
-}
-function PokerDraw(selectedCards) {
-
-}
-
-function BJHit() {
-    let handvalue = 0;
-    let cardvalue = 0;
-    let acecount = 0;
-    getCard("playerhand");
-    for (let i = 0; i < playerhand.length; i++) {
-        cardvalue = (playerhand[i] % 13) + 1;
-        if(cardvalue > 10) {
-            cardvalue = 10;
-        }
-        if(cardvalue === 1) {
-            acecount++;
-            cardvalue = 11;
-        }
-
-        handvalue += cardvalue;
-    }
-}
-
-function endGame() {
-    deck = [];
-    playerhand = [];
-    dealerhand = [];
-    pot = 0;
-    playerbet = 0;
-    dealerbet = 0;
-    rounds = 0;
-
-    while(document.getElementById("playerhand").firstChild) {
-        document.getElementById("playerhand").removeChild(document.getElementById("playerhand").firstChild);
-    }
-
-    while(document.getElementById("dealerhand").firstChild) {
-        document.getElementById("dealerhand").removeChild(document.getElementById("dealerhand").firstChild);
-    }
-
-    while(document.getElementById("middlehand").firstChild) {
-        document.getElementById("middlehand").removeChild(document.getElementById("middlehand").firstChild);
-    }
-}
-function checkBlackJack(hand) {
-    if(handvalue >= 21) {
-        if(handvalue === 21) {
-            //endGame(won);
-        }
-        else if(handvalue > 21) {
-            do {
-                handvalue -= 10;
-                acecount--;
-            } while (handvalue > 21 && acecount > 0)
-
-            //endGame(lost);
-        }
-
-    }
-}
 
 function loadProfile(currentUser) {
 
@@ -689,24 +371,6 @@ function saveSettings() {
         },
         error: function (request, status, error) {
             alert("Failed to update User");
-        }
-    });
-}
-
-function removeMoney(money){
-    let data = {user: username, rmMoney: money};
-    $.ajax
-    ({
-        type: "POST",
-        url: "./inc/serviceHandler.php",
-        data: JSON.stringify(data),
-        cache: false,
-        dataType: "json",
-        success: function () {
-            getUserMoney(username);
-        },
-        error: function (request, status, error) {
-            alert("Error");
         }
     });
 }

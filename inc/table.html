@@ -11,20 +11,46 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                <table class="table" id="usertable">
-                                    <thead id="usertable-head">
-                                        <tr class="">
-                                            <th class="col-4">Name</th>
-                                            <th class="col-4">Email</th>
-                                            <th class="col-2">Money <i class="fas fa-euro-sign"></i></th>
-                                            <th class="col-1">Active</th>
-                                            <th class="col-1">Ban</th>
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Money <i class="fas fa-euro-sign"></i></th>
+                                            <th>Active</th>
+                                            <th>Banned</th>
                                         </tr>
                                     </thead>
                                     <tbody id="usertable-body">
 
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Name</strong></td>
+                                            <td><strong>Email</strong></td>
+                                            <td><strong>Money <i class="fas fa-euro-sign"></i></strong></td>
+                                            <td><strong>Active</strong></td>
+                                            <td><strong>Banned</strong></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 align-self-center">
+                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
