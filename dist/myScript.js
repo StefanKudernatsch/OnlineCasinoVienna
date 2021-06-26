@@ -4,7 +4,6 @@ let selected;
 var deck = [];
 var playerhand = [];
 var dealerhand = [];
-var middlehand = [];
 let pot = 0;
 let playerbet = 0;
 let dealerbet = 0;
@@ -23,7 +22,7 @@ $(document).ready(function () {
     console.log(selected);
 
     if(window.location.search === "?page=UserForm&selected=" + selected) {
-            loadProfile(selected);
+        loadProfile(selected);
     }
     else if(window.location.search === "?page=UserForm"){
         if(username !== undefined)
@@ -31,10 +30,17 @@ $(document).ready(function () {
     }
     else if(window.location.search === "?page=BlackJack"){
 
+        if(username === "admin") {
+            window.location.href = "?page=home";
+        }
+
         if(username !== undefined){
+            /*
             getUserMoney(username);
             $('#startModal').modal({backdrop: 'static', keyboard: false})
             $("#startModal").modal('show');
+             */
+            StartModal();
             document.getElementById("game-button-1").setAttribute("onclick", "BJHit()");
             document.getElementById("game-button-1").textContent = "Hit";
             document.getElementById("game-button-2").setAttribute("onclick", "BJStand()");
@@ -53,24 +59,30 @@ $(document).ready(function () {
     }
     else if(window.location.search === "?page=TexasHoldem" || window.location.search === "?page=FiveCardDraw") {
 
+        if(username === "admin") {
+            window.location.href = "?page=home";
+        }
+
         if(username !== undefined){
+            /*
             getUserMoney(username);
             $('#startModal').modal({backdrop: 'static', keyboard: false})
             $("#startModal").modal('show');
+             */
+            StartModal();
             document.getElementById("game-button-1").setAttribute("onclick", "PokerCall()");
             document.getElementById("game-button-1").textContent = "Call";
             document.getElementById("game-button-3").setAttribute("onclick", "RaiseModal()");
             document.getElementById("game-button-3-full").textContent = "Raise";
             document.getElementById("game-button-3-short").textContent = "Raise";
+            document.getElementById("game-button-4").setAttribute("onclick", "PokerFold()");
             document.getElementById("game-button-4-full").textContent = "Fold";
             document.getElementById("game-button-4-short").textContent = "Fold";
 
             if(window.location.search === "?page=TexasHoldem") {
-                document.getElementById("game-button-4").setAttribute("onclick", "PokerFold('TH')");
                 document.getElementById("game-button-2").remove();
 
             } else if(window.location.search === "?page=FiveCardDraw") {
-                document.getElementById("game-button-4").setAttribute("onclick", "PokerFold('FCD')");
                 document.getElementById("game-button-2").setAttribute("onclick", "PokerDraw()");
                 document.getElementById("game-button-2").textContent = "Draw";
 
@@ -108,21 +120,33 @@ $(document).ready(function () {
 });
 
 function submitRaise(){
-    $("#raiseModal").modal('hide');
-    if($("#InputRaise").val() !== ""){
+    getUserMoney(username);
+    if(  $("#InputRaise").val() !== "" && $("#InputRaise").val() > 0 && $("#InputRaise").val() <= playerbudget){
+        $("#raiseModal").modal('hide');
         pot = parseInt(pot) + parseInt($("#InputRaise").val());
+        playerbet = parseInt(playerbet) + parseInt($("#InputRaise").val());
         removeMoney($("#InputRaise").val());
         $("#pot").html(pot);
         $("#InputRaise").val("");
+        PokerDealerMove();
     }
 }
 
+function dealerRaise(amount){
+    pot = parseInt(pot) + parseInt(amount);
+    $("#pot").html(pot);
+    dealerbet = parseInt(dealerbet) + parseInt(amount);
+}
+
 function checkInput() {
+
     getUserMoney(username);
     if($("#InputBet").val() >= 10 && $("#InputBet").val() <= playerbudget){
         $("#startModal").modal('hide');
         pot = $("#InputBet").val();
+        playerbet = $("#InputBet").val();
         removeMoney($("#InputBet").val());
+        $("#InputBet").val("");
         $("#pot").html(pot);
         if(window.location.search === "?page=BlackJack") {
             playBlackJack();
@@ -156,6 +180,13 @@ function getUserMoney(user){
 
 function RaiseModal(){
     $("#raiseModal").modal('show');
+}
+
+function StartModal() {
+    $(":button").prop("disabled", false);
+    getUserMoney(username);
+    $('#startModal').modal({backdrop: 'static', keyboard: false})
+    $("#startModal").modal('show');
 }
 
 function getAllUser(){
@@ -262,6 +293,19 @@ function banUser(ban_name){
     });
 }
 
+function showDealerCards() {
+    let div = document.getElementById("dealerhand");
+
+    let children = div.children;
+
+
+    for (let i = 0; i < children.length; i++) {
+        let child = children[i];
+
+        child.src = "res/img/cards/current/" + dealerhand[i] +".png";
+    }
+}
+
 function drawCommunityCard(number){
     let image = document.createElement("img");
     image.className = "playercard";
@@ -316,21 +360,21 @@ function drawCard(hand,number,open){
     let children = div1.children;
 
 
-        for (let i = 0; i < children.length; i++) {
-            let child = children[i];
-            console.log("Xasd " + child.offsetLeft);
-            //child.style.left = '"'+child.offsetLeft - (count*((div.clientWidth/2)+5)) + 'px"';
-            //child.style.marginRight = "50px";
-            setTimeout(function (){
-                child.style.transitionDuration = '0.5s';
-                child.style.transform = 'translate('+ -((div.clientWidth/2)+5)  + 'px,'+ 0 +'px)';
-                setTimeout(function () {
-                    child.style.transitionDuration = '';
-                    child.style.transform = '';
-                }, 500);
-            }, 1);
+    for (let i = 0; i < children.length; i++) {
+        let child = children[i];
+        console.log("Xasd " + child.offsetLeft);
+        //child.style.left = '"'+child.offsetLeft - (count*((div.clientWidth/2)+5)) + 'px"';
+        //child.style.marginRight = "50px";
+        setTimeout(function (){
+            child.style.transitionDuration = '0.5s';
+            child.style.transform = 'translate('+ -((div.clientWidth/2)+5)  + 'px,'+ 0 +'px)';
+            setTimeout(function () {
+                child.style.transitionDuration = '';
+                child.style.transform = '';
+            }, 500);
+        }, 1);
 
-        }
+    }
 
     let y;
     let image = document.createElement("img");
@@ -355,11 +399,9 @@ function drawCard(hand,number,open){
 
     console.log("X " + x);
 
-
-
-
     console.log("Wdidht " + screenwidth);
     div.append(image);
+
     setTimeout(function () {
         image.style.zIndex = '10000';
         image.style.transitionDuration = '0.5s';
@@ -371,6 +413,9 @@ function drawCard(hand,number,open){
             div1.append(image);
         }, 500);
     }, 1);
+
+
+
 //167,795 + 143,845 + 48  hälfte middlepart + h#lfte von playerhand + controls height --> y
 
     //main width / 2 - shadow width - card width / 2 - 10px margin -->x
@@ -401,7 +446,8 @@ function getCard(hand,open) {
             break;
         }
         case 'middlehand': {
-            middlehand.push(deck[randomCardIndex]);
+            dealerhand.push(deck[randomCardIndex]);
+            playerhand.push(deck[randomCardIndex]);
             drawCommunityCard(deck[randomCardIndex]);
             break;
         }
@@ -415,6 +461,7 @@ function playFiveCardDraw() {
     rounds = 0;
     document.getElementById("game-button-2").disabled = true;
     createDeck(1);
+    $(':button').prop('disabled', true);
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
     setTimeout(function () {getCard("playerhand", true);}, 2000);
     setTimeout(function () {getCard("dealerhand", false);}, 3000);
@@ -425,6 +472,8 @@ function playFiveCardDraw() {
     setTimeout(function () {getCard("playerhand", true);}, 8000);
     setTimeout(function () {getCard("dealerhand", false);}, 9000);
     setTimeout(function () {getCard("playerhand", true);}, 10000);
+    setTimeout(function (){$(':button').prop('disabled', false);}, 11000);
+
 }
 
 function refreshFiveCardsDraw() {
@@ -435,22 +484,27 @@ function playTexasHoldem() {
     gamerunning = true;
     rounds = 0;
     createDeck(1);
+    $(':button').prop('disabled', true);
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
     setTimeout(function () {getCard("playerhand", true);}, 2000);
     setTimeout(function () {getCard("dealerhand", false);}, 3000);
     setTimeout(function () {getCard("playerhand", true);}, 4000);
+    setTimeout(function (){$(':button').prop('disabled', false);}, 5000);
 }
 
 function playBlackJack() {
     gamerunning = true;
     createDeck(4);
+    $(':button').prop('disabled', true);
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
     setTimeout(function () {getCard("playerhand", true);}, 2000);
     setTimeout(function () {getCard("dealerhand", true);}, 3000);
     setTimeout(function () {getCard("playerhand", true);}, 4000);
+    setTimeout(function (){$(':button').prop('disabled', false);}, 5000);
 }
 
 function PokerCall() {
+
     if(window.location.search === "?page=FiveCardDraw") {
         switch (rounds) {
             case 0: { //prepare for next round which is the card-swapping round
@@ -509,10 +563,14 @@ function PokerCall() {
         rounds++;
     }
     else {
-
         getUserMoney(username);
+        console.log(playerbet);
         if(playerbet < dealerbet && playerbudget >= dealerbet - playerbet) {
             //take player money
+            pot = parseInt(pot) + (dealerbet - playerbet);
+            removeMoney((dealerbet - playerbet));
+            playerbet = parseInt(playerbet) + (dealerbet - playerbet);
+            $("#pot").html(pot.toString());
         }
         PokerDealerMove();
     }
@@ -674,6 +732,9 @@ function fcd_calculateHand(hand) {
         return 100 + 13;
     } else {
         return 100 + moduloHand[4];
+
+   
+
     }
 
 }
@@ -696,23 +757,11 @@ function isNotThisValue(value) {
     return value != tempCardValue;
 }
 
-function PokerRaise(isplayerbet, raise) {
-    getUserMoney(username);
-    pot += raise;
-
-    if(isplayerbet && raise <= playerbudget) {
-        playerbet += raise;
-        PokerDealerMove();
-    } else {
-        dealerbet += raise;
-    }
-}
-
-function PokerFold(pokertype) {
-    //confirm window
+function PokerFold() {
     if(confirm("Fold Cards?")){
         gamerunning = false;
         endGame();
+
         if(pokertype === "TH") {
             playTexasHoldem();
         } else if(pokertype === "FCD"){
@@ -720,63 +769,87 @@ function PokerFold(pokertype) {
             rounds = 0;
         }
     }
-
 }
 
 function PokerDealerMove() {
-    $("button").disabled = true;
+    $(':button').prop('disabled', true); // Disable all the buttons
     if(dealerbet < playerbet) {
-        PokerRaise(false, playerbet - dealerbet);
+        pot = parseInt(pot) + (playerbet - dealerbet);
+        dealerbet = playerbet;
+        $("#pot").html(pot);
+        console.log("Dealer called");
     }
-    else if(dealerbet === playerbet) {
+
+    if(dealerbet === playerbet) {
         switch (rounds) {
             case 0: {
-                setTimeout(function () {getCard("middlehand", true);}, 500);
                 setTimeout(function () {getCard("middlehand", true);}, 1000);
                 setTimeout(function () {getCard("middlehand", true);}, 2000);
+                setTimeout(function () {getCard("middlehand", true);}, 3000);
+                setTimeout(function () {$(':button').prop('disabled', false);}, 4000);
                 break;
             }
             case 1: {
-                setTimeout(function () {getCard("middlehand", true);}, 500);
+                dealerRaise(50);
+                setTimeout(function () {getCard("middlehand", true);}, 1000);
+                setTimeout(function () {$(':button').prop('disabled', false);}, 2000);
                 break;
             }
             case 2: {
-                setTimeout(function () {getCard("middlehand", true);}, 500);
+                setTimeout(function () {getCard("middlehand", true);}, 1000);
+                setTimeout(function () {$(':button').prop('disabled', false);}, 2000);
                 break;
             }
             case 3: {
-                checkTexasHoldem();
+                showDealerCards();
+                setTimeout(function () {checkTexasHoldem()}, 2000);
+                $(':button').prop('disabled', false);
                 break;
             }
         }
         rounds++;
     }
 
-    $("button").disabled = false;
+
+
 }
 
 function  checkTexasHoldem() {
-    alert("Showdown" + dealerhand[0] + ", " + dealerhand[1]);
+    alert("Showdown " + dealerhand[0] + ", " + dealerhand[1]);
+    checkPokerHand("dealerhand");
+    checkPokerHand("playerhand");
     endGame();
 }
 
 function checkPokerHand(hand) {
+    var cards;
+    if(hand === "dealerhand") {
+        cards = dealerhand;
+    } else if(hand === "playerhand") {
+        cards = playerhand;
+    }
     let ofakind = 0;
+    let flush = false;
     let color = [];
     color[0] = 0;
     color[1] = 0;
     color[2] = 0;
     color[3] = 0;
-    let samecolor = false;
 
-    for (let i = 0; i < 5; i++) {
-        if(hand[i] >= 0 && hand[i] <= 12) {
+    cards.sort(function(a, b){return b-a}); //sort cardvalues descending
+
+    for (let i = 0; i < cards.length; i++) {
+        if(cards[i] >= 0 && cards[i] <= 12) {
+            //clubs
             color[0]++;
-        } else if(hand[i] >= 13 && hand[i] <= 25) {
+        } else if(cards[i] >= 13 && cards[i] <= 25) {
+            //diamonds
             color[1]++;
-        } else if(hand[i] >= 26 && hand[i] <= 38) {
+        } else if(cards[i] >= 26 && cards[i] <= 38) {
+            //hearts
             color[2]++;
-        } else if(hand[i] >= 39 && hand[i] <= 51) {
+        } else if(cards[i] >= 39 && cards[i] <= 51) {
+            //spades
             color[3]++;
         }
 
@@ -784,23 +857,25 @@ function checkPokerHand(hand) {
         //geh durch ob aufeinanderfolgend
 
         for (let j = 0; j < 5; j++) {
-            if (i !== j && (hand[i] % 13 + 1) === (hand[j] % 13 + 1)) {
+            if (i !== j && (cards[i] % 13 + 1) === (cards[j] % 13 + 1)) {
                 ofakind++;
             }
         }
     }
 
-    for(let i = 0; i < 4; i++) {
-        if(samecolor && color[i] !== 0) {
-            samecolor = false;
-            break;
-        }
-
-        if(color[i] > 0) {
-            samecolor = true;
+    for(let i = 0; i < color.length; i++) {
+        if(color[i] >= 5) {
+            flush = true;
         }
     }
     ofakind /= 2;
+    if(ofakind > 0) {
+        alert(ofakind + " of a kind");
+    }
+
+    if(flush) {
+        alert("Flush");
+    }
 }
 function PokerDraw(selectedCards) {
 
@@ -845,7 +920,10 @@ function endGame() {
     while(document.getElementById("middlehand").firstChild) {
         document.getElementById("middlehand").removeChild(document.getElementById("middlehand").firstChild);
     }
+
+    StartModal();
 }
+
 function checkBlackJack(hand) {
     if(handvalue >= 21) {
         if(handvalue === 21) {
@@ -1003,6 +1081,7 @@ function changePassword(){
 }
 
 var tableHeader = "<tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Money</th></tr>";
+
 function searchUsers() {
     let search = $("#searchInput").val();
     $.ajax
@@ -1014,7 +1093,7 @@ function searchUsers() {
         dataType: "json",
         success: function(response) {
             $("#testField").text("");
-            if (response == "null") 
+            if (response == "null")
                 $("#testField").text("Keine Treffer");
             else {
                 let result;
@@ -1025,7 +1104,7 @@ function searchUsers() {
                     result += item;
                     let row = document.createElement("tr");
                     row.setAttribute("onclick", "createMoneyChangeRow(this)");
-                    row.innerHTML = "<td class='test'>" + item["UserID"] + "</td><td>" + item["UserName"] + "</td><td>" + item["UserFirstName"] + 
+                    row.innerHTML = "<td class='test'>" + item["UserID"] + "</td><td>" + item["UserName"] + "</td><td>" + item["UserFirstName"] +
                         "</td><td>" + item["UserLastName"] + "</td><td>" + item["UserEMail"] + "</td><td name='UserMoney'>" + item["UserMoney"] + "</td>";
                     table.append(row);
                 });
@@ -1035,14 +1114,14 @@ function searchUsers() {
             console.log ("ERROR.", textStatus, errorThrown);
         }
     })
-} 
+}
 
 function createMoneyChangeRow(tablerow) {
     let moneyRow = document.getElementsByName("moneyChangeRow");
     //wenn kein moneyChangeRow existiert wird ein neues erstellt
     if (moneyRow[0] == null) {
         insertMoneyChangeRow();
-    // wenn schon eines existiert...
+        // wenn schon eines existiert...
     } else {
         //wenn es next sibling ist, wird nur dieses gelöscht, weil es dem User zugegeordnet ist, auf den man gerade geklickt hat.
         let nextSibling = tablerow.nextSibling;
@@ -1059,13 +1138,13 @@ function createMoneyChangeRow(tablerow) {
                 item.remove();
             });
             insertMoneyChangeRow();
-        } 
+        }
     }
     function insertMoneyChangeRow() {
         let row = document.createElement("tr");
         row.setAttribute("name", "moneyChangeRow");
         row.innerHTML = "<td colspan='4'><input type='text' id='moneyInput' placeholder='Change Money'>"+
-        "<button class='btn btn-primary' style='background-color:skyblue' onclick='changeMoney(this)'>Change Money</button> </td>";
+            "<button class='btn btn-primary' style='background-color:skyblue' onclick='changeMoney(this)'>Change Money</button> </td>";
         tablerow.parentNode.insertBefore(row, tablerow.nextSibling);
     }
 }
@@ -1073,7 +1152,7 @@ function createMoneyChangeRow(tablerow) {
 function changeMoney(button) {
     let moneyDelta = button.parentNode.getElementsByTagName("input")[0].value;
     //selects: button.td.tr.previousTablerow.td at index 0.innerhtml = userID.
-    let userID = button.parentNode.parentNode.previousSibling.getElementsByTagName("td")[0].innerHTML;  
+    let userID = button.parentNode.parentNode.previousSibling.getElementsByTagName("td")[0].innerHTML;
     let data = {UserID: userID, money: moneyDelta, reason: "Admin"};
     $.ajax({
         type: "POST",
@@ -1090,9 +1169,9 @@ function changeMoney(button) {
             banner.setAttribute("colspan", "4");
             banner.setAttribute("name", "successBanner");
             banner.innerHTML = '<div class="alert alert-success alert-dismissible fade show" role="alert">'+
-            '<strong>Money added!</strong>'+
-            '<button type="button" class="close" data-dismiss="alert" onclick="this.parentNode.parentNode.remove()" aria-label="Close">'+
-            '<span aria-hidden="true">&times;</span></button></div>';
+                '<strong>Money added!</strong>'+
+                '<button type="button" class="close" data-dismiss="alert" onclick="this.parentNode.parentNode.remove()" aria-label="Close">'+
+                '<span aria-hidden="true">&times;</span></button></div>';
             // selects button.td.tr.table
             let tablerow = button.parentNode.parentNode;
             tablerow.appendChild(banner);
@@ -1124,7 +1203,7 @@ function buildMoneyAdminPage() {
         searchField.setAttribute("placeholder", "Search...");
         searchField.setAttribute("oninput", "searchUsers()");
         main.appendChild(searchField);
-        
+
         let div = document.createElement("div");
         div.setAttribute("style", "overflow-x:auto");
         div.innerHTML = '<table class="table" id="MoneyAdminTable"><tr>' +

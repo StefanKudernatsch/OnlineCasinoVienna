@@ -154,7 +154,7 @@ if (isset($_POST["photo-submit"])) {
                                             class="border rounded-circle img-profile" style="background-color: white"
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
-                                                                                                                                ?>
+                                            ?>
                                             <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
                                                     log</a>
                                                 <div class="dropdown-divider"></div>
@@ -162,16 +162,16 @@ if (isset($_POST["photo-submit"])) {
                                             </div>
                                         <?php } else { ?>
                                     </span><img class="border rounded-circle img-profile" src="res/assets/img/avatars/standard-image.png"></a>
-                                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
-                                </div>
-                            <?php } ?>
+                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
                             </div>
-                        </li>
-                    </ul>
-                <?php } ?>
-            </div>
-        </nav>
-    </header>
+                            <?php } ?>
+                        </div>
+                    </li>
+                </ul>
+            <?php } ?>
+        </div>
+    </nav>
+</header>
 
 
 <div id="wrapper">
@@ -179,23 +179,23 @@ if (isset($_POST["photo-submit"])) {
          style="border-top: 1px solid #28282f">
 
 
-            <div class="container-fluid d-flex justify-content-center align-items-center p-0">
-                <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
+        <div class="container-fluid d-flex justify-content-center align-items-center p-0">
+            <hr class="sidebar-divider my-0">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
 
-                    <?php
-                    if (!isset($_SESSION["UserName"])) {
+                <?php
+                if (!isset($_SESSION["UserName"])) {
                     ?>
-                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=LogIn">
-                                <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
-                                <div class="sidebar-brand-text"><span>Login</span></div>
-                            </a>
-                        </li>
-                        <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Register">
-                                <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
-                                <div class="sidebar-brand-text"><span>Register</span></div>
-                            </a>
-                        </li>
+                    <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=LogIn">
+                            <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
+                            <div class="sidebar-brand-text"><span>Login</span></div>
+                        </a>
+                    </li>
+                    <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Register">
+                            <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
+                            <div class="sidebar-brand-text"><span>Register</span></div>
+                        </a>
+                    </li>
                     <?php
                 } else { ?>
                     <li class="nav-item zoom-in"><a
@@ -216,150 +216,220 @@ if (isset($_POST["photo-submit"])) {
                             </a>
                         </li>
                         <?php
-                        } else {
-                        ?>
-                            <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=UserForm">
-                                    <div class="sidebar-brand-icon"><i class="fas fa-user"></i></div>
-                                    <div class="sidebar-brand-text"><span>Profile</span></div>
-                                </a>
-                            </li>
-
-                    <?php
-                        }
                     }
                     ?>
-                    <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
-                            <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
-                            <div class="sidebar-brand-text"><span>Guidance</span></div>
+                    <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=logout">
+                            <div class="sidebar-brand-icon"><i class="fas fa-sign-out-alt"></i></div>
+                            <div class="sidebar-brand-text"><span>Logout</span></div>
                         </a>
                     </li>
-                    <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
-                            <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
-                            <div class="sidebar-brand-text"><span>Imprint</span></div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <div>
+
+                    <?php
+                }
+                ?>
+                <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
+                        <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
+                        <div class="sidebar-brand-text"><span>Guidance</span></div>
+                    </a>
+                </li>
+                <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
+                        <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
+                        <div class="sidebar-brand-text"><span>Imprint</span></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <div>
 
                 <main id="main">
                     <?php
                     if (!isset($_GET["page"])) {
 
+                        if (isset($_SESSION["UserName"])) {
+                            include "inc/home.html";
+                        } else {
+                            include "inc/startPage.html";
+                        }
+                    } else {
+                        switch ($_GET["page"]) {
+                            default: {
+                                include "inc/login.html";
+                            }
+                        case 'UserForm': {
+                        if (isset($_SESSION["UserName"])) {
+                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
+                        if ($_SESSION["UserName"] != "admin") {
+                            ?>
+                            <script type="text/javascript">
+                                username = "<?= $_SESSION["UserName"] ?>";
+                            </script>
+                        <?php
+                        } else {
+                        if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]) {
+                        ?>
+                            <script type="text/javascript">
+                                selected = "<?= $_GET["selected"] ?>";
+                            </script>
+                        <?php
+                        }
+                        }
+                        include "inc/profile.html";
+                        } else {
+                            include "inc/login.html";
+                        }
+                        break;
+                        }
+                        case 'UserList': {
+                            if ($_SESSION["UserName"] == "admin") {
+                                include "inc/table.html";
+                            } else {
+                                include "inc/profile.html";
+                            }
+
+                            break;
+                        }
+                        case 'home': {
                             if (isset($_SESSION["UserName"])) {
                                 include "inc/home.html";
                             } else {
                                 include "inc/startPage.html";
                             }
-                        } else {
-                            switch ($_GET["page"]) {
-                                default: {
-                                        include "inc/login.html";
-                                    }
-                                case 'UserForm': {
-                                        if (isset($_SESSION["UserName"])) {
-                                            $temp_user = $DB->getUserWithName($_SESSION["UserName"]);
-                                            if ($_SESSION["UserName"] != "admin") {
-                        ?>
-                                                <script type="text/javascript">
-                                                    username = "<?= $_SESSION["UserName"] ?>";
-                                                </script>
-                                                <?php
-                                            } else {
-                                                if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]) {
-                                                ?>
-                                                    <script type="text/javascript">
-                                                        selected = "<?= $_GET["selected"] ?>";
-                                                    </script>
-                                            <?php
-                                                }
-                                            }
-                                            include "inc/profile.html";
-                                        } else {
-                                            include "inc/login.html";
-                                        }
-                                        break;
-                                    }
-                                case 'UserList': {
-                                        if ($_SESSION["UserName"] == "admin") {
-                                            include "inc/table.html";
-                                        } else {
-                                            include "inc/profile.html";
-                                        }
 
-                                        break;
-                                    }
-                                case 'home': {
-                                        if (isset($_SESSION["UserName"])) {
-                                            include "inc/home.html";
-                                        } else {
-                                            include "inc/startPage.html";
-                                        }
+                            break;
+                        }
+                        case 'LogIn': {
+                            include "inc/login.html";
+                            break;
+                        }
+                        case 'Register': {
+                            include "inc/register.html";
+                            break;
+                        }
+                        case 'Guidance': {
+                            include "inc/anleitungen.html";
+                            break;
+                        }
+                        case 'Imprint': {
+                            include "inc/impressum.html";
+                            break;
+                        }
+                        case 'logout': {
+                            setcookie("CookieName", "", time() - 3600);
+                            unset($_SESSION["UserName"]);
+                            session_destroy();
+                            header("Location: index.php");
+                            break;
+                        }
+                        case 'moneyAdmin': {
+                            if (isset($_SESSION["UserName"])) {
+                            ?>
 
-                                        break;
-                                    }
-                                case 'LogIn': {
-                                        include "inc/login.html";
-                                        break;
-                                    }
-                                case 'Register': {
-                                        include "inc/register.html";
-                                        break;
-                                    }
-                                case 'Guidance': {
-                                        include "inc/anleitungen.html";
-                                        break;
-                                    }
-                                case 'Imprint': {
-                                        include "inc/impressum.html";
-                                        break;
-                                    }
-                                case 'logout': {
-                                        setcookie("CookieName", "", time() - 3600);
-                                        unset($_SESSION["UserName"]);
-                                        session_destroy();
-                                        header("Location: index.php");
-                                        break;
-                                    }
-                                case 'moneyAdmin': {
-                                    if (isset($_SESSION["UserName"])) {
-                                        ?>
+                                <script type="text/javascript">
+                                    username = "<?= $_SESSION["UserName"] ?>";
+                                </script>
+                                <?php
+                            } else {
+                                if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]) {
+                                    ?>
                                         <script type="text/javascript">
-                                            username = "<?= $_SESSION["UserName"] ?>";
+                                            selected = "<?= $_GET["selected"] ?>";
                                         </script>
-                                        <?php             
+                                <?php
                                 }
-                                include "inc/moneyAdmin.html";
+                            }
+                                include "inc/profile.html";
+                            } else {
+                                include "inc/login.html";
+                            }
+                                break;
+                                }
+                        case 'UserList': {
+                                if ($_SESSION["UserName"] == "admin") {
+                                    include "inc/table.html";
+                                } else {
+                                    include "inc/profile.html";
+                                }
+
                                 break;
                             }
-                            case 'BlackJack': {
-
-                            }
-                            case 'TexasHoldem': {
-
-                            }
-                            case 'FiveCardDraw': {
+                        case 'home': {
                                 if (isset($_SESSION["UserName"])) {
-                            ?>
+                                    include "inc/home.html";
+                                } else {
+                                    include "inc/startPage.html";
+                                }
+
+                                break;
+                            }
+                        case 'LogIn': {
+                                include "inc/login.html";
+                                break;
+                            }
+                        case 'Register': {
+                                include "inc/register.html";
+                                break;
+                            }
+                        case 'Guidance': {
+                                include "inc/anleitungen.html";
+                                break;
+                            }
+                        case 'Imprint': {
+                                include "inc/impressum.html";
+                                break;
+                            }
+                        case 'logout': {
+                                setcookie("CookieName", "", time() - 3600);
+                                unset($_SESSION["UserName"]);
+                                session_destroy();
+                                header("Location: index.php");
+                                break;
+                            }
+                        case 'moneyAdmin': {
+                            if (isset($_SESSION["UserName"])) {
+                                ?>
+                                <script type="text/javascript">
+                                    username = "<?= $_SESSION["UserName"] ?>";
+                                </script>
+                                <?php             
+                            }
+                            include "inc/moneyAdmin.html";
+                            break;
+                        }
+                        case 'BlackJack': {
+
+                            <script type="text/javascript">
+                                username = "<?= $_SESSION["UserName"] ?>";
+                            </script>
+                        <?php
+                        }
+                        break;
+                        }
+                       
+                        case 'TexasHoldem': {
+
+                        }
+                        case 'FiveCardDraw': {
+                        if (isset($_SESSION["UserName"])) {
+                        ?>
                             <script type="text/javascript">
                                 username = "<?= $_SESSION["UserName"] ?>";
                             </script>
                             <?php
-                                    include "inc/game.html";
-                                } else {
-                                    include "inc/startPage.html";
-                                }
+                            include "inc/game.html";
+                        } else {
+                            include "inc/startPage.html";
+                        }
                             break;
-                            }
+                        }
                         }
                     }
-                        ?>
-                    </main>
-                </div>
+                    ?>
+                </main>
             </div>
+        </div>
         <footer>
             <nav class="navbar navbar-dark navbar-expand topbar nav-fill w-100" style="background-color: #212529"
                  id="bottombar">
@@ -399,17 +469,17 @@ if (isset($_POST["photo-submit"])) {
                             </li>
 
                             <?php
-                        } else {
-                            ?>
-                            <li class="nav-item zoom-in"><a
-                                        class="nav-link"
-                                        href="?page=UserForm">
-                                    <div class="topbar-icon"><i class="fas fa-user"></i></div>
-                                </a>
-                            </li>
+                        } ?>
 
-                            <?php
-                        }
+                        <li class="nav-item zoom-in"><a
+                                    class="nav-link"
+                                    href="?page=logout">
+                                <div class="topbar-icon"><i class="fas fa-sign-out-alt"></i></div>
+                            </a>
+                        </li>
+
+                        <?php
+
                     }
                     ?>
                     <li class="nav-item zoom-in"><a class="nav-link" href="?page=Guidance">
