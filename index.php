@@ -325,12 +325,12 @@ if (isset($_POST["photo-submit"])) {
                                         break;
                                     }
                                 case 'moneyAdmin': {
-                                        if (isset($_SESSION["UserName"])) {
-                                           ?>
-                            <script type="text/javascript">
-                                username = "<?= $_SESSION["UserName"] ?>";
-                            </script>
-                        <?php             
+                                    if (isset($_SESSION["UserName"])) {
+                                        ?>
+                                        <script type="text/javascript">
+                                            username = "<?= $_SESSION["UserName"] ?>";
+                                        </script>
+                                        <?php             
                                 }
                                 include "inc/moneyAdmin.html";
                                 break;

@@ -56,7 +56,7 @@ class simpleLogic {
                 break;
             }
             case "addMoney": {
-                $res = $this->DB->addMoney($param, $param2, $param3);
+                $res = $this->DB->addMoney($this->DB->getUserWithName($param)->getUserID(), $param2, $param3);
                 break;
             }
             case "rmMoney": {
