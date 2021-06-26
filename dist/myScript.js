@@ -459,6 +459,7 @@ function getCard(hand,open) {
 function playFiveCardDraw() {
     gamerunning = true;
     rounds = 0;
+    document.getElementById("game-button-2").disabled = true;
     createDeck(1);
     $(':button').prop('disabled', true);
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
@@ -472,6 +473,10 @@ function playFiveCardDraw() {
     setTimeout(function () {getCard("dealerhand", false);}, 9000);
     setTimeout(function () {getCard("playerhand", true);}, 10000);
     setTimeout(function (){$(':button').prop('disabled', false);}, 11000);
+
+}
+
+function refreshFiveCardsDraw() {
 
 }
 
@@ -499,22 +504,270 @@ function playBlackJack() {
 }
 
 function PokerCall() {
-    getUserMoney(username);
-    console.log(playerbet);
-    if(playerbet < dealerbet && playerbudget >= dealerbet - playerbet) {
-        //take player money
-        pot = parseInt(pot) + (dealerbet - playerbet);
-        removeMoney((dealerbet - playerbet));
-        playerbet = parseInt(playerbet) + (dealerbet - playerbet);
-        $("#pot").html(pot.toString());
+
+    if(window.location.search === "?page=FiveCardDraw") {
+        switch (rounds) {
+            case 0: { //prepare for next round which is the card-swapping round
+                console.log("Card-swapping round");
+
+                //give cards a onclick event
+                let cards = document.getElementById("playerhand").childNodes;
+                for (let i = 1; i < 6; i++) {
+                    cards[i].setAttribute("onClick", "swapCard(this)");
+                }
+                //disable raise button
+                document.getElementById("game-button-3").disabled = true;
+                break;
+            }
+            case 1: { //prepare for next round which is the secont bet round
+                console.log("Second Bet Round");
+
+                //remove onClick event from the cards
+                let cards = document.getElementById("playerhand").childNodes;
+                for (let i = 1; i < 6; i++) {
+                    cards[i].setAttribute("onClick", "");
+                }
+
+                //activate raise button
+                document.getElementById("game-button-3").disabled = false;
+                break;
+            }
+            case 2: { //showdown
+
+                playerhand = [41, 14, 26, 16, 4];
+
+
+                console.log("Showdown");
+                console.log(username);
+                let playerPoints = fcd_calculateHand(playerhand);
+                console.log("Playerhand points: " + playerPoints);
+                let dealerPoints = fcd_calculateHand(dealerhand);
+
+                let message = "";
+                if (playerPoints > dealerPoints) {
+                    //Player wins. So he gets twice the pot, since the dealer never put money in the pot right?
+                    message = "You won!";
+                    addMoney(10);
+                } else if (playerPoints < dealerPoints) {
+                    //Dealer wins
+                    message = "Dealer won.";
+                } else {
+                    //Pot gets split. So Player gets the pot back e.g. all of his bets.
+                    message = "Tie! Pot gets split!"
+                }
+                alert(message + " \nYour Hand: " + playerhand + "\nDealer Hand: " + dealerhand);
+                break;
+            }
+
+        }
+        rounds++;
     }
-    PokerDealerMove();
+    else {
+        getUserMoney(username);
+        console.log(playerbet);
+        if(playerbet < dealerbet && playerbudget >= dealerbet - playerbet) {
+            //take player money
+            pot = parseInt(pot) + (dealerbet - playerbet);
+            removeMoney((dealerbet - playerbet));
+            playerbet = parseInt(playerbet) + (dealerbet - playerbet);
+            $("#pot").html(pot.toString());
+        }
+        PokerDealerMove();
+    }
+}
+
+
+
+function fcd_calculateHand(hand) {
+    // give every possible combination one unique (!) number.
+
+    // Hand sortieren aufsteigend
+    hand.sort(function(a, b){return a-b})
+
+    // four royal flushes ... kann ich noch umschreiben. hand sortieren und nur ersten und letzten wert prüfen
+    // return points = 1000
+    if (hand.find(value => value == 26 ) && hand.find(value => value == 35 ) && hand.find(value => value == 36 ) 
+        && hand.find(value => value == 37 ) && hand.find(value => value == 38)) return 1000;
+    else if (hand.find(value => value == 13 ) && hand.find(value => value == 25 ) && hand.find(value => value == 24 ) 
+        && hand.find(value => value == 23 ) && hand.find(value => value == 22)) return 1000;
+    else if (hand.find(value => value == 39 ) && hand.find(value => value == 51 ) && hand.find(value => value == 50 ) 
+        && hand.find(value => value == 49 ) && hand.find(value => value == 48)) return 1000;
+    else if (hand.find(value => value == 0 ) && hand.find(value => value == 12 ) && hand.find(value => value == 11 ) 
+        && hand.find(value => value == 10 ) && hand.find(value => value == 9)) return 1000;
+    
+    // Straight flushes
+    if (hand[0] >= 0 && hand[4] <= 12 || hand[0] >= 13 && hand[4] <= 25 || hand[0] >= 26 && hand[4] <= 38 || hand[0] >= 39 && hand[4] <= 51) {
+        //all cards are of the same color
+
+        if (hand[0] % 13 == 0) { //try with ace at the end of the straight
+            if (hand[1] % 13 == 9 && hand[4] % 13 == 12 ) {
+                console.log("Straight Flush! Hand: " + hand);
+                return 900 + 13; //add the highest card to the return score (in this case Ace = 13).
+            }
+        } else if (hand[0] + 4 == hand[4]) {
+            console.log("Straight Flush! Hand: " + hand);
+            return 900 + hand[4] % 13; //all in order, ace maybe at the start of the straight. Add the highest card to the return score
+        }
+    }
+
+    //hand[] in modulohand[] kopieren
+    let moduloHand = [];
+    for (let i = 0; i < hand.length; i++) {
+        moduloHand[i] = hand[i];
+    }
+
+    // Pairs, Trips, Quads etc zählen (auch für Full House)
+    // alles modolo rechen und zählen wie oft die gleiche Zahl drinnen ist
+    for (let i = 0; i < moduloHand.length; i++) {
+        moduloHand[i] = moduloHand[i] % 13;
+
+    }
+    let counts = {}
+    for (let i = 0; i < moduloHand.length; i++) {
+        if (counts[moduloHand[i]]) {
+            counts[moduloHand[i]] += 1;
+        } else {
+            counts[moduloHand[i]] = 1;
+        }
+    }
+    moduloHand.sort(function(a, b){return a-b})
+    console.log("Modulo Hand: ", moduloHand);
+    console.log("Counts: ", counts);
+
+    // Quads
+    // search in counts{} if one card was counted 4 times
+    for (let i = 0; i < moduloHand.length; i++) {
+        if (counts[moduloHand[i]] == 4) {
+        console.log("Quads! Hand: " + hand);
+            if (moduloHand[i] == 0) //Ace is highest card
+                return 800 + 13;
+            else
+                return 800 + moduloHand[i];
+        }
+    }
+
+    // Full House
+    for (let i = 0; i < moduloHand.length; i++) {
+        if (counts[moduloHand[i]] == 3) { // Search for Trips
+            for (let j = 0; j < moduloHand.length; j++) {
+                if (counts[moduloHand[j]] == 2) { // Search for pairs
+                    console.log("Full House! Hand: " + hand)
+                    if (moduloHand[i] == 0) // Ace is highest card
+                        return 700 + 13;
+                    else
+                        return 700 + moduloHand[i];
+                }
+            }
+        }
+    }
+
+    // Flushes
+    if ((hand[0] >= 0 && hand[4] <= 12) || (hand[0] >= 13 && hand[4] <= 25) ||  
+    (hand[0] >= 26 && hand[4] <= 38) || (hand[0] >= 39 && hand[4] <= 51)) {
+        console.log("Flush! Hand: " + hand);
+        if (hand[4] % 13 == 0) 
+            return 600 + 13;
+        else 
+            return 600 + hand[4] % 13;
+    }
+
+    // Straight = return 500 - 513
+    if (moduloHand[0] % 13 == 0) { // At least one ace is in the hand
+        if (moduloHand[1] % 13 == 9 && moduloHand[4] % 13 == 12 ) { //try with ace at the end of the straight
+            console.log("Straight! Hand: " + hand);
+            return 500 + 13; //add the highest card to the return score (in this case Ace = 13).
+        } else if (moduloHand[1] % 13 == 1 && moduloHand[4] % 13 == 4) { // try with ace at the beginning of the straight
+            console.log("Straight! Hand: " + hand);
+            return 500 + 13;
+        }
+    } else if (moduloHand[0] + 4 == moduloHand[4]) { // no ace but straight
+        console.log("Straight! Hand: " + hand);
+        return 500 + moduloHand[4] % 13; //all in order, no ace in the straight. Add the highest card to the return score
+    }
+
+    // Trips
+    // search in counts{} if one card was counted 3 times
+    for (let i = 0; i < moduloHand.length; i++) {
+        if (counts[moduloHand[i]] == 3) {
+        console.log("Trips! Hand: " + hand);
+            if (moduloHand[i] == 0) //Ace is highest card
+                return 400 + 13;
+            else
+                return 400 + moduloHand[i];
+        }
+    }
+
+    //Two Pairs
+    for (let i = 0; i < moduloHand.length; i++) {
+        if (counts[moduloHand[i]] == 2) { // Search for first pair
+            for (let j = 0; j < moduloHand.length; j++) {
+                if (moduloHand[i] != moduloHand[j]) {
+                    if (counts[moduloHand[j]] == 2) { // Search for second pair
+                        console.log("Two Pairs! Hand: " + hand);
+
+                        if (moduloHand[i] == 0) // Ace is highest card
+                            return 300 + 13;
+                        else
+                            return 300 + moduloHand[i];
+                    }
+                }  
+            }
+        }
+    }
+
+    // Pair
+    for (let i = 0; i < moduloHand.length; i++) {
+        if (counts[moduloHand[i]] == 2) {
+            console.log("Pairs! Hand: " + hand);
+            if (moduloHand[i] == 0) //Ace is highest card
+                return 200 + 13;
+            else
+                return 200 + moduloHand[i];
+        }
+    }
+
+    // Highest Card
+    console.log("Highest Card! Hand: " + hand);
+    if (moduloHand[0] % 13 == 0) {
+        return 100 + 13;
+    } else {
+        return 100 + moduloHand[4];
+
+   
+
+    }
+
+}
+
+let tempCardValue;
+function swapCard(card) {
+    //delete old Card and get new Card
+    card.remove();
+    setTimeout(function () {getCard("playerhand", true);}, 1000);
+
+    //get the old Card Value and delete it from the playerhand[] with .filter()
+    let cardValue = card.getAttribute("src");
+    cardValue = cardValue.slice(22);
+    cardValue = cardValue.substr(0, cardValue.length - 4);
+    tempCardValue = cardValue;
+    playerhand = playerhand.filter(isNotThisValue);
+}
+//callBack function for the playerhand.filter() function in swapCard()
+function isNotThisValue(value) {
+    return value != tempCardValue;
 }
 
 function PokerFold() {
     if(confirm("Fold Cards?")){
         gamerunning = false;
         endGame();
+
+        if(pokertype === "TH") {
+            playTexasHoldem();
+        } else if(pokertype === "FCD"){
+            playFiveCardDraw();
+            rounds = 0;
+        }
     }
 }
 
@@ -773,12 +1026,38 @@ function removeMoney(money){
         dataType: "json",
         success: function () {
             getUserMoney(username);
+            console.log("Money removed!");
         },
         error: function (request, status, error) {
             alert("Error");
         }
     });
 }
+
+
+function addMoney(money){
+    let data = {
+        userID: username,
+        money: money
+    }
+    $.ajax
+    ({
+        type: "POST",
+        url: "./inc/serviceHandler.php",
+        data: JSON.stringify(data),
+        cache: false,
+        dataType: "json",
+        success: function (result) {
+            console.log("money added! (?) ", result);
+            //getUserMoney(username);
+        },
+        error: function (request, status, error) {
+            console.log("Error : ", status, ", ", error);
+        }
+    });
+}
+
+
 
 function changePassword(){
     let id = user[0];

@@ -324,19 +324,90 @@ if (isset($_POST["photo-submit"])) {
                             break;
                         }
                         case 'moneyAdmin': {
-                        if (isset($_SESSION["UserName"])) {
-                        ?>
+                            if (isset($_SESSION["UserName"])) {
+                            ?>
+
+                                <script type="text/javascript">
+                                    username = "<?= $_SESSION["UserName"] ?>";
+                                </script>
+                                <?php
+                            } else {
+                                if ($_SESSION["UserName"] == "admin" || $_SESSION["UserName"] == $_GET["selected"]) {
+                                    ?>
+                                        <script type="text/javascript">
+                                            selected = "<?= $_GET["selected"] ?>";
+                                        </script>
+                                <?php
+                                }
+                            }
+                                include "inc/profile.html";
+                            } else {
+                                include "inc/login.html";
+                            }
+                                break;
+                                }
+                        case 'UserList': {
+                                if ($_SESSION["UserName"] == "admin") {
+                                    include "inc/table.html";
+                                } else {
+                                    include "inc/profile.html";
+                                }
+
+                                break;
+                            }
+                        case 'home': {
+                                if (isset($_SESSION["UserName"])) {
+                                    include "inc/home.html";
+                                } else {
+                                    include "inc/startPage.html";
+                                }
+
+                                break;
+                            }
+                        case 'LogIn': {
+                                include "inc/login.html";
+                                break;
+                            }
+                        case 'Register': {
+                                include "inc/register.html";
+                                break;
+                            }
+                        case 'Guidance': {
+                                include "inc/anleitungen.html";
+                                break;
+                            }
+                        case 'Imprint': {
+                                include "inc/impressum.html";
+                                break;
+                            }
+                        case 'logout': {
+                                setcookie("CookieName", "", time() - 3600);
+                                unset($_SESSION["UserName"]);
+                                session_destroy();
+                                header("Location: index.php");
+                                break;
+                            }
+                        case 'moneyAdmin': {
+                            if (isset($_SESSION["UserName"])) {
+                                ?>
+                                <script type="text/javascript">
+                                    username = "<?= $_SESSION["UserName"] ?>";
+                                </script>
+                                <?php             
+                            }
+                            include "inc/moneyAdmin.html";
+                            break;
+                        }
+                        case 'BlackJack': {
+
                             <script type="text/javascript">
                                 username = "<?= $_SESSION["UserName"] ?>";
                             </script>
                         <?php
                         }
-                        include "inc/moneyAdmin.html";
                         break;
                         }
-                        case 'BlackJack': {
-
-                        }
+                       
                         case 'TexasHoldem': {
 
                         }
