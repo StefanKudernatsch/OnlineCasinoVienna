@@ -403,7 +403,7 @@ if (isset($_POST["photo-submit"])) {
                                 username = "<?= $_SESSION["UserName"] ?>";
                             </script>
                         <?php
-                        
+                            include "inc/game.html";
                         break;
                         }
                        
