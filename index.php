@@ -325,7 +325,7 @@ if (isset($_POST["photo-submit"])) {
                         }
                         case 'moneyAdmin': {
                             if (isset($_SESSION["UserName"])) {
-                            ?>
+                                ?>
 
                                 <script type="text/javascript">
                                     username = "<?= $_SESSION["UserName"] ?>";
@@ -338,14 +338,13 @@ if (isset($_POST["photo-submit"])) {
                                             selected = "<?= $_GET["selected"] ?>";
                                         </script>
                                 <?php
-                                }
-                            }
                                 include "inc/profile.html";
-                            } else {
-                                include "inc/login.html";
-                            }
-                                break;
+                                } else {
+                                    include "inc/login.html";
                                 }
+                                break;
+                            }
+                        }
                         case 'UserList': {
                                 if ($_SESSION["UserName"] == "admin") {
                                     include "inc/table.html";
@@ -399,12 +398,12 @@ if (isset($_POST["photo-submit"])) {
                             break;
                         }
                         case 'BlackJack': {
-
+                        ?>
                             <script type="text/javascript">
                                 username = "<?= $_SESSION["UserName"] ?>";
                             </script>
                         <?php
-                        }
+                        
                         break;
                         }
                        
