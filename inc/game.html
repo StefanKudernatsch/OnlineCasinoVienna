@@ -107,3 +107,82 @@
         </div>
     </div>
 </div>
+
+
+<div id="blackjackwinModal" class='modal fade'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <form method='post'>
+                <div class="modal-header">
+                    <h4 class="modal-title">You win!</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class='modal-body'>
+                    <div class="col">
+                        <h5>Play again?</h5>
+                    </div>
+                </div>
+                <div class='modal-footer'>
+
+                    <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
+                    value='Cancel' id="cancel">
+                    <input type='button' onclick="" class='btn btn-primary' name='restartbj'
+                           value='New Game' id="restartbj" onclick="playBlackJack()">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="blackjackdrawModal" class='modal fade'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <form method='post'>
+                <div class="modal-header">
+                    <h4 class="modal-title">Draw, bet returned</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class='modal-body'>
+                    <div class="col">
+                        <h5>Play again?</h5>
+                    </div>
+                </div>
+                <div class='modal-footer'>
+
+                    <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
+                    value='Cancel' id="cancel">
+                    <input type='button' onclick="" class='btn btn-primary' name='restartbj'
+                           value='New Game' id="restartbj" onclick="playBlackJack()">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="blackjackloseModal" class='modal fade'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <form method='post'>
+                <div class="modal-header">
+                    <h4 class="modal-title">Lost</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class='modal-body'>
+                    <div class="col">
+                        <h5>Play again?</h5>
+                        <div class="input-group mb-3"><input
+                                class="form-control" type="number" placeholder="100" name=""
+                                id="InputRaise" required><span class="input-group-text">€</span></div>
+                    </div>
+                </div>
+                <div class='modal-footer'>
+
+                    <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
+                    value='Cancel' id="cancel">
+                    <input type='button' onclick="" class='btn btn-primary' name='restartbj'
+                           value='New Game' id="restartbj" onclick="playBlackJack()">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
