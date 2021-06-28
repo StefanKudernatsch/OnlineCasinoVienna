@@ -9,6 +9,25 @@ $method = "";
 $param2 = "";
 $param3 = "";
 
+function response($method, $httpStatus, $data)
+{
+    header('Content-Type: application/json');
+    switch ($method) {
+
+        case  "GET":
+            http_response_code($httpStatus);
+            echo(json_encode($data));
+            break;
+
+        case "POST":
+            http_response_code($httpStatus);
+            echo($data);
+            break;
+        default:
+            http_response_code(405);
+            echo "Method not supported yet";
+    }
+}
 
 if ($server_method === "POST") {
     $jsonObj = json_decode(file_get_contents('php://input'));
@@ -30,10 +49,10 @@ if ($server_method === "POST") {
     }
     else if (isset($jsonObj->money)) {
         $method = "addMoney";
-        $param = $jsonObj->UserID;
+        $param = $jsonObj->userID;
         $param2 = $jsonObj->money;
-        $param3 = $jsonObj->reason;
-        $result = $logic->handleRequest($method, $param, $param2, $param3);
+        //$param3 = $jsonObj->reason;
+        $result = $logic->handleRequest($method, $param, $param2, "test");
         response($_SERVER['REQUEST_METHOD'], 200, $result);
     }
     else if (isset($jsonObj->rmMoney)) {
@@ -61,25 +80,6 @@ else if($server_method === "GET"){
 
 
 
-function response($method, $httpStatus, $data)
-{
-    header('Content-Type: application/json');
-    switch ($method) {
-
-        case  "GET":
-            http_response_code($httpStatus);
-            echo(json_encode($data));
-            break;
-
-        case "POST":
-            http_response_code($httpStatus);
-            echo($data);
-            break;
-        default:
-            http_response_code(405);
-            echo "Method not supported yet";
-    }
-}
 
 
 ?>
