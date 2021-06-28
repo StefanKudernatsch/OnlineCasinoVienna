@@ -142,7 +142,9 @@ function submitRaise(){
         removeMoney($("#InputRaise").val());
         $("#pot").html(pot);
         $("#InputRaise").val("");
-        PokerDealerMove();
+        if (window.location.search !== "?page=FiveCardDraw") {
+            PokerDealerMove();
+        }
     }
 }
 
@@ -700,6 +702,11 @@ function playFiveCardDraw() {
     document.getElementById("game-button-2").disabled = true;
     createDeck(1);
     $(':button').prop('disabled', true);
+    let cards = document.getElementById("playerhand").childNodes;
+                
+                for (let i = 0; i < cards.length; i++) {
+                    cards[i].remove();
+                }
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
     setTimeout(function () {getCard("playerhand", true);}, 2000);
     setTimeout(function () {getCard("dealerhand", false);}, 3000);
@@ -711,6 +718,7 @@ function playFiveCardDraw() {
     setTimeout(function () {getCard("dealerhand", false);}, 9000);
     setTimeout(function () {getCard("playerhand", true);}, 10000);
     setTimeout(function (){$(':button').prop('disabled', false);}, 11000);
+    setTimeout(function (){$('#game-button-2').prop('disabled', true);}, 11000);
 
 }
 
@@ -741,27 +749,34 @@ function playBlackJack() {
 }
 
 function PokerCall() {
+    console.log("PokerCall()");
 
     if(window.location.search === "?page=FiveCardDraw") {
+        console.log("rounds: " , rounds);
         switch (rounds) {
             case 0: { //prepare for next round which is the card-swapping round
                 console.log("Card-swapping round");
 
                 //give cards a onclick event
                 let cards = document.getElementById("playerhand").childNodes;
-                for (let i = 1; i < 6; i++) {
+                
+                for (let i = 0; i < cards.length; i++) {
+                    console.log("Playerhand" + cards[i]); //<--- !!!!!!!!!!!!!!!!!!!
                     cards[i].setAttribute("onClick", "swapCard(this)");
                 }
                 //disable raise button
                 document.getElementById("game-button-3").disabled = true;
+
                 break;
             }
             case 1: { //prepare for next round which is the secont bet round
                 console.log("Second Bet Round");
 
+
+
                 //remove onClick event from the cards
                 let cards = document.getElementById("playerhand").childNodes;
-                for (let i = 1; i < 6; i++) {
+                for (let i = 0; i < cards.length; i++) {
                     cards[i].setAttribute("onClick", "");
                 }
 
@@ -770,9 +785,6 @@ function PokerCall() {
                 break;
             }
             case 2: { //showdown
-
-                playerhand = [41, 14, 26, 16, 4];
-
 
                 console.log("Showdown");
                 console.log(username);
@@ -784,7 +796,7 @@ function PokerCall() {
                 if (playerPoints > dealerPoints) {
                     //Player wins. So he gets twice the pot, since the dealer never put money in the pot right?
                     message = "You won!";
-                    addMoney(10);
+                    addMoney(pot * 2);
                 } else if (playerPoints < dealerPoints) {
                     //Dealer wins
                     message = "Dealer won.";
@@ -793,6 +805,7 @@ function PokerCall() {
                     message = "Tie! Pot gets split!"
                 }
                 alert(message + " \nYour Hand: " + playerhand + "\nDealer Hand: " + dealerhand);
+                endGame();
                 break;
             }
 
@@ -823,8 +836,9 @@ function fcd_calculateHand(hand) {
 
     // four royal flushes ... kann ich noch umschreiben. hand sortieren und nur ersten und letzten wert prüfen
     // return points = 1000
-    if (hand.find(value => value == 26 ) && hand.find(value => value == 35 ) && hand.find(value => value == 36 ) 
-        && hand.find(value => value == 37 ) && hand.find(value => value == 38)) return 1000;
+    if (hand[0] == 26 && hand[1] == 35 && hand[4] == 38) return 1000;
+    //if (hand.find(value => value == 26 ) && hand.find(value => value == 35 ) && hand.find(value => value == 36 ) 
+    //    && hand.find(value => value == 37 ) && hand.find(value => value == 38)) return 1000;
     else if (hand.find(value => value == 13 ) && hand.find(value => value == 25 ) && hand.find(value => value == 24 ) 
         && hand.find(value => value == 23 ) && hand.find(value => value == 22)) return 1000;
     else if (hand.find(value => value == 39 ) && hand.find(value => value == 51 ) && hand.find(value => value == 50 ) 
@@ -868,8 +882,6 @@ function fcd_calculateHand(hand) {
         }
     }
     moduloHand.sort(function(a, b){return a-b})
-    console.log("Modulo Hand: ", moduloHand);
-    console.log("Counts: ", counts);
 
     // Quads
     // search in counts{} if one card was counted 4 times
@@ -915,7 +927,7 @@ function fcd_calculateHand(hand) {
             return 500 + 13; //add the highest card to the return score (in this case Ace = 13).
         } else if (moduloHand[1] % 13 == 1 && moduloHand[4] % 13 == 4) { // try with ace at the beginning of the straight
             console.log("Straight! Hand: " + hand);
-            return 500 + 13;
+            return 500 + moduloHand[4];
         }
     } else if (moduloHand[0] + 4 == moduloHand[4]) { // no ace but straight
         console.log("Straight! Hand: " + hand);
@@ -969,11 +981,7 @@ function fcd_calculateHand(hand) {
         return 100 + 13;
     } else {
         return 100 + moduloHand[4];
-
-   
-
     }
-
 }
 
 let tempCardValue;
