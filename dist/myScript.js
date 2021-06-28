@@ -125,7 +125,7 @@ $(document).ready(function () {
 
     $("a").click(function(){
         if(this.id !== document.getElementById("user_dropdown").id) {
-            if(gamerunning && !confirm("Quit Game?")) {
+            if(gamerunning && !confirm("Spiel beenden?")) {
                 return false;
             }
         }
