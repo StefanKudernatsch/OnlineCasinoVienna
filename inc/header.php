@@ -11,25 +11,25 @@
         <li>
             <a href="?page=UserForm">
                 <span class="icon"><i class="fas fa-user-circle fa-lg"></i></span>
-                <span class="title">Profile</span>
+                <span class="title">Profil</span>
             </a>
         </li>
         <li>
             <a href="?page=imprint">
                 <span class="icon"><i class="fas fa-info-circle fa-lg"></i></span>
-                <span class="title">Imprint</span>
+                <span class="title">Impressum</span>
             </a>
         </li>
         <li>
             <a href="?page=help">
                 <span class="icon"><i class="fas fa-question-circle fa-lg"></i></span>
-                <span class="title">Help</span>
+                <span class="title">Hilfe</span>
             </a>
         </li>
         <li class="logout">
             <a href="?page=logout">
                 <span class="icon"><i class="fas fa-sign-out-alt fa-lg"></i></span>
-                <span class="title">Log Out</span>
+                <span class="title">Ausloggen</span>
             </a>
         </li>
     </ul>

@@ -1227,7 +1227,7 @@ function editSettings() {
     console.log("Change");
     $(".form-control").prop("readonly",false);
     $(".form-select").prop("disabled",false);
-    $("#save-edit-user").html("Save Settings");
+    $("#save-edit-user").html("Einstellungen speichern");
     $("#save-edit-user").attr("onclick","saveSettings()");
 }
 
@@ -1253,7 +1253,7 @@ function saveSettings() {
         success: function () {
             $(".form-control").prop("readonly",true);
             $(".form-select").prop("disabled",true);
-            $("#save-edit-user").html("Edit Settings");
+            $("#save-edit-user").html("Einstellungen ändern");
             $("#save-edit-user").attr("onclick","editSettings()");
             $("#logged_user").html(user[8]);
         },
