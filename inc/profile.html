@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Change Password</h4>
+                <h4 class="modal-title">Passwort ändern</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" id="vote-form">
@@ -11,7 +11,7 @@
                         <div class=" main-center">
                             <div class="container col-md-12">
                                 <div class="form-group" id="vote">
-                                    <label for="old_pw" class="cols-sm-2 control-label">Old Password: </label>
+                                    <label for="old_pw" class="cols-sm-2 control-label">Altes Passwort: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
@@ -19,7 +19,7 @@
                                         <input type="password" id="old_pw" name="old_pw"
                                                class="form-control" required="required">
                                     </div>
-                                    <label for="new_pw" class="cols-sm-2 control-label">New Password: </label>
+                                    <label for="new_pw" class="cols-sm-2 control-label">Neues Passwort: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
@@ -27,7 +27,7 @@
                                         <input type="password" id="new_pw" name="new_pw" onchange="validatePassword()"
                                                class="form-control" required="required">
                                     </div>
-                                    <label for="re_pw" class="cols-sm-2 control-label">Repeat: </label>
+                                    <label for="re_pw" class="cols-sm-2 control-label">Passwort wiederholen: </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fas fa-unlock"></i> </span>
@@ -42,8 +42,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="container">
-                        <button id="pw-submit" type="submit" class="btn btn-primary btn-block" name="pw-submit" value="0">Change</button>
-                        <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Close</button>
+                        <button id="pw-submit" type="submit" class="btn btn-primary btn-block" name="pw-submit" value="0">Ändern</button>
+                        <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Schließen</button>
                     </div>
                 </div>
             </form>
@@ -56,7 +56,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Change Photo</h4>
+                <h4 class="modal-title">Foto ändern</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post" id="photo-form" enctype="multipart/form-data">
@@ -67,7 +67,7 @@
                                 <div class="form-group" id="photo">
                                     <div class="input-group" style="border: lightgray solid 1px; border-radius: 10px;">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Upload</span>
+                                            <span class="input-group-text">Hochladen</span>
                                         </div>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="new_photo" name="new_photo">
@@ -80,8 +80,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="container">
-                        <button id="photo-submit" type="submit" class="btn btn-primary btn-block" name="photo-submit" value="0">Change Photo</button>
-                        <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Close</button>
+                        <button id="photo-submit" type="submit" class="btn btn-primary btn-block" name="photo-submit" value="0">Hochladen</button>
+                        <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">Schließen</button>
                     </div>
                 </div>
             </form>
@@ -91,7 +91,7 @@
 
 <div class="container pt-3">
     <form>
-        <h3 class="text-dark mb-4">Profile</h3>
+        <h3 class="text-dark mb-4">Profil</h3>
         <div class="row mb-3">
             <div class="col-lg-4">
                 <div class="card mb-3">
@@ -103,17 +103,17 @@
                             width="160" height="160">
 
                         <div class="d-grid gap-1 mb-3">
-                            <button class="btn btn-secondary btn-sm btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photo_change_modal">Change Photo
+                            <button class="btn btn-secondary btn-sm btn-block" type="button" data-bs-toggle="modal" data-bs-target="#photo_change_modal">Foto ändern
                             </button>
                         </div>
                         <div class="d-grid gap-1 mb-3">
 
                             <button id="change_password_btn" type="button" class="btn btn-danger btn-sm btn-block" data-bs-toggle="modal" data-bs-target="#password_change_modal">
-                                Change Password
+                                Passwort ändern
                             </button>
                         </div>
                         <div class="d-grid gap-1 mb-3">
-                            <button id="save-edit-user" class="btn btn-primary btn-sm btn-block" type="button" onclick="editSettings()">Edit Settings
+                            <button id="save-edit-user" class="btn btn-primary btn-sm btn-block" type="button" onclick="editSettings()">Einstellungen ändern
                             </button>
                         </div>
                     </div>
@@ -124,23 +124,23 @@
                     <div class="col">
                         <div class="card shadow mb-3">
                             <div class="card-header py-3">
-                                <p class="text-primary m-0 fw-bold">User Settings</p>
+                                <p class="text-primary m-0 fw-bold">Benutzerkonto Einstellungen</p>
                             </div>
                             <div class="card-body" style="padding-top: 30px; padding-bottom: 30px;">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group mb-3"><label class="form-label"
-                                                                            for="user[1]"><strong>Gender</strong></label>
+                                                                            for="user[1]"><strong>Geschlecht</strong></label>
                                             <select class="form-select" id="user[1]" name="user[1]" disabled>
-                                                <option disabled selected>Choose...</option>
-                                                <option value="0">Male</option>
-                                                <option value="1">Female</option>
-                                                <option value="2">Other</option>
+                                                <option disabled selected>Auswählen...</option>
+                                                <option value="0">Mann</option>
+                                                <option value="1">Frau</option>
+                                                <option value="2">Andere</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="user[2]"><strong>Birthday</strong></label><input
+                                        <div class="form-group mb-3"><label class="form-label" for="user[2]"><strong>Geburtsdatum</strong></label><input
                                                 class="form-control" id="user[2]"
                                                 name="user[2]" type="date" readonly></div>
                                     </div>
@@ -153,20 +153,20 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group mb-3"><label class="form-label" for="user[10]"><strong>Email
-                                            Address</strong></label><input class="form-control" type="email" id="user[10]"
+                                            </strong></label><input class="form-control" type="email" id="user[10]"
                                                                            placeholder="user@example.com" name="user[10]" readonly>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="user[3]"><strong>First
-                                            Name</strong></label><input class="form-control" type="text" id="user[3]"
+                                        <div class="form-group mb-3"><label class="form-label" for="user[3]"><strong>Vorname
+                                            </strong></label><input class="form-control" type="text" id="user[3]"
                                                                         placeholder="John" name="user[3]" readonly></div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-group mb-3"><label class="form-label" for="user[4]"><strong>Last
-                                            Name</strong></label><input class="form-control" type="text" id="user[4]"
+                                        <div class="form-group mb-3"><label class="form-label" for="user[4]"><strong>Nachname
+                                            </strong></label><input class="form-control" type="text" id="user[4]"
                                                                         placeholder="Doe" name="user[4]" readonly></div>
                                     </div>
                                 </div>
@@ -179,23 +179,23 @@
         </div>
         <div class="card shadow mb-5">
             <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold">Contact Settings</p>
+                <p class="text-primary m-0 fw-bold">Wohnadresse</p>
             </div>
             <div class="card-body" id="contact-settings">
 
                 <div class="form-group mb-3"><label class="form-label"
-                                                    for="user[5]"><strong>Address</strong></label><input
+                                                    for="user[5]"><strong>Adresse</strong></label><input
                         class="form-control" type="text" id="user[5]" placeholder="Höchstädtpl. 6" name="user[5]" readonly>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="form-group mb-3"><label class="form-label"
-                                                            for="user[7]"><strong>City</strong></label><input
+                                                            for="user[7]"><strong>Stadt</strong></label><input
                                 class="form-control" type="text" id="user[7]" placeholder="Wien" name="user[7]" readonly></div>
                     </div>
                     <div class="col">
                         <div class="form-group mb-3"><label class="form-label"
-                                                            for="user[6]"><strong>Post</strong></label><input
+                                                            for="user[6]"><strong>Postleitzahl</strong></label><input
                                 class="form-control" type="number" id="user[6]" placeholder="1200" name="user[6]"
                                 max="9999" min="1000" readonly></div>
                     </div>

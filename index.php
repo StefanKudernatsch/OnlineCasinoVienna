@@ -17,12 +17,12 @@ if (isset($_POST["login-submit"])) {
             if (isset($_POST["RememberMe"])) {
                 setcookie("CookieName", $loginUsername, time() + 3600);
             }
-            echo "<script language='JavaScript'>alert('Login successfully')</script>";
+            echo "<script language='JavaScript'>alert('Erfolgreich eingeloggt')</script>";
         } else {
-            echo "<script language='JavaScript'>alert('Login incorrect')</script>";
+            echo "<script language='JavaScript'>alert('Einloggen fehlgeschlagen')</script>";
         }
     } else {
-        echo "<script language='JavaScript'>alert('Account deactivated')</script>";
+        echo "<script language='JavaScript'>alert('Konto ist deaktiviert')</script>";
     }
 } else if (!isset($_SESSION["UserName"]) && isset($_COOKIE["CookieName"])) {
     $_SESSION["UserName"] = $_COOKIE["CookieName"];
@@ -41,7 +41,7 @@ if (isset($_POST['RegisterUser'])) {
             if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬;-]/', $UserData[$i])) {
 
                 $CheckInput = false;
-                echo "<script language='JavaScript'>alert('Error1 | Special characters are not allowed')</script>";
+                echo "<script language='JavaScript'>alert('Error1 | Sonderzeichen sind nicht erlaubt')</script>";
                 break;
             }
         }
@@ -49,7 +49,7 @@ if (isset($_POST['RegisterUser'])) {
     if (preg_match('/[\'^£$%&*()}{#~?><>,|=_+¬;-]/', $UserData[4])) {
 
         $CheckInput = false;
-        echo "<script language='JavaScript'>alert('Error2 | Special characters are not allowed')</script>";
+        echo "<script language='JavaScript'>alert('Error2 | Sonderzeichen sind nicht erlaubt')</script>";
     }
     if ($CheckInput == true) {
         $User = new User((int)$UserData[0], $UserData[1], $UserData[2], $UserData[3], $UserData[4], (int)$UserData[5], $UserData[6], $UserData[7], $UserData[8], $UserData[9], 100, 1, 0);
@@ -57,10 +57,10 @@ if (isset($_POST['RegisterUser'])) {
             $tempuser = $DB->getUserWithName($UserData[7]);
             $tempuserid = $tempuser->getUserID();
             $DB->uploadImage("res/assets/img/avatars/standard-image.png", $tempuserid);
-            echo "<script language='JavaScript'>alert('Account created successfully')</script>";
+            echo "<script language='JavaScript'>alert('Konto erfolgreich erstellt')</script>";
         } else {
 
-            echo "<script language='JavaScript'>alert('Error | Create account failed')</script>";
+            echo "<script language='JavaScript'>alert('Error | Kontoerstellung fehlgeschlagen')</script>";
         }
     }
 }
@@ -71,25 +71,25 @@ if (isset($_POST["pw-submit"])) {
     $tempuserid = $tempuser->getUserID();
     $return_val = $DB->updateUserPW($tempuserid, $_POST["old_pw"], $_POST["new_pw"]);
     if ($return_val == 0) {
-        echo "<script language='JavaScript'>alert('Password changed')</script>";
+        echo "<script language='JavaScript'>alert('Passwort geändert')</script>";
     } else if ($return_val == 1) {
-        echo "<script language='JavaScript'>alert('Failed to change password')</script>";
+        echo "<script language='JavaScript'>alert('Passwortänderung fehlgeschlagen')</script>";
     } else if ($return_val == 2) {
-        echo "<script language='JavaScript'>alert('Old password not correct')</script>";
+        echo "<script language='JavaScript'>alert('Altes Passwort nicht korrekt')</script>";
     }
 }
 
 if (isset($_POST["photo-submit"])) {
     if ($_FILES["new_photo"]["error"] == 0) {
         if ($_FILES["new_photo"]["type"] != "image/jpeg" && $_FILES["new_photo"]["type"] != "image/png" && $_FILES["new_photo"]["type"] != "image/jpg") {
-            echo "<script language='JavaScript'>alert('Error | Only upload .jpgs and .png')</script>";
+            echo "<script language='JavaScript'>alert('Error | Nur .jpgs and .png erlaubt')</script>";
         } else {
             $tempuser = $DB->getUserWithName($_SESSION["UserName"]);
             $tempuserid = $tempuser->getUserID();
             $DB->uploadImage($_FILES["new_photo"]["tmp_name"], $tempuserid);
         }
     } else {
-        echo "<script language='JavaScript'>alert('Error | Upload of image failed')</script>";
+        echo "<script language='JavaScript'>alert('Error | Hochladen des Fotos fehlgeschlagen')</script>";
     }
 }
 
@@ -155,14 +155,14 @@ if (isset($_POST["photo-submit"])) {
                                             src="data:image/png;base64,' . base64_encode($image) . '"></a>';
 
                                             ?>
-                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity
-                                                    log</a>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                                <a class="dropdown-item" href="?page=UserForm"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profil</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="?page=logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                                <a class="dropdown-item" href="?page=logout"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Ausloggen</a>
                                             </div>
                                         <?php } else { ?>
                                     </span><img class="border rounded-circle img-profile" src="res/assets/img/avatars/standard-image.png"></a>
-                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Login</a>
+                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="?page=LogIn"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Einloggen</a>
                             </div>
                             <?php } ?>
                         </div>
@@ -188,12 +188,12 @@ if (isset($_POST["photo-submit"])) {
                     ?>
                     <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=LogIn">
                             <div class="sidebar-brand-icon"><i class="fas fa-sign-in-alt"></i></div>
-                            <div class="sidebar-brand-text"><span>Login</span></div>
+                            <div class="sidebar-brand-text"><span>Einloggen</span></div>
                         </a>
                     </li>
                     <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Register">
                             <div class="sidebar-brand-icon"><i class="far fa-user-circle"></i></div>
-                            <div class="sidebar-brand-text"><span>Register</span></div>
+                            <div class="sidebar-brand-text"><span>Registrieren</span></div>
                         </a>
                     </li>
                     <?php
@@ -201,8 +201,8 @@ if (isset($_POST["photo-submit"])) {
                     <li class="nav-item zoom-in"><a
                                 class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
                                 href="?page=home">
-                            <div class="sidebar-brand-icon"><i class="fas fa-home"></i></div>
-                            <div class="sidebar-brand-text"><span>Home</span></div>
+                            <div class="sidebar-brand-icon"><i class="fas fa-coins"></i></div>
+                            <div class="sidebar-brand-text"><span>Spielebereich</span></div>
                         </a>
                     </li>
                     <?php if ($_SESSION["UserName"] == "admin") {
@@ -211,7 +211,7 @@ if (isset($_POST["photo-submit"])) {
                                     class="nav-link d-flex justify-content-center align-items-center sidebar-brand"
                                     href="?page=UserList">
                                 <div class="sidebar-brand-icon"><i class="fas fa-users"></i></div>
-                                <div class="sidebar-brand-text" style=""><span>Users</span></div>
+                                <div class="sidebar-brand-text"><span>Benutzer</span></div>
 
                             </a>
                         </li>
@@ -220,7 +220,7 @@ if (isset($_POST["photo-submit"])) {
                     ?>
                     <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=logout">
                             <div class="sidebar-brand-icon"><i class="fas fa-sign-out-alt"></i></div>
-                            <div class="sidebar-brand-text"><span>Logout</span></div>
+                            <div class="sidebar-brand-text"><span>Ausloggen</span></div>
                         </a>
                     </li>
 
@@ -229,12 +229,12 @@ if (isset($_POST["photo-submit"])) {
                 ?>
                 <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Guidance">
                         <div class="sidebar-brand-icon"><i class="fas fa-book"></i></i></div>
-                        <div class="sidebar-brand-text"><span>Guidance</span></div>
+                        <div class="sidebar-brand-text"><span>Kurzanleitungen</span></div>
                     </a>
                 </li>
                 <li class="nav-item zoom-in"><a class="nav-link d-flex justify-content-center align-items-center sidebar-brand" href="?page=Imprint">
                         <div class="sidebar-brand-icon"><i class="fas fa-stamp"></i></div>
-                        <div class="sidebar-brand-text"><span>Imprint</span></div>
+                        <div class="sidebar-brand-text"><span>Impressum</span></div>
                     </a>
                 </li>
             </ul>
@@ -455,7 +455,7 @@ if (isset($_POST["photo-submit"])) {
                         <li class="nav-item zoom-in"><a
                                     class="nav-link"
                                     href="?page=home">
-                                <div class="topbar-icon"><i class="fas fa-home"></i></div>
+                                <div class="topbar-icon"><i class="fas fa-coins"></i></div>
                             </a>
                         </li>
                         <?php if ($_SESSION["UserName"] == "admin") {
