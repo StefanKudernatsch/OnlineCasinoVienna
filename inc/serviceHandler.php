@@ -21,7 +21,7 @@ function response($method, $httpStatus, $data)
 
         case "POST":
             http_response_code($httpStatus);
-            echo($data);
+            echo(json_encode($data));
             break;
         default:
             http_response_code(405);

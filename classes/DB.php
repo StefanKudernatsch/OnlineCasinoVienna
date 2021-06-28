@@ -261,9 +261,9 @@ class DB
     }
     function getMoneyUsername($user_id)
     {
-        $sql = "SELECT Money FROM user WHERE Username = ?;";
+        $sql = "SELECT Money FROM user WHERE UserName = ?;";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('i', $user_id);
+        $stmt->bind_param('s', $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $money = $result->fetch_assoc();
@@ -328,15 +328,15 @@ class DB
         $beforemoney = $this->getMoneyUsername($username);
         $aftermoney = $beforemoney + $amount;
 
-        $sql = "UPDATE user SET Money=? WHERE Username = ?;";
+        $sql = "UPDATE user SET Money=? WHERE UserName = ?;";
         $stmt = $this->connect->prepare($sql);
-        $stmt->bind_param('ii', $aftermoney, $username);
+        $stmt->bind_param('is', $aftermoney, $username);
         $stmt->execute();
         
         if($stmt == true)
         {
             //$this->addlog($user_id, $reason, $beforemoney, $aftermoney);
-            return true;
+            return $amount;
         }
         else
         {
