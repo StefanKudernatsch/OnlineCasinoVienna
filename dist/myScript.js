@@ -4,6 +4,7 @@ let selected;
 var deck = [];
 var playerhand = [];
 var dealerhand = [];
+var swapCards = [];
 let pot = 0;
 let playerbet = 0;
 let dealerbet = 0;
@@ -16,6 +17,8 @@ let rounds = 0;
 var PlayerHand = new Array(); //bj
 var DealerHand = new Array();
 var taken = new Array();
+let tempCardValue;
+var tableHeader = "<tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Money</th></tr>";
 
 function resizeMain(){
     document.getElementById("main").style.height = "0px";
@@ -90,7 +93,7 @@ $(document).ready(function () {
                 document.getElementById("game-button-2").remove();
 
             } else if(window.location.search === "?page=FiveCardDraw") {
-                document.getElementById("game-button-2").setAttribute("onclick", "PokerDraw()");
+                document.getElementById("game-button-2").setAttribute("onclick", "swapCard()");
                 document.getElementById("game-button-2").textContent = "Draw";
             }
 
@@ -378,6 +381,7 @@ function drawCard(hand,number,open){
         //child.style.marginRight = "50px";
         setTimeout(function (){
             child.style.transitionDuration = '0.5s';
+
             child.style.transform = 'translate('+ -((div.clientWidth/2)+5)  + 'px,'+ 0 +'px)';
             setTimeout(function () {
                 child.style.transitionDuration = '';
@@ -1027,18 +1031,35 @@ function fcd_calculateHand(hand) {
     }
 }
 
-let tempCardValue;
-function swapCard(card) {
-    //delete old Card and get new Card
-    card.remove();
-    setTimeout(function () {getCard("playerhand", true);}, 1000);
+function selectCard(card){
+    if((swapCards.find(element => element === card) !== undefined)){
+        console.log("Index of Card" + swapCards.indexOf(card));
+        swapCards.splice(swapCards.indexOf(card),1);
+        setTimeout(function() {
+            card.style.transitionDuration = '0.2s';
+            card.style.transform = '';
+        },200);
+    } else {
+        swapCards.push(card);
+        setTimeout(function () {
+            card.style.transitionDuration = '0.2s'
+            card.style.transform = 'translateY(20px)';
+        }, 200);
+    }
+}
 
-    //get the old Card Value and delete it from the playerhand[] with .filter()
-    let cardValue = card.getAttribute("src");
-    cardValue = cardValue.slice(22);
-    cardValue = cardValue.substr(0, cardValue.length - 4);
-    tempCardValue = cardValue;
-    playerhand = playerhand.filter(isNotThisValue);
+function swapCard() {
+    for(let i = 0; i < swapCards.length; i++) {
+        let cardValue = swapCards[i].getAttribute("src");
+        cardValue = cardValue.slice(22);
+        cardValue = cardValue.substr(0, cardValue.length - 4);
+        cardValue = parseInt(cardValue);
+        swapCards[i].remove();
+        playerhand.splice(playerhand.indexOf(cardValue), 1);
+        setTimeout(function () {getCard("playerhand", true);}, ((i + 1) * 1000));
+    }
+    $("#game-button-2").prop('disabled', true);
+    $("#game-button-3").prop('disabled', false);
 }
 //callBack function for the playerhand.filter() function in swapCard()
 function isNotThisValue(value) {
@@ -1047,6 +1068,14 @@ function isNotThisValue(value) {
 
 function PokerFold() {
     if(confirm("Fold Cards?")){
+        gamerunning = false;
+        endGame();
+    }
+}
+
+function surrenderBJ(){
+    if(confirm("Surrender?")){
+        addMoney(playerbet/2);
         gamerunning = false;
         endGame();
     }
@@ -1099,11 +1128,11 @@ function  checkTexasHoldem() {
     console.log("player: " + playerpoints);
 
     if(dealerpoints > playerpoints) {
-        alert("You lost");
-        console.log("LOST");
-        printPoints(dealerpoints);
-        console.log("beats your");
-        printPoints(playerpoints);
+        //LOST
+        title = "You LOST!"
+        endString = printPoints(dealerpoints,endString);
+        endString += " beats your ";
+        endString = printPoints(playerpoints,endString);
     } else if(playerpoints > dealerpoints){
         alert("You won");
         console.log("WON");
@@ -1117,20 +1146,21 @@ function  checkTexasHoldem() {
         console.log("same as")
         printPoints(playerpoints);
     }
-    endGame();
+    EndModal(title,endString);
 }
 
-function printPoints(points) {
-    if(points === 660) {console.log("Royal Flush");}
-    else if(points < 660 && points >= 615) {console.log("Straight Flush");}
-    else if(points <= 556 && points >= 508) {console.log("Four of a kind");}
-    else if(points <= 468 && points >= 412) {console.log("Full house");}
-    else if(points === 300) {console.log("Flush");}
-    else if(points <= 260 && points >= 215) {console.log("Straight");}
-    else if(points <= 192 && points >= 156) {console.log("Three of a kind");}
-    else if(points <= 128 && points >= 106) {console.log("Two pair");}
-    else if(points <= 38 && points >= 14) {console.log("Pair");}
-    else {console.log("High Card");}
+function printPoints(points,endString) {
+    if(points === 660) {endString += "Royal Flush";}
+    else if(points < 660 && points >= 615) {endString += "Straight Flush";}
+    else if(points <= 556 && points >= 508) {endString += "Four of a kind";}
+    else if(points <= 468 && points >= 412) {endString += "Full house";}
+    else if(points === 300) {endString += "Flush";}
+    else if(points <= 260 && points >= 215) {endString += "Straight";}
+    else if(points <= 192 && points >= 156) {endString += "Three of a kind";}
+    else if(points <= 128 && points >= 106) {endString += "Two pair";}
+    else if(points <= 38 && points >= 14) {endString += "Pair";}
+    else {endString += "High Card";}
+    return endString;
 }
 
 function checkPokerHand(hand) {
@@ -1144,7 +1174,8 @@ function checkPokerHand(hand) {
     let fourofakind = false;
     let straightcounter = 0;
     let points = 0;
-    let highcard;
+    let highcard = 0;
+
 
     let color = [];
     color[0] = 0;
@@ -1347,6 +1378,7 @@ function endGame() {
     deck = [];
     playerhand = [];
     dealerhand = [];
+    swapCards = [];
     pot = 0;
     playerbet = 0;
     dealerbet = 0;
@@ -1463,7 +1495,7 @@ function removeMoney(money){
 }
 
 
-function addMoney(username, money){
+function addMoney(money){
     console.log("AddMoney");
     var data = {
         userID: username,
@@ -1477,7 +1509,7 @@ function addMoney(username, money){
         dataType: "json",
         success: function (result) {
             console.log("money added! (?) ", result);
-            //getUserMoneyUsername(username);
+            getUserMoney(username);
         },
         error: function(jqXHR,
             textStatus,
@@ -1516,8 +1548,6 @@ function changePassword(){
         }
     });
 }
-
-var tableHeader = "<tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Money</th></tr>";
 
 function searchUsers() {
     let search = $("#searchInput").val();
