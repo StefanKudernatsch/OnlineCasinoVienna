@@ -11,9 +11,9 @@ let dealerbet = 0;
 let playerbudget = 0;
 let gamerunning = false;
 let rounds = 0;
-var PlayerHand = new Array(); //bj
-var DealerHand = new Array();
-var taken = new Array();
+var PlayerHand = []; //bj
+var DealerHand = [];
+var taken = [];
 let tempCardValue;
 var tableHeader = "<tr><th>ID</th><th>Username</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Money</th></tr>";
 
@@ -23,6 +23,8 @@ function resizeMain(){
 }
 
 $(document).ready(function () {
+    $('#endModal').modal({backdrop: 'static', keyboard: false});
+    $('#startModal').modal({backdrop: 'static', keyboard: false})
     console.log(window.innerHeight)
     console.log(username);
     console.log(selected);
@@ -43,7 +45,6 @@ $(document).ready(function () {
         if(username !== undefined){
             
             getUserMoney(username);
-            $('#startModal').modal({backdrop: 'static', keyboard: false})
             $("#startModal").modal('show');
             StartModal();
             document.getElementById("game-button-1").setAttribute("onclick", "bj_hit('playerhand', PlayerHand, taken, DealerHand)");
@@ -202,16 +203,18 @@ function RaiseModal(){
 function StartModal() {
     getUserMoney(username);
     $("#endModal").modal('hide');
-    $('#startModal').modal({backdrop: 'static', keyboard: false})
+    $('#startModal').modal({backdrop: 'static', keyboard: false});
     $("#startModal").modal('show');
     enableGameButtons(1);
 }
 
 function EndModal(Title, BodyText) {
+    disableGameButtons();
     $("#endTitle").html(Title);
     $("#endText").html(BodyText);
-    $('#endModal').modal({backdrop: 'static', keyboard: false})
-    $("#endModal").modal('show');
+    setTimeout(function (){
+        $("#endModal").modal('show');
+    },2000);
 }
 
 function getAllUser(){
@@ -727,9 +730,9 @@ function playTexasHoldem() {
 function playBlackJack() {
     createDeck(1);
     disableGameButtons();
-    setTimeout(function(){ bj_pullcard("dealerhand", DealerHand, taken, true)}, 2000);
+    setTimeout(function(){ bj_pullcard("dealerhand", DealerHand, taken, true)}, 1000);
+    setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 2000);
     setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 3000);
-    setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 4000);
     setTimeout(function(){
         var values = bj_calcHandValue(PlayerHand);
         var won = values.bj_hasWon()
