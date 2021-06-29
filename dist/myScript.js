@@ -1329,6 +1329,7 @@ function calculatePokerhand(hand) {
 }
 
 function endGame() {
+    $("#pot").html("0");
     deck = [];
     playerhand = [];
     dealerhand = [];
