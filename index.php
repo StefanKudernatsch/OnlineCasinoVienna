@@ -17,7 +17,7 @@ if (isset($_POST["login-submit"])) {
             if (isset($_POST["RememberMe"])) {
                 setcookie("CookieName", $loginUsername, time() + 3600);
             }
-            echo "<script language='JavaScript'>alert('Erfolgreich eingeloggt')</script>";
+            //echo "<script language='JavaScript'>alert('Erfolgreich eingeloggt')</script>";
         } else {
             echo "<script language='JavaScript'>alert('Einloggen fehlgeschlagen')</script>";
         }

@@ -11,9 +11,6 @@ let dealerbet = 0;
 let playerbudget = 0;
 let gamerunning = false;
 let rounds = 0;
-
-
-
 var PlayerHand = new Array(); //bj
 var DealerHand = new Array();
 var taken = new Array();
@@ -53,19 +50,22 @@ $(document).ready(function () {
             document.getElementById("game-button-1").textContent = "Hit";
             document.getElementById("game-button-2").setAttribute("onclick", "bj_stand(DealerHand, PlayerHand, taken)");
             document.getElementById("game-button-2").textContent = "Stand";
-            // document.getElementById("game-button-3").setAttribute("onclick", "BJDoubleDown()");
-            // document.getElementById("game-button-3-full").textContent = "Double Down";
-            // document.getElementById("game-button-3-short").textContent = "DD";
-            // document.getElementById("game-button-4").setAttribute("onclick", "BJSurrender()");
-            // document.getElementById("game-button-4-full").textContent = "Surrender";
-            // document.getElementById("game-button-4-short").textContent = "Surr";
+            document.getElementById("game-button-3").remove();
+            /*
+            document.getElementById("game-button-3").setAttribute("onclick", "BJDoubleDown()");
+            document.getElementById("game-button-3-full").textContent = "Double Down";
+            document.getElementById("game-button-3-short").textContent = "DD";
+             */
+            document.getElementById("game-button-4").setAttribute("onclick", "surrenderBJ()");
+            document.getElementById("game-button-4-full").textContent = "Surrender";
+            document.getElementById("game-button-4-short").textContent = "Surr";
             document.getElementById("content").className = "deck";
             resizeMain();
             document.getElementById("main").className = "main";
             window.addEventListener('resize', resizeMain);
-            resetTaken(taken);
-            bj_disableButtons();
-        }   
+            //resetTaken(taken);
+            //disableGameButtons();
+        }
     }
     else if(window.location.search === "?page=TexasHoldem" || window.location.search === "?page=FiveCardDraw") {
 
@@ -74,11 +74,6 @@ $(document).ready(function () {
         }
 
         if(username !== undefined){
-            /*
-            getUserMoney(username);
-            $('#startModal').modal({backdrop: 'static', keyboard: false})
-            $("#startModal").modal('show');
-             */
             StartModal();
             document.getElementById("game-button-1").setAttribute("onclick", "PokerCall()");
             document.getElementById("game-button-1").textContent = "Call";
@@ -124,7 +119,6 @@ $(document).ready(function () {
                 return false;
             }
         }
-
     });
 });
 
@@ -137,9 +131,18 @@ function submitRaise(){
         removeMoney($("#InputRaise").val());
         $("#pot").html(pot);
         $("#InputRaise").val("");
-        if (window.location.search !== "?page=FiveCardDraw") {
-            PokerDealerMove();
+
+        if(dealerbet < playerbet) {
+            pot = parseInt(pot) + (playerbet - dealerbet);
+            dealerbet = playerbet;
+            $("#pot").html(pot);
+            console.log("Dealer called");
         }
+
+        /*
+        if (window.location.search !== "?page=FiveCardDraw") {FCDDealerMove();}
+        else if(window.location.search === "?page=TexasHoldem") {THDealerMove();}
+         */
     }
 }
 
@@ -150,7 +153,6 @@ function dealerRaise(amount){
 }
 
 function checkInput() {
-console.log("CheckInput()");
     getUserMoney(username);
     if($("#InputBet").val() >= 10 && $("#InputBet").val() <= playerbudget){
         $("#startModal").modal('hide');
@@ -159,9 +161,11 @@ console.log("CheckInput()");
         removeMoney(playerbet);
         $("#InputBet").val("");
         $("#pot").html(pot);
+        rounds = 0;
+        gamerunning = true;
+
         if(window.location.search === "?page=BlackJack") {
             $("#startModal").modal('hide');
-            bj_enableButtons();
             playBlackJack();
         }
         else if(window.location.search === "?page=TexasHoldem"){
@@ -196,10 +200,18 @@ function RaiseModal(){
 }
 
 function StartModal() {
-    $(":button").prop("disabled", false);
     getUserMoney(username);
+    $("#endModal").modal('hide');
     $('#startModal').modal({backdrop: 'static', keyboard: false})
     $("#startModal").modal('show');
+    enableGameButtons(1);
+}
+
+function EndModal(Title, BodyText) {
+    $("#endTitle").html(Title);
+    $("#endText").html(BodyText);
+    $('#endModal').modal({backdrop: 'static', keyboard: false})
+    $("#endModal").modal('show');
 }
 
 function getAllUser(){
@@ -307,15 +319,12 @@ function banUser(ban_name){
 }
 
 function showDealerCards() {
-    $(':button').prop('disabled', true);
+    disableGameButtons();
     let div = document.getElementById("dealerhand");
-
     let children = div.children;
-
 
     for (let i = 0; i < children.length; i++) {
         let child = children[i];
-
         child.src = "res/img/cards/current/" + dealerhand[i] +".png";
     }
 }
@@ -447,9 +456,8 @@ function createDeck(deckamounts) {
     }
 }
 
-function getCard(hand,open,cardIndex) {
+function getCard(hand,open) {
     let randomCardIndex = getRandomInt(deck.length);
-    //randomCardIndex = cardIndex;
     switch (hand) {
         case 'dealerhand': {
             dealerhand.push(deck[randomCardIndex]);
@@ -472,14 +480,15 @@ function getCard(hand,open,cardIndex) {
     //console.log(cardIndex + ": " + deck[cardIndex]);
     deck.splice(randomCardIndex,1);
 }
+
 function bj_pushcard(destination, hand, taken, Card, open) {
     console.log("Pushing Card Num: " + Card);
     hand.push(Card); // Add card to hand
     taken[Card] = true; // Set card taken
     // Display Card on Hand Function here
     bj_getCard(destination,Card, open);
-
 }
+
 function bj_pullcard(destination, hand, taken, open) {
     var pull;
     do {
@@ -488,6 +497,7 @@ function bj_pullcard(destination, hand, taken, open) {
     } while (taken[pull]); // Try to pull card that is not taken
     bj_pushcard(destination, hand, taken, pull, open); // Push the Card into the Hand
 }
+
 function bj_calcHandValue(hand) {
     var valuelow = 0;
     var valuehigh = 0;
@@ -547,6 +557,7 @@ function bj_calcHandValue(hand) {
     return numbers;
 
 }
+
 function bj_hit(destination, PlayerHand, taken, DealerHand) {
 
     bj_pullcard(destination, PlayerHand, taken);
@@ -556,8 +567,8 @@ function bj_hit(destination, PlayerHand, taken, DealerHand) {
     if (bust) {
         //End game
         console.log("Busted");
-        bj_disableButtons();
-        setTimeout(function(){$("#blackjackloseModal").modal('show');},5000);
+        disableGameButtons();
+        EndModal("Verloren", "Du bist über 21 gekommen");
     }
     var won = values.bj_hasWon()
     if (won) {
@@ -567,8 +578,7 @@ function bj_hit(destination, PlayerHand, taken, DealerHand) {
 
 }
 
-function bj_dealerhit(DealerHand, taken)
-{
+function bj_dealerhit(DealerHand, taken) {
     bj_pullcard(DealerHand, taken);
     var values = bj_calcHandValue(DealerHand); 
     var bust = values.isBust();
@@ -576,14 +586,15 @@ function bj_dealerhit(DealerHand, taken)
     if (bust) {
         //End game
         console.log("Busted");
+        disableGameButtons();
+        EndModal("Gewonnen", "Dealer ist über 21 gekommen");
         return false;
     }
     return true;
 }
 
-function bj_dealer(DealerHand, PlayerHand, taken)
-{
-    bj_disableButtons();
+function bj_dealer(DealerHand, PlayerHand, taken) {
+    disableGameButtons();
     var values = bj_calcHandValue(DealerHand, taken);
     var own = bj_calcHandValue(PlayerHand, taken);
     setTimeout(function() {
@@ -598,27 +609,23 @@ function bj_dealer(DealerHand, PlayerHand, taken)
         }
         else
         {
-            $(':button').prop('disabled', false);
- 
-                if (values.bj_hasWon() && own.bj_hasWon() || values.low == own.low && values.high == own.high)
+            disableGameButtons();
+                if (values.bj_hasWon() && own.bj_hasWon() || values.low === own.low && values.high === own.high)
                 {
                    // Draw
                    console.log("Draw");
                    // Modal, both money back
                    // Play again?
                    // Reset game
-                   bj_disableButtons();
-                   addMoney(username, pot);
-                   setTimeout(function(){$("#blackjackdrawModal").modal('show');},5000);
+                   addMoney(pot);
+                   EndModal("Unentschieden", "Dealer und Du sind gleich hoch");
                 }
-                else if(values.low>21 || values.high<own.high)
+                else if(values.low > 21 || values.high < own.high)
                 {
-                   
                     console.log("Dealer lost, you win");
                     // Modal, win
-                    addMoney(username, pot*2);
-                    bj_disableButtons();
-                    setTimeout(function(){$("#blackjackwinModal").modal('show');},5000);
+                    addMoney(pot*2);
+                    EndModal("Gewonnen", "Dealer ist über 21");
                 }
                 else if (values.low > own.low && values.low > own.high || ((values.high > own.low  && values.high > own.high) && values.high <=21))
                 {
@@ -627,27 +634,22 @@ function bj_dealer(DealerHand, PlayerHand, taken)
                     // Play again?
                     // Reset game
                     console.log(username);
-                    bj_disableButtons();
-                    setTimeout(function(){$("#blackjackloseModal").modal('show');},5000);
-
+                    EndModal("Verloren", "Dealer ist höher");
                 }
                 else
                 {
                     console.log("Dealer lost, you win");
                     // Modal, win
-                    addMoney(username, pot*2);
-                    bj_disableButtons();
-                    setTimeout(function(){$("#blackjackwinModal").modal('show');},5000);
+                    addMoney(pot*2);
+                    EndModal("Gewonnen", "Du hast gewonnen");
                 }
             }
-                               
       }, 1000)
 }
 
 function bj_stand(DealerHand, PlayerHand, taken) {
-
     // Disable buttons
-    $(':button').prop('disabled', true);
+    disableGameButtons()
     // Show card
     console.log("calculating dealerhand");
     var values = bj_calcHandValue(DealerHand, taken);
@@ -657,60 +659,23 @@ function bj_stand(DealerHand, PlayerHand, taken) {
     bj_dealer(DealerHand, PlayerHand, taken);
 }
 
-function resetTaken(taken)
-{
-    for (var bool = 0; bool < 52; bool++) {
-        taken[bool] = false; // Set Taken to false by default
-    }
+function resetTaken(taken) {
+    // Set Taken to false by default
+    for (var bool = 0; bool < 52; bool++) {taken[bool] = false;}
 }
 
-function bj_disableButtons()
-{
-
+function disableGameButtons() {
     $("#game-button-1").prop('disabled', true);
     $("#game-button-2").prop('disabled', true);
     $("#game-button-3").prop('disabled', true);
     $("#game-button-4").prop('disabled', true);
 }
 
-function bj_enableButtons()
-{
-
-    $("#game-button-1").prop('disabled', false);
-    $("#game-button-2").prop('disabled', false);
-    $("#game-button-3").prop('disabled', false);
-    $("#game-button-4").prop('disabled', false);
-}
-function resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)
-{
-    console.log("End");
-    deck = [];
-    playerhand = [];
-    dealerhand = [];
-    pot = 0;
-    playerbet = 0;
-    dealerbet = 0;
-    rounds = 0;
-    PlayerHand.splice(0, PlayerHand.length);
-    DealerHand.splice(0, DealerHand.length);
-    resetTaken(taken);
-    console.log(PlayerHand);
-    $("#blackjackwinModal").modal('hide');
-    $("#blackjackdrawModal").modal('hide');
-    $("#blackjackloseModal").modal('hide');
-
-    while(document.getElementById("playerhand").firstChild) {
-        document.getElementById("playerhand").removeChild(document.getElementById("playerhand").firstChild);
-    }
-
-    while(document.getElementById("dealerhand").firstChild) {
-        document.getElementById("dealerhand").removeChild(document.getElementById("dealerhand").firstChild);
-    }
-
-    while(document.getElementById("middlehand").firstChild) {
-        document.getElementById("middlehand").removeChild(document.getElementById("middlehand").firstChild);
-    }
-    StartModal();
+function enableGameButtons(timeout) {
+    setTimeout(function (){$('#game-button-1').prop('disabled', false);}, timeout);
+    setTimeout(function (){$('#game-button-2').prop('disabled', false);}, timeout);
+    setTimeout(function (){$('#game-button-3').prop('disabled', false);}, timeout);
+    setTimeout(function (){$('#game-button-4').prop('disabled', false);}, timeout);
 }
 
 function bj_getCard(destination, pos, open) {
@@ -728,17 +693,13 @@ function bj_getCard(destination, pos, open) {
         }
     }
 }
+
 function playFiveCardDraw() {
-    gamerunning = true;
-    rounds = 0;
-    document.getElementById("game-button-2").disabled = true;
     createDeck(1);
-    $(':button').prop('disabled', true);
+    disableGameButtons();
     let cards = document.getElementById("playerhand").childNodes;
-                
-                for (let i = 0; i < cards.length; i++) {
-                    cards[i].remove();
-                }
+    for (let i = 0; i < cards.length; i++) {cards[i].remove();}
+
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
     setTimeout(function () {getCard("playerhand", true);}, 2000);
     setTimeout(function () {getCard("dealerhand", false);}, 3000);
@@ -749,130 +710,65 @@ function playFiveCardDraw() {
     setTimeout(function () {getCard("playerhand", true);}, 8000);
     setTimeout(function () {getCard("dealerhand", false);}, 9000);
     setTimeout(function () {getCard("playerhand", true);}, 10000);
-    setTimeout(function (){$(':button').prop('disabled', false);}, 11000);
-    setTimeout(function (){$('#game-button-2').prop('disabled', true);}, 11000);
-
-}
-
-function refreshFiveCardsDraw() {
-
+    enableGameButtons(11000);
+    $("#game-button-2").prop('disabled', true);
 }
 
 function playTexasHoldem() {
-    gamerunning = true;
-    rounds = 0;
     createDeck(1);
-    $(':button').prop('disabled', true);
+    disableGameButtons();
     setTimeout(function () {getCard("dealerhand", false);}, 1000);
     setTimeout(function () {getCard("playerhand", true);}, 2000);
     setTimeout(function () {getCard("dealerhand", false);}, 3000);
     setTimeout(function () {getCard("playerhand", true);}, 4000);
-    setTimeout(function (){$(':button').prop('disabled', false);}, 5000);
+    enableGameButtons(5000);
 }
 
 function playBlackJack() {
-    gamerunning = true;
     createDeck(1);
-    $(':button').prop('disabled', true);
-    bj_disableButtons();
+    disableGameButtons();
     setTimeout(function(){ bj_pullcard("dealerhand", DealerHand, taken, true)}, 2000);
     setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 3000);
     setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 4000);
-    setTimeout(function(){    
+    setTimeout(function(){
         var values = bj_calcHandValue(PlayerHand);
         var won = values.bj_hasWon()
         if (won) {
             // Pulled a blackjack first
             bj_dealer(DealerHand, PlayerHand, taken);
         }
-            else
-        {
-            bj_enableButtons();
-        }
-}, 5000);
-
-    //setTimeout(function(){$(':button').prop('disabled', false);bj_enableButtons();},5000);
+        else {enableGameButtons(1);}
+    }, 5000);
 }
 
 function PokerCall() {
-    console.log("PokerCall()");
+    console.log("Player called");
+    getUserMoney(username);
+    console.log(playerbet);
 
-    if(window.location.search === "?page=FiveCardDraw") {
-        console.log("rounds: " , rounds);
-        switch (rounds) {
-            case 0: { //prepare for next round which is the card-swapping round
-                console.log("Card-swapping round");
-
-                //give cards a onclick event
-                let cards = document.getElementById("playerhand").childNodes;
-                
-                for (let i = 0; i < cards.length; i++) {
-                    console.log("Playerhand" + cards[i]); //<--- !!!!!!!!!!!!!!!!!!!
-                    cards[i].setAttribute("onClick", "swapCard(this)");
-                }
-                //disable raise button
-                document.getElementById("game-button-3").disabled = true;
-
-                break;
-            }
-            case 1: { //prepare for next round which is the secont bet round
-                console.log("Second Bet Round");
-
-
-
-                //remove onClick event from the cards
-                let cards = document.getElementById("playerhand").childNodes;
-                for (let i = 0; i < cards.length; i++) {
-                    cards[i].setAttribute("onClick", "");
-                }
-
-                //activate raise button
-                document.getElementById("game-button-3").disabled = false;
-                break;
-            }
-            case 2: { //showdown
-
-                console.log("Showdown");
-                console.log(username);
-                let playerPoints = fcd_calculateHand(playerhand);
-                console.log("Playerhand points: " + playerPoints);
-                let dealerPoints = fcd_calculateHand(dealerhand);
-
-                let message = "";
-                if (playerPoints > dealerPoints) {
-                    //Player wins. So he gets twice the pot, since the dealer never put money in the pot right?
-                    message = "You won!";
-                    addMoney(pot * 2);
-                } else if (playerPoints < dealerPoints) {
-                    //Dealer wins
-                    message = "Dealer won.";
-                } else {
-                    //Pot gets split. So Player gets the pot back e.g. all of his bets.
-                    message = "Tie! Pot gets split!"
-                }
-                alert(message + " \nYour Hand: " + playerhand + "\nDealer Hand: " + dealerhand);
-                endGame();
-                break;
-            }
-
-        }
-        rounds++;
+    if(playerbet < dealerbet && playerbudget >= dealerbet - playerbet) {
+        //take player money
+        pot = parseInt(pot) + (dealerbet - playerbet);
+        removeMoney((dealerbet - playerbet));
+        playerbet = parseInt(playerbet) + (dealerbet - playerbet);
+        $("#pot").html(pot.toString());
     }
-    else {
-        getUserMoney(username);
-        console.log(playerbet);
-        if(playerbet < dealerbet && playerbudget >= dealerbet - playerbet) {
-            //take player money
-            pot = parseInt(pot) + (dealerbet - playerbet);
-            removeMoney((dealerbet - playerbet));
-            playerbet = parseInt(playerbet) + (dealerbet - playerbet);
-            $("#pot").html(pot.toString());
-        }
-        PokerDealerMove();
+
+    if(dealerbet < playerbet) {
+        pot = parseInt(pot) + (playerbet - dealerbet);
+        dealerbet = playerbet;
+        $("#pot").html(pot);
+        console.log("Dealer called");
+    }
+
+    if(playerbet === dealerbet) {
+        if(window.location.search === "?page=FiveCardDraw") {FCDDealerMove();}
+        else if(window.location.search === "?page=TexasHoldem") {THDealerMove();}
     }
 }
 
 
+/*
 
 function fcd_calculateHand(hand) {
     // give every possible combination one unique (!) number.
@@ -1029,7 +925,10 @@ function fcd_calculateHand(hand) {
     } else {
         return 100 + moduloHand[4];
     }
-}
+}*/
+
+
+
 
 function selectCard(card){
     if((swapCards.find(element => element === card) !== undefined)){
@@ -1061,10 +960,6 @@ function swapCard() {
     $("#game-button-2").prop('disabled', true);
     $("#game-button-3").prop('disabled', false);
 }
-//callBack function for the playerhand.filter() function in swapCard()
-function isNotThisValue(value) {
-    return value != tempCardValue;
-}
 
 function PokerFold() {
     if(confirm("Fold Cards?")){
@@ -1081,49 +976,116 @@ function surrenderBJ(){
     }
 }
 
-function PokerDealerMove() {
-    $(':button').prop('disabled', true); // Disable all the buttons
-    if(dealerbet < playerbet) {
-        pot = parseInt(pot) + (playerbet - dealerbet);
-        dealerbet = playerbet;
-        $("#pot").html(pot);
-        console.log("Dealer called");
-    }
+function FCDDealerMove() {
+    console.log("round: " , rounds);
+    switch (rounds) {
+        case 0: { //prepare for next round which is the card-swapping round
+            console.log("Card-swapping round");
 
-    if(dealerbet === playerbet) {
+            //give cards a onclick event
+            let cards = document.getElementById("playerhand").childNodes;
+
+            for (let i = 0; i < cards.length; i++) {
+                console.log("Playerhand" + cards[i]); //<--- !!!!!!!!!!!!!!!!!!!
+                cards[i].setAttribute("onClick", "selectCard(this)");
+            }
+            //disable raise button
+            document.getElementById("game-button-3").disabled = true;
+
+            break;
+        }
+        case 1: { //prepare for next round which is the secont bet round
+            console.log("Second Bet Round");
+
+
+            for(let i = 0; i < playerhand.length; i++){
+                console.log("PlayerHandElement " + i + " = " + playerhand[i]);
+            }
+
+            //remove onClick event from the cards
+            let cards = document.getElementById("playerhand").childNodes;
+            for (let i = 0; i < cards.length; i++) {
+                cards[i].setAttribute("onClick", "");
+            }
+
+            //activate raise button
+            document.getElementById("game-button-3").disabled = false;
+            break;
+        }
+        case 2: {
+
+            //showdown
+
+            showDealerCards();
+            /*
+            console.log("Showdown");
+            console.log(username);
+            let playerPoints = fcd_calculateHand(playerhand);
+            console.log("Playerhand points: " + playerPoints);
+            let dealerPoints = fcd_calculateHand(dealerhand);
+
+            let message = "";
+            if (playerPoints > dealerPoints) {
+                //Player wins. So he gets twice the pot, since the dealer never put money in the pot right?
+                message = "You won!";
+                addMoney(pot * 2);
+            } else if (playerPoints < dealerPoints) {
+                //Dealer wins
+                message = "Dealer won.";
+            } else {
+                //Pot gets split. So Player gets the pot back e.g. all of his bets.
+                message = "Tie! Pot gets split!"
+            }
+            alert(message + " \nYour Hand: " + playerhand + "\nDealer Hand: " + dealerhand);
+            //endGame();
+
+*/
+            setTimeout(function () {comparePokerhand()}, 2000);
+            break;
+        }
+    }
+    rounds++;
+}
+
+function THDealerMove() {
+    console.log("rounds: " , rounds);
+    disableGameButtons()
+    //if(dealerbet === playerbet) {
         switch (rounds) {
             case 0: {
                 setTimeout(function () {getCard("middlehand", true);}, 1000);
                 setTimeout(function () {getCard("middlehand", true);}, 2000);
                 setTimeout(function () {getCard("middlehand", true);}, 3000);
-                setTimeout(function () {$(':button').prop('disabled', false);}, 4000);
+                enableGameButtons(4000);
                 break;
             }
             case 1: {
                 //dealerRaise(50);
                 setTimeout(function () {getCard("middlehand", true);}, 1000);
-                setTimeout(function () {$(':button').prop('disabled', false);}, 2000);
+                enableGameButtons(2000);
                 break;
             }
             case 2: {
                 setTimeout(function () {getCard("middlehand", true);}, 1000);
-                setTimeout(function () {$(':button').prop('disabled', false);}, 2000);
+                enableGameButtons(2000);
                 break;
             }
             case 3: {
                 showDealerCards();
-                setTimeout(function () {checkTexasHoldem()}, 2000);
-                $(':button').prop('disabled', false);
+                setTimeout(function () {comparePokerhand()}, 2000);
+                enableGameButtons(2001);
                 break;
             }
         }
         rounds++;
-    }
+    //}
 }
 
-function  checkTexasHoldem() {
-    let dealerpoints = checkPokerHand("dealerhand");
-    let playerpoints = checkPokerHand("playerhand");
+function comparePokerhand() {
+    let dealerpoints = calculatePokerhand("dealerhand");
+    let playerpoints = calculatePokerhand("playerhand");
+    let endString = "";
+    let title;
     console.log("dealer: " + dealerpoints);
     console.log("player: " + playerpoints);
 
@@ -1134,17 +1096,17 @@ function  checkTexasHoldem() {
         endString += " beats your ";
         endString = printPoints(playerpoints,endString);
     } else if(playerpoints > dealerpoints){
-        alert("You won");
-        console.log("WON");
-        printPoints(playerpoints);
-        console.log("beats dealers");
-        printPoints(dealerpoints);
+        title = "You WON!";
+        endString = printPoints(playerpoints,endString);
+        endString += " beats dealers ";
+        endString = printPoints(dealerpoints,endString);
+        addMoney(pot);
     } else {
-        alert("Draw");
-        console.log("DRAW");
-        printPoints(dealerpoints);
-        console.log("same as")
-        printPoints(playerpoints);
+        title = "It's a DRAW!";
+        endString = printPoints(dealerpoints,endString);
+        endString += " same as ";
+        endString = printPoints(playerpoints,endString);
+        addMoney(playerbet);
     }
     EndModal(title,endString);
 }
@@ -1163,7 +1125,7 @@ function printPoints(points,endString) {
     return endString;
 }
 
-function checkPokerHand(hand) {
+function calculatePokerhand(hand) {
     var cards;
     let pair = false;
     let twopair = false;
@@ -1187,8 +1149,7 @@ function checkPokerHand(hand) {
     straightflush[1] = 0;
     straightflush[2] = 0;
     straightflush[3] = 0;
-    let visited = Array(13);
-
+    let visited = new Array(13);
 
     if(hand === "dealerhand") {
         cards = dealerhand;
@@ -1196,19 +1157,30 @@ function checkPokerHand(hand) {
         cards = playerhand;
     }
 
-    if((cards[0] % 13) === 0 || (cards[1] % 13) === 0) {
-        highcard = 13;
-    } else if((cards[0] % 13) >= (cards[1] % 13)) {
-        highcard = (cards[0] % 13);
+    if(cards.length === 7) {
+        if((cards[0] % 13) === 0 || (cards[1] % 13) === 0) {
+            highcard = 13;
+        } else if((cards[0] % 13) >= (cards[1] % 13)) {
+            highcard = (cards[0] % 13);
+        } else {
+            highcard = (cards[1] % 13);
+        }
     } else {
-        highcard = (cards[1] % 13);
+        for (let i = 0; i < cards.length; i++) {
+            if(cards[i] % 13 === 0) {
+                highcard = 13;
+                break;
+            } else if(cards[i] % 13 > highcard && cards[i] % 13 !== 0) {
+                highcard = cards[i] % 13;
+            }
+        }
     }
+    console.log("highcard: " + highcard);
 
-    cards.sort(function(a, b){return b-a}); //sort cardvalues descending    51  36  25  25  22
+    cards.sort(function(a, b){return b-a}); //sort cardvalues descending
 
     for (let i = 0; i < cards.length; i++) {
 
-        //console.log("colorcard: " + cards[i]);
         if(cards[i] >= 0 && cards[i] <= 12) {
             //clubs
             color[0]++;
@@ -1223,9 +1195,7 @@ function checkPokerHand(hand) {
             color[3]++;
         }
 
-        //if(visited.find(element => element === (visited[cards[i] % 13])) === undefined) {
-        //Benni ist kacke, kann nicht mal ne if condition schreiben - joshi
-        //card sort % 13    14  12  11  10  9
+        //card sort % 13
         if(visited[(cards[i] % 13)] === undefined) {
             visited[(cards[i] % 13)] = 1;
             //sortier array
@@ -1255,6 +1225,7 @@ function checkPokerHand(hand) {
         }
     }
 
+    //check if flush and  straight
     for (let i = 0; i < straightflush.length; i++) {
         if(straightflush[i] === 4) {
             straightflushed = true;
@@ -1267,6 +1238,7 @@ function checkPokerHand(hand) {
         straightcounter++;
         points = 14;
     }
+
     for (let i = (visited.length - 1); i >= 0; i--) {
         if(straightcounter === 4) {
             points += (i+1) + 200;
@@ -1274,17 +1246,17 @@ function checkPokerHand(hand) {
             break;
         }
         if(visited[i] >= 1 && visited[i-1] >= 1) {
-            //console.log(i + " straight loop");
             straightcounter++;
             points += (i+1);
         } else {
             straightcounter = 0;
             points = 0;
         }
-        //console.log(straightcounter);
     }
 
+    //check if straightflush
     if(straightflushed && straight) {points += 400}
+
     //check if flush
     for(let i = 0; i < color.length; i++) {
         if(color[i] >= 5) {
@@ -1294,6 +1266,7 @@ function checkPokerHand(hand) {
         }
     }
 
+    //check amount of aces
     switch (visited[0]) {
         case 2: {
             if((14 * 2 + 10) >= points) {points = 14 * 2 + 10;}
@@ -1313,66 +1286,47 @@ function checkPokerHand(hand) {
     }
 
     let bufferpoints = points;
+
+    //check amount of every card
     for (let i = visited.length - 1; i >= 1; i--) {
+        console.log("card " + i + ": " + visited[i]);
         switch (visited[i]) {
             case 2: {
                 if (twopair || threeofakind || fourofakind || straight || flush) {
-                    if(threeofakind){
-                        points += 240;
-                    }
+                    if(threeofakind) {points += 240;}
                     break;
                 } else if (pair) {
-
-                        points += 90;
-
+                    points += 90;
                     twopair = true;
                 } else {
-                    if(bufferpoints + (i + 1) * 2 + 10 > points) {
-                        points = bufferpoints + (i + 1) * 2 + 10;
-                    }
+                    if(bufferpoints + (i + 1) * 2 + 10 > points) {points = bufferpoints + (i + 1) * 2 + 10;}
                     pair = true;
                 }
                 break;
             }
             case 3: {
-                if (threeofakind || fourofakind || straight || flush) {
-                    break;
-                } else if (twopair) {
-                    points += 300 + 3 * (i+1);
-                } else if (pair) {
-                    points += 390 + 3 * (i+1);
-                } else {
-                    if(bufferpoints + 3 * (i+1) + 150 > points) {
-                        points = bufferpoints + 3 * (i+1) + 150;
-                    }
+                if (threeofakind || fourofakind || straight || flush) {break;}
+                else if (twopair) {points += 300 + 3 * (i+1);}
+                else if (pair) {points += 390 + 3 * (i+1);}
+                else {
+                    if(bufferpoints + 3 * (i+1) + 150 > points) {points = bufferpoints + 3 * (i+1) + 150;}
                 }
                 threeofakind = true;
                 break;
             }
             case 4: {
-                if(bufferpoints + 4 * (i+1) + 500 > points){
-                    points = bufferpoints + 4 * (i+1) + 500;
-                }
+                if(bufferpoints + 4 * (i+1) + 500 > points) {points = bufferpoints + 4 * (i+1) + 500;}
                 fourofakind = true;
                 break;
             }
-            default: {
-                break;
-            }
+            default: {break;}
         }
     }
 
-    if(points === 0) {
-        points = highcard;
-    }
-
+    console.log("points: " + points);
+    if(points === 0) {points = highcard;}
     return points;
 }
-
-function PokerDraw(selectedCards) {
-
-}
-
 
 function endGame() {
     deck = [];
@@ -1387,23 +1341,14 @@ function endGame() {
     DealerHand.splice(0, DealerHand.length);
     resetTaken(taken);
 
-    while(document.getElementById("playerhand").firstChild) {
-        document.getElementById("playerhand").removeChild(document.getElementById("playerhand").firstChild);
-    }
-
-    while(document.getElementById("dealerhand").firstChild) {
-        document.getElementById("dealerhand").removeChild(document.getElementById("dealerhand").firstChild);
-    }
-
-    while(document.getElementById("middlehand").firstChild) {
-        document.getElementById("middlehand").removeChild(document.getElementById("middlehand").firstChild);
-    }
+    while(document.getElementById("playerhand").firstChild) {document.getElementById("playerhand").removeChild(document.getElementById("playerhand").firstChild);}
+    while(document.getElementById("dealerhand").firstChild) {document.getElementById("dealerhand").removeChild(document.getElementById("dealerhand").firstChild);}
+    while(document.getElementById("middlehand").firstChild) {document.getElementById("middlehand").removeChild(document.getElementById("middlehand").firstChild);}
 
     StartModal();
 }
 
 function loadProfile(currentUser) {
-
     console.log(currentUser);
     $.ajax
     ({
@@ -1452,7 +1397,6 @@ function saveSettings() {
             user[i] = document.getElementById("user["+i+"]").value;
             console.log("user["+i+"]: " + user[i]);
         }
-
     }
     let data = {User: user};
 
@@ -1494,7 +1438,6 @@ function removeMoney(money){
     });
 }
 
-
 function addMoney(money){
     console.log("AddMoney");
     var data = {
@@ -1511,12 +1454,9 @@ function addMoney(money){
             console.log("money added! (?) ", result);
             getUserMoney(username);
         },
-        error: function(jqXHR,
-            textStatus,
-            errorThrown) {
+        error: function(jqXHR, textStatus, errorThrown) {
             alert("Error Return from Ajax");
-            alert(jqXHR
-                .getResponseHeader('Content-Type'));
+            alert(jqXHR.getResponseHeader('Content-Type'));
             console.log(jqXHR.responseText);
             console.log(jqXHR);
             console.log(errorThrown);
@@ -1526,8 +1466,6 @@ function addMoney(money){
         }
     });
 }
-
-
 
 function changePassword(){
     let id = user[0];

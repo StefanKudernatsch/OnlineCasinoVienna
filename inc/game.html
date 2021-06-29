@@ -1,23 +1,15 @@
-<div id="dealerhand" class="container">
-</div>
+<div id="dealerhand" class="container"></div>
 
 <div id="pot_main">
-
     <div>Pot:&nbsp</div>  <div id="pot">0</div>€
 </div>
 
-
 <div id="middlepart">
-    <div id="deck">
-    </div>
+    <div id="deck"></div>
     <div id="middlewrapper">
-        <div id="middlehand">
-
-        </div>
+        <div id="middlehand"></div>
     </div>
-
 </div>
-
 
 <div id="controls">
     <button type="button"  class="btn btn-lg" id="game-button-1" style="background-image:
@@ -38,7 +30,6 @@
                     #ff8700,
                     #b35f00
             );;  color: white; width: 25%;"><span id="game-button-3-full" class="full-text"></span><span id="game-button-3-short" class="short-text"></span></button>
-
     <button type="button" class="btn btn-lg" id="game-button-4" style="background-image:
             radial-gradient(
                     40% 100vh at center,
@@ -47,9 +38,7 @@
             );;color: white; width: 25%;"><span id="game-button-4-full" class="full-text"></span><span id="game-button-4-short" class="short-text"></span></button>
 </div>
 
-
-<div id="playerhand" class="container">
-</div>
+<div id="playerhand" class="container"></div>
 
 
 <div id="startModal" class='modal fade'>
@@ -96,7 +85,6 @@
                     </div>
                 </div>
                 <div class='modal-footer'>
-
                     <input type='button' onclick="submitRaise()" class='btn btn-primary' name='RaiseSubmit'
                            value='Einsatzbetrag festlegen' id="RaiseSubmit" style="width: 100%">
                 </div>
@@ -105,8 +93,7 @@
     </div>
 </div>
 
-
-<div id="blackjackwinModal" class='modal fade'>
+<div id="endModal" class='modal fade'>
     <div class='modal-dialog'>
         <div class='modal-content'>
             <form method='post'>
@@ -121,60 +108,10 @@
                     </div>
                 </div>
                 <div class='modal-footer'>
-
                     <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
-                    value='Abbrechen' id="cancel">
-                    <input type='button' class='btn btn-primary' name='restartbj'
-                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div id="blackjackdrawModal" class='modal fade'>
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <form method='post'>
-                <div class="modal-header">
-                    <h4 class="modal-title">Unentschieden, Einsatz zurückgegeben</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class='modal-body'>
-                    <div class="col">
-                        <h5>Nochmal spielen?</h5>
-                    </div>
-                </div>
-                <div class='modal-footer'>
-
-                    <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
-                    value='Abbrechen' id="cancel">
-                    <input type='button' class='btn btn-primary' name='restartbj'
-                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)">
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
-
-<div id="blackjackloseModal" class='modal fade'>
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <form method='post'>
-                <div class="modal-header">
-                    <h4 class="modal-title">Sie haben leider verloren</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class='modal-body'>
-                    <div class="col">
-                        <h5>Nochmal spielen?</h5>
-                </div>
-                <div class='modal-footer'>
-
-                    <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
-                    value='Abbrechen' id="cancel">
-                    <input type='button' class='btn btn-primary' name='restartbj'
-                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)">
+                    value='Zurück zu Home'>
+                    <input type='button' class='btn btn-primary' name='replay'
+                           value='Nochmal spielen' id="replay" onclick="endGame()">
                 </div>
             </form>
         </div>
