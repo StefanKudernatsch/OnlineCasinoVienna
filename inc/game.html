@@ -1,6 +1,3 @@
-
-
-
 <div id="dealerhand" class="container">
 </div>
 
@@ -114,7 +111,7 @@
         <div class='modal-content'>
             <form method='post'>
                 <div class="modal-header">
-                    <h4 class="modal-title">Gratulation Sie haben gewonnen!</h4>
+                    <h4 class="modal-title">Gratulation Sie haben gewonnen! Sie haben den doppelten Einsatz erhalten!</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class='modal-body'>
@@ -126,8 +123,8 @@
 
                     <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
                     value='Abbrechen' id="cancel">
-                    <input type='button' onclick="" class='btn btn-primary' name='restartbj'
-                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack()">
+                    <input type='button' class='btn btn-primary' name='restartbj'
+                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)">
                 </div>
             </form>
         </div>
@@ -151,13 +148,13 @@
 
                     <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
                     value='Abbrechen' id="cancel">
-                    <input type='button' onclick="" class='btn btn-primary' name='restartbj'
-                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack()">
+                    <input type='button' class='btn btn-primary' name='restartbj'
+                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)">
                 </div>
             </form>
         </div>
     </div>
-</div>
+    </div>
 
 <div id="blackjackloseModal" class='modal fade'>
     <div class='modal-dialog'>
@@ -175,8 +172,8 @@
 
                     <input type='button' onclick="window.location.href = '?page=home'" class='btn btn-danger' name='BetPostSubmit'
                     value='Abbrechen' id="cancel">
-                    <input type='button' onclick="" class='btn btn-primary' name='restartbj'
-                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack()">
+                    <input type='button' class='btn btn-primary' name='restartbj'
+                           value='Nochmal spielen' id="restartbj" onclick="resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)">
                 </div>
             </form>
         </div>

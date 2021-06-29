@@ -46,28 +46,22 @@ $(document).ready(function () {
             $('#startModal').modal({backdrop: 'static', keyboard: false})
             $("#startModal").modal('show');
             StartModal();
-            document.getElementById("game-button-1").setAttribute("onclick", "bj_hit('playerhand', PlayerHand, taken)");
+            document.getElementById("game-button-1").setAttribute("onclick", "bj_hit('playerhand', PlayerHand, taken, DealerHand)");
             document.getElementById("game-button-1").textContent = "Hit";
             document.getElementById("game-button-2").setAttribute("onclick", "bj_stand(DealerHand, PlayerHand, taken)");
             document.getElementById("game-button-2").textContent = "Stand";
-            document.getElementById("game-button-3").setAttribute("onclick", "BJDoubleDown()");
-            document.getElementById("game-button-3-full").textContent = "Double Down";
-            document.getElementById("game-button-3-short").textContent = "DD";
-            document.getElementById("game-button-4").setAttribute("onclick", "BJSurrender()");
-            document.getElementById("game-button-4-full").textContent = "Surrender";
-            document.getElementById("game-button-4-short").textContent = "Surr";
+            // document.getElementById("game-button-3").setAttribute("onclick", "BJDoubleDown()");
+            // document.getElementById("game-button-3-full").textContent = "Double Down";
+            // document.getElementById("game-button-3-short").textContent = "DD";
+            // document.getElementById("game-button-4").setAttribute("onclick", "BJSurrender()");
+            // document.getElementById("game-button-4-full").textContent = "Surrender";
+            // document.getElementById("game-button-4-short").textContent = "Surr";
             document.getElementById("content").className = "deck";
             resizeMain();
             document.getElementById("main").className = "main";
             window.addEventListener('resize', resizeMain);
-            // Disable all buttons
             resetTaken(taken);
-            
-            // $(':button').prop('disabled', true);
-            // setTimeout(function(){ bj_pullcard("dealerhand", DealerHand, taken, true)}, 1000);
-            // setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 3000);
-            // setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 4000);
-            // setTimeout(function(){$(':button').prop('disabled', false);},5000);
+            bj_disableButtons();
         }   
     }
     else if(window.location.search === "?page=TexasHoldem" || window.location.search === "?page=FiveCardDraw") {
@@ -164,6 +158,7 @@ console.log("CheckInput()");
         $("#pot").html(pot);
         if(window.location.search === "?page=BlackJack") {
             $("#startModal").modal('hide');
+            bj_enableButtons();
             playBlackJack();
         }
         else if(window.location.search === "?page=TexasHoldem"){
@@ -548,38 +543,28 @@ function bj_calcHandValue(hand) {
     return numbers;
 
 }
-function bj_hit(destination, hand, taken) {
+function bj_hit(destination, PlayerHand, taken, DealerHand) {
 
-    bj_pullcard(destination, hand, taken);
-    var values = bj_calcHandValue(hand);
-    //console.log("here");
+    bj_pullcard(destination, PlayerHand, taken);
+    var values = bj_calcHandValue(PlayerHand);
     var bust = values.bj_isBust();
     console.log(bust);
     if (bust) {
         //End game
         console.log("Busted");
-        setTimeout(function(){resetBlackJack()},5000);
-        return false;
+        bj_disableButtons();
+        setTimeout(function(){$("#blackjackloseModal").modal('show');},5000);
     }
     var won = values.bj_hasWon()
     if (won) {
-        // Win game
-        // Reset Games
         // Dealer?
-        console.log("Won game");
-        addMoney(username, pot*2);
-        setTimeout(function(){resetBlackJack()},5000);
-        $("#blackjackwinModal").modal('show');
-        return true;
+        bj_dealer(DealerHand, PlayerHand, taken);
     }
-
-    return true;
 
 }
 
 function bj_dealerhit(DealerHand, taken)
 {
-    // unfold card dont forget
     bj_pullcard(DealerHand, taken);
     var values = bj_calcHandValue(DealerHand); 
     var bust = values.isBust();
@@ -587,10 +572,72 @@ function bj_dealerhit(DealerHand, taken)
     if (bust) {
         //End game
         console.log("Busted");
-       
         return false;
     }
     return true;
+}
+
+function bj_dealer(DealerHand, PlayerHand, taken)
+{
+    bj_disableButtons();
+    var values = bj_calcHandValue(DealerHand, taken);
+    var own = bj_calcHandValue(PlayerHand, taken);
+    setTimeout(function() {
+
+        if (!values.bj_isBust() 
+        && (!(values.low > own.low && values.low > own.high || (values.high > own.low && values.high > own.high)) 
+        && (values.low != 21 || values.high != 21) 
+        && !(values.low >= 17))) { 
+            bj_pullcard("dealerhand", DealerHand, taken, true);
+            values = bj_calcHandValue(DealerHand, taken);          
+            bj_dealer(DealerHand, PlayerHand, taken); // Recursive instead of using a loop to have animations with delay
+        }
+        else
+        {
+            $(':button').prop('disabled', false);
+ 
+                if (values.bj_hasWon() && own.bj_hasWon() || values.low == own.low && values.high == own.high)
+                {
+                   // Draw
+                   console.log("Draw");
+                   // Modal, both money back
+                   // Play again?
+                   // Reset game
+                   bj_disableButtons();
+                   addMoney(username, pot);
+                   setTimeout(function(){$("#blackjackdrawModal").modal('show');},5000);
+                }
+                else if(values.low>21 || values.high<own.high)
+                {
+                   
+                    console.log("Dealer lost, you win");
+                    // Modal, win
+                    addMoney(username, pot*2);
+                    bj_disableButtons();
+                    setTimeout(function(){$("#blackjackwinModal").modal('show');},5000);
+                }
+                else if (values.low > own.low && values.low > own.high || ((values.high > own.low  && values.high > own.high) && values.high <=21))
+                {
+                    // Lose game
+                    console.log("Lost. Dealer higher than you.");
+                    // Play again?
+                    // Reset game
+                    console.log(username);
+                    bj_disableButtons();
+                    setTimeout(function(){$("#blackjackloseModal").modal('show');},5000);
+
+                }
+                else
+                {
+                    console.log("Dealer lost, you win");
+                    // Modal, win
+                    addMoney(username, pot*2);
+                    bj_disableButtons();
+                    setTimeout(function(){$("#blackjackwinModal").modal('show');},5000);
+                }
+            }
+                               
+      }, 1000)
 }
 
 function bj_stand(DealerHand, PlayerHand, taken) {
@@ -603,69 +650,7 @@ function bj_stand(DealerHand, PlayerHand, taken) {
     console.log("calculating playerhand");
     var own = bj_calcHandValue(PlayerHand, taken);
     console.log("Dealer low: " + values.low + " Dealer high: " + values.high);
-   
-    // Draw cards until one condition win or lose condition has been met
-    // while (!values.bj_isBust() // Ended up busted
-    // && ( !(values.low > own.low && values.low > own.high) || !(values.high > own.low && values.high > own.high) //higher than player num
-    // || values.low != 21 || values.high != 21 ||  !(values.low >= 17 || values.high >=17))) {
-    //     console.log("Dealer low: " + values.low + " Dealer high: " + values.high);
-    //     console.log("Dealer hits");
-    //     bj_pullcard("dealerhand", DealerHand, taken, true);
-    //     values = bj_calcHandValue(DealerHand, taken);
-       
-    // }
-    //console.log("pot: " + pot*2);
-    while(!values.bj_isBust() 
-    && (!(values.low > own.low && values.low > own.high || (values.high > own.low && values.high > own.high)) 
-    && (values.low != 21 || values.high != 21) 
-    && !(values.low >= 17 || values.high >=17)))
-    {
-        console.log("Dealer low: " + values.low + " Dealer high: " + values.high);
-        console.log("Dealer hits");
-        bj_pullcard("dealerhand", DealerHand, taken, true);
-        values = bj_calcHandValue(DealerHand, taken);
-    }
-
-    var alive = true;
-    $(':button').prop('disabled', false);
-    if (alive) {
-        if(values.low>21)
-        {
-            alive = false;
-            console.log("Dealer lost, you win");
-            // Modal, win
-            //endGame();
-            addMoney(username, pot*2);
-            $("#blackjackwinModal").modal('show');
-            //setTimeout(function(){resetBlackJack()},5000);
-           
-        }
-        else if (values.bj_hasWon() && own.bj_hasWon())
-        {
-           // Draw
-           console.log("Draw");
-           alive = false;
-
-           // Modal, both money back
-           // Play again?
-           // Reset game
-           addMoney(username, pot);
-           //setTimeout(function(){{$("#blackjackdrawModal").modal('show')}},5000);
-           $("#blackjackdrawModal").modal('show');
-           //setTimeout(function(){resetBlackJack()},5000);
-        }
-        else
-        {
-            // Lose game
-            console.log("Lost. Dealer higher than you.");
-            // Play again?
-            // Reset game
-            console.log(username);
-            addMoney(username, 20);
-            $("#blackjackloseModal").modal('show');
-            //setTimeout(function(){resetBlackJack()},5000);
-        }
-    }
+    bj_dealer(DealerHand, PlayerHand, taken);
 }
 
 function resetTaken(taken)
@@ -675,8 +660,26 @@ function resetTaken(taken)
     }
 }
 
-function resetBlackJack()
+function bj_disableButtons()
 {
+
+    $("#game-button-1").prop('disabled', true);
+    $("#game-button-2").prop('disabled', true);
+    $("#game-button-3").prop('disabled', true);
+    $("#game-button-4").prop('disabled', true);
+}
+
+function bj_enableButtons()
+{
+
+    $("#game-button-1").prop('disabled', false);
+    $("#game-button-2").prop('disabled', false);
+    $("#game-button-3").prop('disabled', false);
+    $("#game-button-4").prop('disabled', false);
+}
+function resetBlackJack(deck, playerhand, dealerhand, pot, playerbet, dealerbet, rounds, PlayerHand, DealerHand, taken)
+{
+    console.log("End");
     deck = [];
     playerhand = [];
     dealerhand = [];
@@ -687,6 +690,10 @@ function resetBlackJack()
     PlayerHand.splice(0, PlayerHand.length);
     DealerHand.splice(0, DealerHand.length);
     resetTaken(taken);
+    console.log(PlayerHand);
+    $("#blackjackwinModal").modal('hide');
+    $("#blackjackdrawModal").modal('hide');
+    $("#blackjackloseModal").modal('hide');
 
     while(document.getElementById("playerhand").firstChild) {
         document.getElementById("playerhand").removeChild(document.getElementById("playerhand").firstChild);
@@ -763,10 +770,24 @@ function playBlackJack() {
     gamerunning = true;
     createDeck(1);
     $(':button').prop('disabled', true);
+    bj_disableButtons();
     setTimeout(function(){ bj_pullcard("dealerhand", DealerHand, taken, true)}, 2000);
     setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 3000);
     setTimeout(function(){ bj_pullcard("playerhand", PlayerHand, taken, true)}, 4000);
-    setTimeout(function(){$(':button').prop('disabled', false);},5000);
+    setTimeout(function(){    
+        var values = bj_calcHandValue(PlayerHand);
+        var won = values.bj_hasWon()
+        if (won) {
+            // Pulled a blackjack first
+            bj_dealer(DealerHand, PlayerHand, taken);
+        }
+            else
+        {
+            bj_enableButtons();
+        }
+}, 5000);
+
+    //setTimeout(function(){$(':button').prop('disabled', false);bj_enableButtons();},5000);
 }
 
 function PokerCall() {
@@ -1321,24 +1342,6 @@ function PokerDraw(selectedCards) {
 
 }
 
-function BJHit() {
-    let handvalue = 0;
-    let cardvalue = 0;
-    let acecount = 0;
-    getCard("playerhand");
-    for (let i = 0; i < playerhand.length; i++) {
-        cardvalue = (playerhand[i] % 13) + 1;
-        if(cardvalue > 10) {
-            cardvalue = 10;
-        }
-        if(cardvalue === 1) {
-            acecount++;
-            cardvalue = 11;
-        }
-
-        handvalue += cardvalue;
-    }
-}
 
 function endGame() {
     deck = [];
@@ -1365,23 +1368,6 @@ function endGame() {
     }
 
     StartModal();
-}
-
-function checkBlackJack(hand) {
-    if(handvalue >= 21) {
-        if(handvalue === 21) {
-            //endGame(won);
-        }
-        else if(handvalue > 21) {
-            do {
-                handvalue -= 10;
-                acecount--;
-            } while (handvalue > 21 && acecount > 0)
-
-            //endGame(lost);
-        }
-
-    }
 }
 
 function loadProfile(currentUser) {
