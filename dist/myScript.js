@@ -310,6 +310,7 @@ function banUser(ban_name){
 }
 
 function showDealerCards() {
+    $(':button').prop('disabled', true);
     let div = document.getElementById("dealerhand");
 
     let children = div.children;
@@ -361,12 +362,12 @@ function drawCard(hand,number,open){
     let main =  document.getElementById("main");
     let div1 = document.getElementById(hand);
     let middle = document.getElementById("middlepart");
-    console.log(div1.clientWidth);
+    //console.log(div1.clientWidth);
     let count = div1.childElementCount;
 
 
     let main_padding = parseInt(window.getComputedStyle(main, null).getPropertyValue('padding'), 10);
-    console.log("max:"+main_padding);
+    //console.log("max:"+main_padding);
     let screenwidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     let x = main.clientWidth/2 - main_padding - (div.clientWidth/2) - 10 + (count * ((div.clientWidth/2)+5));
 
@@ -378,7 +379,7 @@ function drawCard(hand,number,open){
 
     for (let i = 0; i < children.length; i++) {
         let child = children[i];
-        console.log("Xasd " + child.offsetLeft);
+        //console.log("Xasd " + child.offsetLeft);
         //child.style.left = '"'+child.offsetLeft - (count*((div.clientWidth/2)+5)) + 'px"';
         //child.style.marginRight = "50px";
         setTimeout(function (){
@@ -413,9 +414,9 @@ function drawCard(hand,number,open){
         }
     }
 
-    console.log("X " + x);
+    //console.log("X " + x);
 
-    console.log("Wdidht " + screenwidth);
+    //console.log("Wdidht " + screenwidth);
     div.append(image);
 
     setTimeout(function () {
@@ -448,8 +449,9 @@ function createDeck(deckamounts) {
     }
 }
 
-function getCard(hand,open) {
+function getCard(hand,open,cardIndex) {
     let randomCardIndex = getRandomInt(deck.length);
+    //randomCardIndex = cardIndex;
     switch (hand) {
         case 'dealerhand': {
             dealerhand.push(deck[randomCardIndex]);
@@ -469,6 +471,7 @@ function getCard(hand,open) {
         }
     }
 
+    //console.log(cardIndex + ": " + deck[cardIndex]);
     deck.splice(randomCardIndex,1);
 }
 function bj_pushcard(destination, hand, taken, Card, open) {
@@ -1053,7 +1056,7 @@ function PokerDealerMove() {
                 break;
             }
             case 1: {
-                dealerRaise(50);
+                //dealerRaise(50);
                 setTimeout(function () {getCard("middlehand", true);}, 1000);
                 setTimeout(function () {$(':button').prop('disabled', false);}, 2000);
                 break;
