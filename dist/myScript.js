@@ -98,7 +98,6 @@ $(document).ready(function () {
             } else if(window.location.search === "?page=FiveCardDraw") {
                 document.getElementById("game-button-2").setAttribute("onclick", "PokerDraw()");
                 document.getElementById("game-button-2").textContent = "Draw";
-
             }
 
             document.getElementById("content").className = "deck";
@@ -675,6 +674,7 @@ function resetTaken(taken)
         taken[bool] = false; // Set Taken to false by default
     }
 }
+
 function resetBlackJack()
 {
     deck = [];
@@ -928,6 +928,7 @@ function fcd_calculateHand(hand) {
                         return 700 + moduloHand[i];
                 }
             }
+            //console.log("valuecard: " +(cards[i] % 13 + 1)+ " visited "+visited[(cards[i] % 13)]);
         }
     }
 
@@ -1027,13 +1028,6 @@ function PokerFold() {
     if(confirm("Fold Cards?")){
         gamerunning = false;
         endGame();
-
-        if(pokertype === "TH") {
-            playTexasHoldem();
-        } else if(pokertype === "FCD"){
-            playFiveCardDraw();
-            rounds = 0;
-        }
     }
 }
 
@@ -1075,36 +1069,94 @@ function PokerDealerMove() {
         }
         rounds++;
     }
-
-
-
 }
 
 function  checkTexasHoldem() {
-    alert("Showdown " + dealerhand[0] + ", " + dealerhand[1]);
-    checkPokerHand("dealerhand");
-    checkPokerHand("playerhand");
+    let dealerpoints = checkPokerHand("dealerhand");
+    let playerpoints = checkPokerHand("playerhand");
+    console.log("dealer: " + dealerpoints);
+    console.log("player: " + playerpoints);
+
+    if(dealerpoints > playerpoints) {
+        alert("You lost");
+        console.log("LOST");
+        printPoints(dealerpoints);
+        console.log("beats your");
+        printPoints(playerpoints);
+    } else if(playerpoints > dealerpoints){
+        alert("You won");
+        console.log("WON");
+        printPoints(playerpoints);
+        console.log("beats dealers");
+        printPoints(dealerpoints);
+    } else {
+        alert("Draw");
+        console.log("DRAW");
+        printPoints(dealerpoints);
+        console.log("same as")
+        printPoints(playerpoints);
+    }
     endGame();
+}
+
+function printPoints(points) {
+    if(points === 660) {console.log("Royal Flush");}
+    else if(points < 660 && points >= 615) {console.log("Straight Flush");}
+    else if(points <= 556 && points >= 508) {console.log("Four of a kind");}
+    else if(points <= 468 && points >= 412) {console.log("Full house");}
+    else if(points === 300) {console.log("Flush");}
+    else if(points <= 260 && points >= 215) {console.log("Straight");}
+    else if(points <= 192 && points >= 156) {console.log("Three of a kind");}
+    else if(points <= 128 && points >= 106) {console.log("Two pair");}
+    else if(points <= 38 && points >= 14) {console.log("Pair");}
+    else {console.log("High Card");}
 }
 
 function checkPokerHand(hand) {
     var cards;
-    if(hand === "dealerhand") {
-        cards = dealerhand;
-    } else if(hand === "playerhand") {
-        cards = playerhand;
-    }
-    let ofakind = 0;
+    let pair = false;
+    let twopair = false;
     let flush = false;
+    let straight = false;
+    let straightflushed = false;
+    let threeofakind = false;
+    let fourofakind = false;
+    let straightcounter = 0;
+    let points = 0;
+    let highcard;
+
     let color = [];
     color[0] = 0;
     color[1] = 0;
     color[2] = 0;
     color[3] = 0;
+    let straightflush = [];
+    straightflush[0] = 0;
+    straightflush[1] = 0;
+    straightflush[2] = 0;
+    straightflush[3] = 0;
+    let visited = Array(13);
 
-    cards.sort(function(a, b){return b-a}); //sort cardvalues descending
+
+    if(hand === "dealerhand") {
+        cards = dealerhand;
+    } else if(hand === "playerhand") {
+        cards = playerhand;
+    }
+
+    if((cards[0] % 13) === 0 || (cards[1] % 13) === 0) {
+        highcard = 13;
+    } else if((cards[0] % 13) >= (cards[1] % 13)) {
+        highcard = (cards[0] % 13);
+    } else {
+        highcard = (cards[1] % 13);
+    }
+
+    cards.sort(function(a, b){return b-a}); //sort cardvalues descending    51  36  25  25  22
 
     for (let i = 0; i < cards.length; i++) {
+
+        //console.log("colorcard: " + cards[i]);
         if(cards[i] >= 0 && cards[i] <= 12) {
             //clubs
             color[0]++;
@@ -1119,30 +1171,152 @@ function checkPokerHand(hand) {
             color[3]++;
         }
 
-        //sortier array
-        //geh durch ob aufeinanderfolgend
-
-        for (let j = 0; j < 5; j++) {
-            if (i !== j && (cards[i] % 13 + 1) === (cards[j] % 13 + 1)) {
-                ofakind++;
+        //if(visited.find(element => element === (visited[cards[i] % 13])) === undefined) {
+        //Benni ist kacke, kann nicht mal ne if condition schreiben - joshi
+        //card sort % 13    14  12  11  10  9
+        if(visited[(cards[i] % 13)] === undefined) {
+            visited[(cards[i] % 13)] = 1;
+            //sortier array
+            //geh durch ob aufeinanderfolgend
+            for (let j = i + 1; j < cards.length; j++) {
+                if ((cards[i] % 13) === (cards[j] % 13)) {
+                    visited[(cards[i] % 13)] += 1;
+                }
             }
         }
     }
 
-    for(let i = 0; i < color.length; i++) {
-        if(color[i] >= 5) {
-            flush = true;
+    //cards.length
+    for (let i = cards.length-1; i >= 0; i--) {
+        if ((cards[i] >= 0 && cards[i] <= 12) && (cards[i - 1] >= 0 && cards[i - 1] <= 12)) {
+            //clubs
+            straightflush[0]++;
+        } else if ((cards[i] >= 13 && cards[i] <= 25) && (cards[i - 1] >= 13 && cards[i - 1] <= 25)) {
+            //diamonds
+            straightflush[1]++;
+        } else if ((cards[i] >= 26 && cards[i] <= 38) && (cards[i - 1] >= 26 && cards[i - 1] <= 38)) {
+            //hearts
+            straightflush[2]++;
+        } else if ((cards[i] >= 39 && cards[i] <= 51) && (cards[i - 1] >= 39 && cards[i - 1] <= 51)) {
+            //spades
+            straightflush[3]++;
         }
     }
-    ofakind /= 2;
-    if(ofakind > 0) {
-        alert(ofakind + " of a kind");
+
+    for (let i = 0; i < straightflush.length; i++) {
+        if(straightflush[i] === 4) {
+            straightflushed = true;
+            break;
+        }
     }
 
-    if(flush) {
-        alert("Flush");
+    //check if straight
+    if(visited[12] >= 1 && visited[0] >= 1) {
+        straightcounter++;
+        points = 14;
     }
+    for (let i = (visited.length - 1); i >= 0; i--) {
+        if(straightcounter === 4) {
+            points += (i+1) + 200;
+            straight = true;
+            break;
+        }
+        if(visited[i] >= 1 && visited[i-1] >= 1) {
+            //console.log(i + " straight loop");
+            straightcounter++;
+            points += (i+1);
+        } else {
+            straightcounter = 0;
+            points = 0;
+        }
+        //console.log(straightcounter);
+    }
+
+    if(straightflushed && straight) {points += 400}
+    //check if flush
+    for(let i = 0; i < color.length; i++) {
+        if(color[i] >= 5) {
+            if(points < 300) {points = 300;}
+            flush = true;
+            break;
+        }
+    }
+
+    switch (visited[0]) {
+        case 2: {
+            if((14 * 2 + 10) >= points) {points = 14 * 2 + 10;}
+            pair = true;
+            break;
+        }
+        case 3: {
+            if((14 * 3 + 150) >= points) {points = 14 * 3 + 150;}
+            threeofakind = true;
+            break;
+        }
+        case 4: {
+            if((14 * 4 + 500) >= points) {points = 14 * 4 + 500;}
+            fourofakind = true;
+            break;
+        }
+    }
+
+    let bufferpoints = points;
+    for (let i = visited.length - 1; i >= 1; i--) {
+        switch (visited[i]) {
+            case 2: {
+                if (twopair || threeofakind || fourofakind || straight || flush) {
+                    if(threeofakind){
+                        points += 240;
+                    }
+                    break;
+                } else if (pair) {
+
+                        points += 90;
+
+                    twopair = true;
+                } else {
+                    if(bufferpoints + (i + 1) * 2 + 10 > points) {
+                        points = bufferpoints + (i + 1) * 2 + 10;
+                    }
+                    pair = true;
+                }
+                break;
+            }
+            case 3: {
+                if (threeofakind || fourofakind || straight || flush) {
+                    break;
+                } else if (twopair) {
+                    points += 300 + 3 * (i+1);
+                } else if (pair) {
+                    points += 390 + 3 * (i+1);
+                } else {
+                    if(bufferpoints + 3 * (i+1) + 150 > points) {
+                        points = bufferpoints + 3 * (i+1) + 150;
+                    }
+                }
+                threeofakind = true;
+                break;
+            }
+            case 4: {
+                if(bufferpoints + 4 * (i+1) + 500 > points){
+                    points = bufferpoints + 4 * (i+1) + 500;
+                }
+                fourofakind = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    if(points === 0) {
+        points = highcard;
+    }
+
+    return points;
 }
+
 function PokerDraw(selectedCards) {
 
 }
